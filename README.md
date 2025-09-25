@@ -64,15 +64,15 @@ The team will propose and validate an extra feature with the TA. This will serve
 
 ## Team Members and their Roles
 
-| Name                 | Student ID | Role     |
-| -------------------- | ---------- | -------- |
-| Ali El Khaled        | 40268326   | Frontend |
-| Davann Hang          | 24790383   | Frontend |
-| Nirthika Ilaiyarajah | 40298669   | Frontend |
-| Omar Ghazaly         | 40280795   | Backend  |
-| Ryan Batti           | 40299408   | Frontend |
-| Shayan Javanmardi    | 40299147   | Backend  |
-| Yasmin Tavassoli     | 40284812   | Backend  |
+| Name                 | Student ID | Role     | Username          |
+| -------------------- | ---------- | -------- | ----------------- |
+| Ali El Khaled        | 40268326   | Frontend | Ali-ElKha         |
+| Davann Hang          | 24790383   | Frontend | davanndbg         |
+| Nirthika Ilaiyarajah | 40298669   | Frontend | nirthikkaa        |
+| Omar Ghazaly         | 40280795   | Backend  | HersheyWaffle     |
+| Ryan Batti           | 40299408   | Frontend | houd162           |
+| Shayan Javanmardi    | 40299147   | Backend  | shayjaa           |
+| Yasmin Tavassoli     | 40284812   | Backend  | yasmintavassoli04 |
 
 ---
 
