@@ -72,7 +72,7 @@ The team will propose and validate an extra feature with the TA. This will serve
 | Omar Ghazaly         | 40280795   | Backend  | HersheyWaffle     |
 | Ryan Batti           | 40299408   | Frontend | houd162           |
 | Shayan Javanmardi    | 40299147   | Backend  | shayjaa           |
-| Yasmin Tavassoli     | 40284812   | Backend  | yasmintavassoli04 |
+| Yasmin Tavassoli     | 40284812   | Frontend | yasmintavassoli04 |
 
 ---
 
