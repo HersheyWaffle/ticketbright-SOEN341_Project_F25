@@ -67,7 +67,7 @@ The team will propose and validate an extra feature with the TA. This will serve
 | Name                 | Student ID | Role     | Username          |
 | -------------------- | ---------- | -------- | ----------------- |
 | Ali El Khaled        | 40268326   | Frontend | Ali-ElKha         |
-| Davann Hang          | 24790383   | Frontend | davanndbg         |
+| Davann Hang          | 24790383   | Backend  | davanndbg         |
 | Nirthika Ilaiyarajah | 40298669   | Frontend | nirthikkaa        |
 | Omar Ghazaly         | 40280795   | Backend  | HersheyWaffle     |
 | Ryan Batti           | 40299408   | Frontend | houd162           |
@@ -108,13 +108,13 @@ Each sprint will include deliverables that demonstrate incremental progress. Con
 <ticketbright-SOEN341_Project_F25>/
 │
 ├── Sprint1/
-│   ├── Minutes/
+│   ├── MeetingMinutes/
 │   ├── UserStories/
 │   ├── Tasks/
 │   └── Logs/
 │
 ├── Sprint2/
-│   ├── Minutes/
+│   ├── MeetingMinutes/
 │   ├── UserStories/
 │   ├── Tasks/
 │   └── Logs/
