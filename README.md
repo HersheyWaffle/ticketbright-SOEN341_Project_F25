@@ -108,13 +108,13 @@ Each sprint will include deliverables that demonstrate incremental progress. Con
 <ticketbright-SOEN341_Project_F25>/
 │
 ├── Sprint1/
-│   ├── Minutes/
+│   ├── MeetingMinutes/
 │   ├── UserStories/
 │   ├── Tasks/
 │   └── Logs/
 │
 ├── Sprint2/
-│   ├── Minutes/
+│   ├── MeetingMinutes/
 │   ├── UserStories/
 │   ├── Tasks/
 │   └── Logs/
