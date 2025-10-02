@@ -79,8 +79,8 @@ The team will propose and validate an extra feature with the TA. This will serve
 ## Technologies  
 We intend to use modern web development frameworks and tools. The exact stack will be finalized as the project progresses.  
 
-- Frontend: TBD (React, Angular, Vue etc.)  
-- Backend: TBD (Node.js with Express, Django, Spring Boot etc.)  
+- Frontend: (React, Angular)
+- Backend: (Node.js with Express) 
 - Database: TBD (if required) (PostgreSQL, MySQL, MongoDB etc.)
 - Version Control: GitHub (distributed version control, issues, and project boards)  
 - Development Approach: Agile Scrum with four sprints (~3 weeks each)  
