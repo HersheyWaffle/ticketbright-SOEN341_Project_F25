@@ -4,12 +4,14 @@
 const express=require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const eventsRouter = require('./routes/events');
 
 const app = express();
 
 app.use(cors()); //API and frontend can work together 
 app.use(express.json());
 app.use(morgan('dev')); //request logs in the terminal 
+app.use('/api/events', eventsRouter)
 
 app.get('/health',(req,res)=>{ //http://localhost:3000/health
     res.json({
