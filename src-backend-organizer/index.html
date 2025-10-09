@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TicketBright – Static MVP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="container">
+    <h1>TicketBright – Organizer (Static MVP)</h1>
+    <p>Pure HTML/CSS/JS. Import CSV → Edit → Export CSV. Data stays in your browser.</p>
+  </header>
+
+  <main class="container">
+    <!-- USERS -->
+    <section class="card">
+      <h2>Users</h2>
+      <div class="toolbar">
+        <label class="import-btn">
+          Import CSV
+          <input id="usersImportFile" type="file" accept=".csv" hidden />
+        </label>
+        <button id="usersExportBtn">Export CSV</button>
+        <button id="usersClearBtn" class="danger">Clear Local Data</button>
+      </div>
+
+      <div class="table-wrap">
+        <table id="usersTable">
+          <thead>
+            <tr>
+              <th style="width:70px">ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th style="width:120px">Role</th>
+              <th style="width:90px">Actions</th>
+            </tr>
+          </thead>
+          <tbody><!-- filled by users.actions.js --></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Add New User</h3>
+      <form id="addUserForm" class="grid" autocomplete="off">
+        <div>
+          <label>Name</label>
+          <input id="nameInput" type="text" placeholder="Jane Smith" required />
+        </div>
+        <div>
+          <label>Email</label>
+          <input id="emailInput" type="email" placeholder="jane@example.com" required />
+        </div>
+        <div>
+          <label>Role</label>
+          <select id="roleInput" required>
+            <option value="">Choose role…</option>
+            <option value="student">student</option>
+            <option value="organizer">organizer</option>
+            <option value="admin">admin</option>
+          </select>
+        </div>
+        <div class="end">
+          <button type="submit">Add User</button>
+        </div>
+      </form>
+    </section>
+
+    <hr class="container" />
+
+    <!-- EVENTS -->
+    <section class="card">
+      <h2>Events</h2>
+      <div class="toolbar">
+        <label class="import-btn">
+          Import CSV
+          <input id="eventsImportFile" type="file" accept=".csv" hidden />
+        </label>
+        <button id="eventsExportBtn">Export CSV</button>
+        <button id="eventsClearBtn" class="danger">Clear Local Data</button>
+      </div>
+
+      <div class="table-wrap">
+        <table id="eventsTable">
+          <thead>
+            <tr>
+              <th style="width:70px">ID</th>
+              <th>Title</th>
+              <th style="width:140px">Date</th>
+              <th>Location</th>
+              <th style="width:110px">Capacity</th>
+              <th style="width:90px">Actions</th>
+            </tr>
+          </thead>
+          <tbody><!-- filled by events.actions.js --></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Add New Event</h3>
+      <form id="addEventForm" class="grid" autocomplete="off">
+        <div>
+          <label>Title</label>
+          <input id="eventTitleInput" type="text" placeholder="Welcome Fair" required />
+        </div>
+        <div>
+          <label>Date</label>
+          <input id="eventDateInput" type="date" required />
+        </div>
+        <div>
+          <label>Location</label>
+          <input id="eventLocationInput" type="text" placeholder="Hall A" required />
+        </div>
+        <div>
+          <label>Capacity</label>
+          <input id="eventCapacityInput" type="number" min="1" step="1" placeholder="200" required />
+        </div>
+        <div class="end">
+          <button type="submit">Add Event</button>
+        </div>
+      </form>
+      <p class="muted">Events CSV headers expected: <code>id,title,date,location,capacity</code></p>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small class="muted">Use Export to download CSV files for backup or sharing.</small>
+  </footer>
+
+  <!-- JS (order matters) -->
+  <script src="state.js"></script>
+  <script src="utils.js"></script>
+  <script src="storage.js"></script>
+  <script src="csv.js"></script>
+
+  <script src="users.actions.js"></script>
+  <script src="events.actions.js"></script>
+
+  <script src="init.js"></script>
+</body>
+</html>

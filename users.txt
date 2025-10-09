@@ -17,5 +17,5 @@ ticket-type.csv\{\
 \}\
 \
 tickets.csv\{\
-	id,eventId,ticketTypeId,attendeeEmail,status,qrHash,issuedAt,checkedInAt\
-\}}
+	id,eventId,ticketTypeId,attendeeEmail,status,qrHash,issue}dAt,checkedInAt\
+\}
