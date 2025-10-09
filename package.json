@@ -1,10 +1,20 @@
 {
+<<<<<<< HEAD
   "name": "ticketbright-soen341_project_f25",
   "version": "1.0.0",
   "description": "---",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+=======
+  "name": "ticketbright-soen341_project_f25-1",
+  "version": "1.0.0",
+  "description": "---",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "dev": "nodemon backend/src/server.js"
+>>>>>>> 2b0c199 (Project setup)
   },
   "repository": {
     "type": "git",
@@ -18,6 +28,14 @@
   },
   "homepage": "https://github.com/HersheyWaffle/ticketbright-SOEN341_Project_F25#readme",
   "dependencies": {
+<<<<<<< HEAD
     "express": "^5.1.0"
+=======
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "json2csv": "^6.0.0-alpha.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3"
+>>>>>>> 2b0c199 (Project setup)
   }
 }
