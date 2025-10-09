@@ -1,0 +1,43 @@
+# Node modules (don’t commit dependencies)
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+
+# Optional npm cache
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor files
+.vscode/
+.idea/
+
+# Build / Dist folders (if you ever compile)
+dist/
+build/
+
+# Coverage reports (if using Jest or other test tools)
+coverage/
+
+# Temporary files
+*.tmp
+*.swp
