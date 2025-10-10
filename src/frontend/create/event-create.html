@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event - TicketBright</title>
+    <link rel="stylesheet" href="event-create.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="loginArea">
+                <a href="#" class="navButton">Dashboard</a>
+                <a href="#" class="navButton">My Events</a>
+                <a href="#" class="navButton">Log Out</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="mainContent">
+        <div class="pageHeader">
+            <h1 class="pageTitle">Create New Event</h1>
+            <p class="pageSubtitle">Fill in all the details for your campus event</p>
+        </div>
+
+        <!-- Event Form -->
+        <form id="eventForm">
+            <!-- Basic Information Section -->
+            <div class="formSection">
+                <h2 class="sectionTitle">Basic Information</h2>
+                
+                <div class="formGroup">
+                    <label for="title" class="required">Event Title</label>
+                    <input type="text" id="title" placeholder="Enter event title">
+                </div>
+                
+                <div class="formGroup">
+                    <label for="description" class="required">Event Description</label>
+                    <textarea id="description" placeholder="Describe your event"></textarea>
+                </div>
+                
+                <div class="formRow">
+                    <div class="formGroup">
+                        <label for="date" class="required">Date</label>
+                        <input type="date" id="date">
+                    </div>
+                    
+                    <div class="formGroup">
+                        <label for="time" class="required">Time</label>
+                        <input type="time" id="time">
+                    </div>
+                </div>
+                
+                <div class="formGroup">
+                    <label for="location" class="required">Location</label>
+                    <input type="text" id="location" placeholder="Enter event location">
+                </div>
+            </div>
+            
+            <!-- Ticket Information Section -->
+            <div class="formSection">
+                <h2 class="sectionTitle">Ticket Information</h2>
+                
+                <div class="formGroup">
+                    <label for="capacity" class="required">Ticket Capacity</label>
+                    <input type="number" id="capacity" placeholder="Enter maximum number of tickets" min="1">
+                </div>
+                
+                <div class="formGroup">
+                    <label class="required">Ticket Type</label>
+                    <div class="ticketTypeContainer">
+                        <div class="ticketOption selected" id="freeOption">
+                            <input type="radio" id="free" name="ticketType" value="free" checked>
+                            <label for="free">Free</label>
+                        </div>
+                        <div class="ticketOption" id="paidOption">
+                            <input type="radio" id="paid" name="ticketType" value="paid">
+                            <label for="paid">Paid</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="priceInput" id="priceContainer">
+                    <label for="price" class="required">Price per Ticket ($)</label>
+                    <input type="number" id="price" placeholder="Enter price" min="0" step="0.01">
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="formActions">
+                <button type="button" class="btn btnDraft" id="saveDraft">Save as Draft</button>
+                <button type="button" class="btn btnPublish" id="publishEvent">Publish Event</button>
+            </div>
+        </form>
+        
+        <!-- Review Page -->
+        <div class="reviewPage" id="reviewPage">
+            <h2 class="reviewTitle">Review Event Details</h2>
+            <p class="reviewSubtitle">Please review your event information before publishing</p>
+            
+            <div class="reviewDetails">
+                <div class="detailRow">
+                    <div class="detailLabel">Event Title:</div>
+                    <div class="detailValue" id="reviewTitle"></div>
+                </div>
+                <div class="detailRow">
+                    <div class="detailLabel">Description:</div>
+                    <div class="detailValue" id="reviewDescription"></div>
+                </div>
+                <div class="detailRow">
+                    <div class="detailLabel">Date & Time:</div>
+                    <div class="detailValue" id="reviewDateTime"></div>
+                </div>
+                <div class="detailRow">
+                    <div class="detailLabel">Location:</div>
+                    <div class="detailValue" id="reviewLocation"></div>
+                </div>
+                <div class="detailRow">
+                    <div class="detailLabel">Ticket Capacity:</div>
+                    <div class="detailValue" id="reviewCapacity"></div>
+                </div>
+                <div class="detailRow">
+                    <div class="detailLabel">Ticket Type:</div>
+                    <div class="detailValue" id="reviewTicketType"></div>
+                </div>
+                <div class="detailRow" id="reviewPriceRow">
+                    <div class="detailLabel">Price per Ticket:</div>
+                    <div class="detailValue" id="reviewPrice"></div>
+                </div>
+            </div>
+            
+            <div class="reviewActions">
+                <button type="button" class="btn btnDraft" id="editEvent">Edit Details</button>
+                <button type="button" class="btn btnPublish" id="confirmPublish">Confirm & Publish</button>
+            </div>
+        </div>
+        
+        <!-- Saved as Draft Message -->
+        <div class="savedMessage" id="savedMessage">
+            <div class="savedIcon">💾</div>
+            <h2 class="savedTitle">Event Saved as Draft!</h2>
+            <p class="savedText">Your event has been saved as draft. You can publish it later from your dashboard.</p>
+            <div class="savedActions">
+                <button class="btn btnDraft" id="createAnotherDraft">Create Another Event</button>
+                <button class="btn btnPublish" id="viewDashboard">View Dashboard</button>
+            </div>
+        </div>
+
+        <!-- Published Success Message -->
+        <div class="successMessage" id="successMessage">
+            <div class="successIcon">✓</div>
+            <h2 class="successTitle">Event Published Successfully!</h2>
+            <p class="successText">Your event is now live and available for students to view and register.</p>
+            <div class="successActions">
+                <button class="btn btnDraft" id="createAnother">Create Another Event</button>
+                <button class="btn btnPublish" id="viewEvent">View Event Page</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="event-create.js"></script>
+</body>
+</html>
