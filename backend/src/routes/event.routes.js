@@ -7,7 +7,7 @@ const router = express.Router();
 
 // GET /api/events/:eventId/attendees/export
 router.get("/:eventId/attendees/export", authenticateOrganizer, exportAttendees);
-
+//normal
 router.post("/", authenticateOrganizer, createEvent);
 
 // TEMP for local test
