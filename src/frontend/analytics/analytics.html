@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicketBright - Event Analytics</title>
+    <link rel="stylesheet" href="analytics.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <a href="main.html" class="navLink">Home</a>
+                <div class="organizerDropdown">
+                    <button class="organizerButton">Organizer</button>
+                    <div class="dropdownContent">
+                        <a href="analytics.html" class="dropdownLink active">Analytics</a>
+                        <a href="#" class="dropdownLink">Create Event</a>
+                    </div>
+                </div>
+                <button class="logoutButton">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="analyticsHeader">
+        <h1>Event Analytics</h1>
+        <p>Track how your events are doing, past and current.</p>
+    </section>
+
+    <section class="analyticsContainer">
+        <div class="statsSummary">
+            <div class="statCard">
+                <div class="statValue">1000</div>
+                <div class="statLabel">Total Tickets Sold</div>
+            </div>
+            <div class="statCard">
+                <div class="statValue">74%</div>
+                <div class="statLabel">Attendance Rate</div>
+            </div>
+            <div class="statCard">
+                <div class="statValue">4.0</div>
+                <div class="statLabel">Average Rating</div>
+            </div>
+        </div>
+
+        <div class="eventsAnalytics">
+            <div class="eventsHeader">
+                <h2>Your Events</h2>
+                <div class="eventsTabs">
+                    <button class="tabButton active" data-tab="all">All Events</button>
+                    <button class="tabButton" data-tab="current">Current</button>
+                    <button class="tabButton" data-tab="past">Past</button>
+                </div>
+            </div>
+            
+            <div class="eventsList">
+                <div class="tabContent active" id="all">
+                    <div class="eventAnalyticsCard">
+                        <div class="eventBasicInfo">
+                            <h3>2024 Career Fair</h3>
+                            <p class="eventDate">February 3, 2024 • Concordia University</p>
+                            <span class="eventStatus past">Past Event</span>
+                        </div>
+                        <div class="eventStats">
+                            <div class="statItem">
+                                <span class="statNumber">300</span>
+                                <span class="statDesc">Tickets Sold</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">150</span>
+                                <span class="statDesc">Attendances</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">50%</span>
+                                <span class="statDesc">Attendance Rate</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">4.0</span>
+                                <span class="statDesc">Rating</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">150</span>
+                                <span class="statDesc">Remaining Capacity</span>
+                            </div>
+                        </div>
+                        <div class="eventActions">
+                            <button class="exportButton">Export Attendee List</button>
+                            <div class="qrValidation">
+                                <input type="text" id="qrCodeInput1" placeholder="Enter QR Code for validation" class="qrInput">
+                                <button class="validateButton">Validate QR</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="eventAnalyticsCard">
+                        <div class="eventBasicInfo">
+                            <h3>Tech Seminar</h3>
+                            <p class="eventDate">September 3, 2025 • Engineering Building</p>
+                            <span class="eventStatus past">Past Event</span>
+                        </div>
+                        <div class="eventStats">
+                            <div class="statItem">
+                                <span class="statNumber">200</span>
+                                <span class="statDesc">Tickets Sold</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">198</span>
+                                <span class="statDesc">Attendances</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">99%</span>
+                                <span class="statDesc">Attendance Rate</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">5.0</span>
+                                <span class="statDesc">Rating</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">2</span>
+                                <span class="statDesc">Remaining Capacity</span>
+                            </div>
+                        </div>
+                        <div class="eventActions">
+                            <button class="exportButton">Export Attendee List</button>
+                            <div class="qrValidation">
+                                <input type="text" id="qrCodeInput2" placeholder="Enter QR Code for validation" class="qrInput">
+                                <button class="validateButton">Validate QR</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="eventAnalyticsCard">
+                        <div class="eventBasicInfo">
+                            <h3>Winter Mixer</h3>
+                            <p class="eventDate">January 20, 2024 • Student Center</p>
+                            <span class="eventStatus current">Current Event</span>
+                        </div>
+                        <div class="eventStats">
+                            <div class="statItem">
+                                <span class="statNumber">100</span>
+                                <span class="statDesc">Tickets Sold</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">40</span>
+                                <span class="statDesc">Attendances</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">40%</span>
+                                <span class="statDesc">Attendance Rate</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">-</span>
+                                <span class="statDesc">Rating</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">60</span>
+                                <span class="statDesc">Remaining Capacity</span>
+                            </div>
+                        </div>
+                        <div class="eventActions">
+                            <button class="exportButton">Export Attendee List</button>
+                            <div class="qrValidation">
+                                <input type="text" id="qrCodeInput3" placeholder="Enter QR Code for validation" class="qrInput">
+                                <button class="validateButton">Validate QR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--current events-->
+                <div class="tabContent" id="current">
+                    <div class="eventAnalyticsCard">
+                        <div class="eventBasicInfo">
+                            <h3>Winter Mixer</h3>
+                            <p class="eventDate">January 20, 2024 • Student Center</p>
+                            <span class="eventStatus current">Current Event</span>
+                        </div>
+                        <div class="eventStats">
+                            <div class="statItem">
+                                <span class="statNumber">100</span>
+                                <span class="statDesc">Tickets Sold</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">40</span>
+                                <span class="statDesc">Attendances</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">40%</span>
+                                <span class="statDesc">Attendance Rate</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">-</span>
+                                <span class="statDesc">Rating</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">60</span>
+                                <span class="statDesc">Remaining Capacity</span>
+                            </div>
+                        </div>
+                        <div class="eventActions">
+                            <button class="exportButton">Export Attendee List</button>
+                            <div class="qrValidation">
+                                <input type="text" id="qrCodeInput4" placeholder="Enter QR Code for validation" class="qrInput">
+                                <button class="validateButton">Validate QR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--past events-->
+                <div class="tabContent" id="past">
+                    <div class="eventAnalyticsCard">
+                        <div class="eventBasicInfo">
+                            <h3>2024 Career Fair</h3>
+                            <p class="eventDate">February 3, 2024 • Concordia University</p>
+                            <span class="eventStatus past">Past Event</span>
+                        </div>
+                        <div class="eventStats">
+                            <div class="statItem">
+                                <span class="statNumber">300</span>
+                                <span class="statDesc">Tickets Sold</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">150</span>
+                                <span class="statDesc">Attendances</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">50%</span>
+                                <span class="statDesc">Attendance Rate</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">4.0</span>
+                                <span class="statDesc">Rating</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">150</span>
+                                <span class="statDesc">Remaining Capacity</span>
+                            </div>
+                        </div>
+                        <div class="eventActions">
+                            <button class="exportButton">Export Attendee List</button>
+                            <div class="qrValidation">
+                                <input type="text" id="qrCodeInput5" placeholder="Enter QR Code for validation" class="qrInput">
+                                <button class="validateButton">Validate QR</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="eventAnalyticsCard">
+                        <div class="eventBasicInfo">
+                            <h3>Tech Seminar</h3>
+                            <p class="eventDate">September 3, 2025 • Engineering Building</p>
+                            <span class="eventStatus past">Past Event</span>
+                        </div>
+                        <div class="eventStats">
+                            <div class="statItem">
+                                <span class="statNumber">200</span>
+                                <span class="statDesc">Tickets Sold</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">198</span>
+                                <span class="statDesc">Attendances</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">99%</span>
+                                <span class="statDesc">Attendance Rate</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">5.0</span>
+                                <span class="statDesc">Rating</span>
+                            </div>
+                            <div class="statItem">
+                                <span class="statNumber">2</span>
+                                <span class="statDesc">Remaining Capacity</span>
+                            </div>
+                        </div>
+                        <div class="eventActions">
+                            <button class="exportButton">Export Attendee List</button>
+                            <div class="qrValidation">
+                                <input type="text" id="qrCodeInput6" placeholder="Enter QR Code for validation" class="qrInput">
+                                <button class="validateButton">Validate QR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="analytics.js"></script>
+</body>
+</html>
