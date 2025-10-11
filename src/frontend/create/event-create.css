@@ -11,7 +11,7 @@ body {
     line-height: 1.6;
 }
 
-/* Header - Matching TicketBright */
+/* Header */
 header {
     background-color: #1a1a2e; 
     color: white;
@@ -115,10 +115,15 @@ label {
     color: #dc2626;
 }
 
+.formInput,
 input[type="text"],
+input[type="email"],
+input[type="url"],
 input[type="date"],
 input[type="time"],
+input[type="datetime-local"],
 input[type="number"],
+input[type="file"],
 textarea,
 select {
     width: 100%;
@@ -148,7 +153,83 @@ textarea {
     gap: 20px;
 }
 
-/* Ticket Type - Smaller options */
+.durationInput {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.durationInput input {
+    width: 100%;
+}
+
+.durationInput select {
+    width: 120px;
+}
+
+/* Category Tags */
+.categoryTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.categoryTag {
+    background-color: #3b82f6;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.categoryTag .remove {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.categoryTag .remove:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.categoryOptions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.categoryOption {
+    padding: 12px;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.categoryOption.selected {
+    border-color: #3b82f6;
+    background-color: #3b82f6;
+    color: white;
+}
+
+/* Ticket Type */
 .ticketTypeContainer {
     display: flex;
     gap: 15px;
@@ -186,10 +267,28 @@ textarea {
     display: block;
 }
 
+.currency {
+    position: relative;
+}
+
+.currency::before {
+    content: "$";
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-weight: 500;
+}
+
+.currency input {
+    padding-left: 25px;
+}
+
 /* Form Actions */
 .formActions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 15px;
     margin-top: 30px;
     padding-top: 25px;
@@ -206,13 +305,22 @@ textarea {
     transition: background-color 0.3s;
 }
 
-.btnDraft {
+.btnReset {
     background-color: #6b7280;
     color: white;
 }
 
-.btnDraft:hover {
+.btnReset:hover {
     background-color: #4b5563;
+}
+
+.btnDraft {
+    background-color: #f59e0b;
+    color: white;
+}
+
+.btnDraft:hover {
+    background-color: #d97706;
 }
 
 .btnPublish {
@@ -254,10 +362,23 @@ textarea {
     margin: 20px 0;
 }
 
+.reviewSection {
+    margin-bottom: 25px;
+}
+
+.reviewSectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 8px;
+}
+
 .detailRow {
     display: flex;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
     border-bottom: 1px solid #e5e7eb;
 }
 
@@ -265,6 +386,7 @@ textarea {
     font-weight: 600;
     width: 200px;
     color: #374151;
+    flex-shrink: 0;
 }
 
 .detailValue {
@@ -290,20 +412,16 @@ textarea {
     margin-top: 20px;
 }
 
-.savedIcon {
-    font-size: 48px;
-    color: #6b7280;
-    margin-bottom: 20px;
-}
-
 .savedTitle {
     color: #1a1a2e;
     margin-bottom: 15px;
+    font-size: 24px;
 }
 
 .savedText {
     color: #666;
     margin-bottom: 25px;
+    font-size: 16px;
 }
 
 .savedActions {
@@ -351,11 +469,19 @@ textarea {
         grid-template-columns: 1fr;
     }
 
+    .durationInput {
+        grid-template-columns: 1fr;
+    }
+
     .ticketTypeContainer {
         flex-direction: column;
     }
 
-    .formActions, 
+    .categoryOptions {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .formActions,
     .reviewActions,
     .savedActions,
     .successActions {
