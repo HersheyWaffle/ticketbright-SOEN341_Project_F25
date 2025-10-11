@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicketBright</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <a href="main.html" class="navLink active">Home</a>
+                <div class="organizerDropdown">
+                    <button class="organizerButton">Organizer</button>
+                    <div class="dropdownContent">
+                        <a href="analytics.html" class="dropdownLink">Analytics</a>
+                        <a href="#" class="dropdownLink">Create Event</a>
+                    </div>
+                </div>
+                <button class="loginButton">Log In</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="topArea">
+        <h1>Find Student Events</h1>
+        <p>Discover seminars, career fairs, networking events and more</p>
+        <div class="searchContainer">
+            <form class="searchForm">
+                <div class="searchField">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" class="searchInput" placeholder="Campus or venue">
+                </div>
+                <div class="searchField">
+                    <label for="date">Date</label>
+                    <input type="text" id="date" class="searchInput" placeholder="Any date">
+                </div>
+                <div class="searchField">
+                    <label for="search">Search</label>
+                    <input type="text" id="search" class="searchInput" placeholder="Speaker or event">
+                </div>
+                <div class="searchField">
+                    <label for="filters">Category</label>
+                    <select id="filters" class="filterDropdown">
+                        <option value="">All Categories</option>
+                        <option value="seminars">Seminars</option>
+                        <option value="careerfairs">Career Fairs</option>
+                        <option value="networking">Networking Events</option>
+                        <option value="academic">Academic Events</option>
+                        <option value="dinners">Student Dinners</option>
+                        <option value="speeches">Guest Speeches</option>
+                    </select>
+                </div>
+                <button type="submit" class="searchButton">Search</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="featuredEvents">
+        <h2 class="sectionTitle">Featured Events</h2>
+        <div class="eventsGrid">
+        </div>
+    </section>
+
+    <section class="categories">
+        <div class="categoriesContainer">
+            <h2 class="sectionTitle">Browse By Category</h2>
+            <div class="categoriesGrid">
+                <div class="categoryCard">
+                    <div class="categoryName">Seminars</div>
+                </div>
+                <div class="categoryCard">
+                    <div class="categoryName">Career Fairs</div>
+                </div>
+                <div class="categoryCard">
+                    <div class="categoryName">Networking</div>
+                </div>
+                <div class="categoryCard">
+                    <div class="categoryName">Academic</div>
+                </div>
+                <div class="categoryCard">
+                    <div class="categoryName">Student Dinners</div>
+                </div>
+                <div class="categoryCard">
+                    <div class="categoryName">Guest Speeches</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="main.js"></script>
+</body>
+</html>
