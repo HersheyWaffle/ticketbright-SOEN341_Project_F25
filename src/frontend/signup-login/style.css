@@ -1,0 +1,123 @@
+:root{  
+  --bkg-color: #4458db;
+  --text-color: #201854;
+  --input-color: #ece8f5;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+  font-family: Poppins, sans-serif;
+  font-size: 12pt;
+  color: var(--text-color);
+  text-align: center;  
+}
+
+body{
+  background: linear-gradient(135deg, #6a11cb 0%, #0d9ae0 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.container{
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: min(380px, 100%);
+}
+h1{
+  text-align: center;
+  margin-bottom: 1rem;
+}
+form{
+  width: min(400px, 100%);
+  margin-top: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+form > div{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+form label{
+  flex-shrink: 0;
+  height: 42px;
+  width: 42px;
+  background-color: var(--bkg-color);
+  border-radius: 12px 0 0 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+form input{
+  box-sizing: border-box;
+  flex-grow: 1;
+  min-width: 0;
+  height: 42px;
+  padding: 1em;
+  font: inherit;
+  border-radius: 0 10px 10px 0;
+  border: 2px solid var(--input-color);
+  background-color: var(--input-color);  
+  border-left: none;
+  transition: 150ms ease;
+}
+form input:hover{
+  border-color: var(--bkg-color);
+}
+form input:focus{
+  outline: none;
+  border-color: var(--text-color);
+}
+div:has(input:focus) > label{
+  background-color: var(--text-color);
+}
+form input::placeholder{
+  color: var(--text-color);
+}
+form button{
+  margin-top: 10px;
+  border-radius: 42px;
+  padding: .8em 5em;  
+  background-color: var(--bkg-color);
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.6s;
+}
+form button:hover{
+  background-color: var(--text-color);
+}
+form button:focus{
+  outline: none;
+  background-color: var(--text-color);
+}
+a{
+  text-decoration: none;
+  color: var(--bkg-color);
+}
+a:hover{
+  text-decoration: underline;
+}
+
+.form-group.incorrect label{
+  background-color: red;
+}
+.form-group.incorrect input{
+  border-color: #f22f45;
+}
+#errorMessage{
+  color:#f22f45;
+  font-size: 0.8rem;
+}
