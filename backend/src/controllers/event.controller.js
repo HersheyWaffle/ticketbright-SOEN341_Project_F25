@@ -2,9 +2,7 @@
 import { getAttendeesForEvent, createEventService } from "../services/event.service.js";
 import { generateCSV } from "../utils/csvExporter.js";
 
-/* ------------------------------
-   Helpers (local to this file)
---------------------------------*/
+//helper local to this
 const toInt = (v) => {
   if (v === undefined || v === null || v === "") return null;
   const n = parseInt(v, 10);
@@ -35,9 +33,7 @@ const computeDurationMinutes = (value, unit) => {
   return v;
 };
 
-/* ------------------------------
-   EXPORT ATTENDEES (unchanged)
---------------------------------*/
+
 export const exportAttendees = async (req, res) => {
   try {
     const eventId = req.params.eventId;
@@ -58,18 +54,18 @@ export const exportAttendees = async (req, res) => {
   }
 };
 
-/* ------------------------------
-   CREATE EVENT (extended)
-   - Accept both old field names and new frontend field names.
-   - Normalize into the DB schema used by the service.
---------------------------------*/
+
+  // CREATE EVENT
+   //- Accept both old field names and new frontend field names.
+   //- Normalize  the DB schema used by the service.
+
 export const createEvent = async (req, res) => {
   try {
     const b = req.body || {};
     console.log("createEvent body =>", b);
 
-    // Map NEW frontend names -> DB columns (snake_case) your service expects
-    // Keep backward compatibility with your old names too.
+    // Map NEW frontend names DB columns (snake_case) your service expects
+    
     const title       = b.title ?? null;
     const subtitle    = b.subtitle ?? null;
     const description = b.description ?? null;

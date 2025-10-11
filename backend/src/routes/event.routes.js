@@ -11,6 +11,6 @@ router.get("/:eventId/attendees/export", authenticateOrganizer, exportAttendees)
 router.post("/", authenticateOrganizer, createEvent);
 
 // For local ad-hoc testing without a token, you can momentarily disable auth:
-// router.post("/", createEvent);
+//router.post("/", createEvent);
 
 export default router;
