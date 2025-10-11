@@ -1,58 +1,114 @@
-import pool from "../config/db.js"; // TODO add PostgreSQL connection pool
-//  CREATE EVENT (Service Layer) 
-// This service takes validated event data from the controller and inserts
-// one row into the `events` table. It returns the inserted row (including
-// the generated UUID `id`) so the API can send it back to the client.
+// backend/src/services/event.service.js
+import pool from "../config/db.js";
+
+/**
+ * CREATE EVENT (Service Layer)
+ * - Accepts a normalized event object (controller ensures shape).
+ * - Inserts one row into `events` and returns the inserted row.
+ *
+ * NOTE:
+ *   We keep your function name to avoid touching the rest of the app.
+ *   Any missing optional field is saved as NULL.
+ */
 export const createEventService = async (eventData) => {
-  // Destructure what we expect from the controller / request body.
-  // NOTE: If the frontend changes field names, update these.
+  // Existing fields (your original ones) + newly supported optional fields.
   const {
+    // required/core
     title,
     description,
-    event_date,     // string, e.g. "2025-12-05"  (DATE)
-    event_time,     // string, e.g. "18:00"       (TIME)
+    event_date,   // 'YYYY-MM-DD'
+    event_time,   // 'HH:MM'
     location,
-    capacity,       // integer or null
-    ticket_type,    // 'free' | 'paid'
-    price,          // number or null (free events store NULL)
-    organizer_id,   // may be injected by auth middleware; can be NULL for now
+    capacity,     // integer or null
+    ticket_type,  // 'free' | 'paid'
+    price,        // numeric or null (free => null)
+    organizer_id, // set by auth middleware, can be null in local tests
+
+    // NEW optional fields from the updated frontend
+    subtitle,
+    speakers,
+    categories,         // array of text or null
+    tags,               // array of text or null
+    banner_url,
+    organizer_name,
+    organizer_email,
+    organizer_type,
+    mode,               // 'in-person' | 'online' | 'hybrid'
+    event_link,         // only for online/hybrid
+    accessibility,
+    duration_minutes,   // computed from durationValue + durationUnit
+    registration_deadline, // timestamp
   } = eventData;
 
-  // Use parameterized SQL to avoid SQL injection.
-  // RETURNING * gives us the full inserted row (including uuid).
+  // Explicit column list keeps INSERT robust if the table changes later.
   const insertSql = `
-    INSERT INTO events
-      (title, description, event_date, event_time, location, capacity, ticket_type, price, organizer_id)
-    VALUES
-      ($1,    $2,          $3,         $4,        $5,       $6,       $7,          $8,    $9)
+    INSERT INTO events (
+      title,
+      subtitle,
+      description,
+      speakers,
+      categories,
+      tags,
+      banner_url,
+      organizer_name,
+      organizer_email,
+      organizer_type,
+      event_date,
+      event_time,
+      mode,
+      event_link,
+      location,
+      accessibility,
+      capacity,
+      ticket_type,
+      price,
+      duration_minutes,
+      registration_deadline,
+      organizer_id
+    )
+    VALUES (
+      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,
+      $11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22
+    )
     RETURNING *;
   `;
 
-  // Order matters: indices must match the $1..$9 placeholders above.
+  // Order must match the placeholders above.
   const values = [
     title ?? null,
+    subtitle ?? null,
     description ?? null,
-    event_date,          // required (DB constraint will reject NULL)
-    event_time,          // required
-    location,            // required
+    speakers ?? null,
+    categories ?? null,          // array or null
+    tags ?? null,                // array or null
+    banner_url ?? null,
+    organizer_name ?? null,
+    organizer_email ?? null,
+    organizer_type ?? null,
+    event_date ?? null,
+    event_time ?? null,
+    mode ?? null,
+    event_link ?? null,
+    location ?? null,
+    accessibility ?? null,
     capacity ?? null,
-    ticket_type,         // required ('free' or 'paid')
-    // For free events, store NULL so numeric checks don’t complain.
+    ticket_type ?? null,
+    // Ensure free => NULL in DB
     ticket_type === "free" ? null : (price ?? null),
+    duration_minutes ?? null,
+    registration_deadline ?? null,
     organizer_id ?? null,
   ];
 
-  // Prefer a client when you need transactions; for a single insert,
-  // pool.query is fine and returns rows directly.
   const result = await pool.query(insertSql, values);
-
-  // rows[0] is the inserted row (thanks to RETURNING *).
   return result.rows[0];
 };
 
+/**
+ * Unchanged: export attendees (left as-is)
+ */
 export const getAttendeesForEvent = async (eventId, organizerId) => {
   const client = await pool.connect();
-
   try {
     const eventCheck = await client.query(
       `SELECT id, organizer_id FROM events WHERE id = $1`,
@@ -62,7 +118,6 @@ export const getAttendeesForEvent = async (eventId, organizerId) => {
     if (eventCheck.rows.length === 0) {
       throw new Error("Event not found");
     }
-
     if (eventCheck.rows[0].organizer_id !== organizerId) {
       throw new Error("Unauthorized");
     }

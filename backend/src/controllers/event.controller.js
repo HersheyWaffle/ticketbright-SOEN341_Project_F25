@@ -1,9 +1,43 @@
+// backend/src/controllers/event.controller.js
 import { getAttendeesForEvent, createEventService } from "../services/event.service.js";
 import { generateCSV } from "../utils/csvExporter.js";
 
-// ------------------------------
-// EXPORT ATTENDEES
-// ------------------------------
+/* ------------------------------
+   Helpers (local to this file)
+--------------------------------*/
+const toInt = (v) => {
+  if (v === undefined || v === null || v === "") return null;
+  const n = parseInt(v, 10);
+  return Number.isNaN(n) ? null : n;
+};
+
+const toNumeric = (v) => {
+  if (v === undefined || v === null || v === "") return null;
+  const n = Number(v);
+  return Number.isNaN(n) ? null : n;
+};
+
+const toArray = (v) => {
+  if (!v) return null;
+  if (Array.isArray(v)) return v.length ? v : null;
+  const s = String(v).trim();
+  if (!s) return null;
+  return s.split(",").map(x => x.trim()).filter(Boolean);
+};
+
+const computeDurationMinutes = (value, unit) => {
+  const v = toInt(value);
+  if (!v) return null;
+  const u = (unit || "").toLowerCase();
+  if (u === "minutes") return v;
+  if (u === "hours")   return v * 60;
+  if (u === "days")    return v * 60 * 24;
+  return v;
+};
+
+/* ------------------------------
+   EXPORT ATTENDEES (unchanged)
+--------------------------------*/
 export const exportAttendees = async (req, res) => {
   try {
     const eventId = req.params.eventId;
@@ -24,16 +58,72 @@ export const exportAttendees = async (req, res) => {
   }
 };
 
-// ------------------------------
-// CREATE EVENT
-// ------------------------------
+/* ------------------------------
+   CREATE EVENT (extended)
+   - Accept both old field names and new frontend field names.
+   - Normalize into the DB schema used by the service.
+--------------------------------*/
 export const createEvent = async (req, res) => {
   try {
-    const eventData = req.body;
-    console.log("createEvent body =>", eventData);
+    const b = req.body || {};
+    console.log("createEvent body =>", b);
 
-    // Normalize & validate
-    let {
+    // Map NEW frontend names -> DB columns (snake_case) your service expects
+    // Keep backward compatibility with your old names too.
+    const title       = b.title ?? null;
+    const subtitle    = b.subtitle ?? null;
+    const description = b.description ?? null;
+
+    // Dates/times (accept either the old names or the new ones)
+    const event_date  = b.event_date ?? b.date ?? null; // 'YYYY-MM-DD'
+    const event_time  = b.event_time ?? b.time ?? null; // 'HH:MM'
+
+    // Mode + conditional fields (new)
+    const mode        = b.mode ?? null; // 'in-person' | 'online' | 'hybrid'
+    const event_link  = (mode === "online" || mode === "hybrid") ? (b.eventLink ?? b.event_link ?? null) : null;
+    const location    = (mode === "in-person" || mode === "hybrid")
+                          ? (b.location ?? null)
+                          : (mode === "online" ? null : (b.location ?? null)); // keep old behavior if mode missing
+
+    // Organizer fields (new)
+    const organizer_name  = b.organizerName  ?? b.organizer_name  ?? null;
+    const organizer_email = b.organizerEmail ?? b.organizer_email ?? null;
+    const organizer_type  = b.organizerType  ?? b.organizer_type  ?? null;
+
+    const accessibility = b.accessibility ?? null;
+    const banner_url    = b.banner ?? b.banner_url ?? null;
+
+    // Arrays (accept comma-separated strings too)
+    const categories = toArray(b.categories);
+    const tags       = toArray(b.tags);
+
+    // Capacity & ticketing
+    const capacity    = toInt(b.capacity);
+    const ticket_type = b.ticket_type ?? b.ticketType ?? "free";
+    let price = null;
+    if (ticket_type === "paid") {
+      price = toNumeric(b.price);
+      if (!Number.isFinite(price) || price <= 0) {
+        return res.status(400).json({ message: "For paid events, price must be a positive number." });
+      }
+    }
+
+    // Duration (new)
+    const duration_minutes = computeDurationMinutes(b.durationValue, b.durationUnit);
+
+    // Registration deadline (new; let DB cast)
+    const registration_deadline = b.registrationDeadline ?? null;
+
+    // Organizer id: prefer auth middleware (safer than trusting body)
+    const organizer_id = req.user?.id ?? b.organizer_id ?? null;
+
+    // Basic required checks (same spirit as your original)
+    if (!title || !description || !event_date || !event_time || !capacity || !ticket_type) {
+      return res.status(400).json({ message: "Missing required fields." });
+    }
+
+    const cleanEvent = {
+      // original fields
       title,
       description,
       event_date,
@@ -43,36 +133,23 @@ export const createEvent = async (req, res) => {
       ticket_type,
       price,
       organizer_id,
-    } = eventData;
 
-    if (capacity !== undefined && capacity !== null) {
-      capacity = Number(capacity);
-    }
-
-    if (ticket_type === "free") {
-      price = null;
-    } else if (ticket_type === "paid") {
-      price = Number(price);
-      if (!Number.isFinite(price) || price <= 0) {
-        return res.status(400).json({ message: "For paid events, price must be a positive number." });
-      }
-    } else {
-      return res.status(400).json({ message: "ticket_type must be 'free' or 'paid'." });
-    }
-
-    const cleanEvent = {
-      title,
-      description,
-      event_date,
-      event_time,
-      location,
-      capacity,
-      ticket_type,
-      price,
-      organizer_id: organizer_id ?? null,
+      // new fields
+      subtitle,
+      speakers: b.speakers ?? null,
+      categories,
+      tags,
+      banner_url,
+      organizer_name,
+      organizer_email,
+      organizer_type,
+      mode,
+      event_link,
+      accessibility,
+      duration_minutes,
+      registration_deadline,
     };
 
-    // Save to DB
     const newEvent = await createEventService(cleanEvent);
     return res.status(201).json(newEvent);
   } catch (error) {
