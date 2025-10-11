@@ -1,3 +1,4 @@
+//For searching
 document.querySelector('.searchForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const location = document.getElementById('location').value;
@@ -13,18 +14,20 @@ document.querySelector('.searchForm').addEventListener('submit', function(e) {
     };
     
     if (location.trim() !== '' || date.trim() !== '' || search.trim() !== '') {
-        alert(`Searching student events:\nLocation: ${location || 'Any'}\nDate: ${date || 'Any'}\nSearch: ${search || 'Any'}\nCategory: ${filters || 'All'}`);
+        alert(`Searching with:\nLocation: ${location || 'Any'}\nDate: ${date || 'Any'}\nSearch: ${search || 'Any'}\nCategory: ${filters || 'All'}`);
         
     } else {
         alert('Please enter at least one search criteria');
     }
 });
 
+//Log in button
 document.querySelector('.loginButton').addEventListener('click', function() {
     alert('Login functionality would go here');
     
 });
 
+//For the date
 document.getElementById('date').addEventListener('focus', function() {
     this.type = 'date';
 });
@@ -35,11 +38,12 @@ document.getElementById('date').addEventListener('blur', function() {
     }
 });
 
+//Category
 const categoryCards = document.querySelectorAll('.categoryCard');
 categoryCards.forEach(card => {
     card.addEventListener('click', function() {
         const categoryName = this.querySelector('.categoryName').textContent;
-        alert(`Browsing ${categoryName} for students`);
+        alert(`Browsing ${categoryName} events`);
         
     });
 });
