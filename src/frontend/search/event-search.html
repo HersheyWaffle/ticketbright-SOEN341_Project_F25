@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Events - TicketBright</title>
+    <link rel="stylesheet" href="event-search.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="loginArea">
+                <a href="#" class="navButton">My Events</a>
+                <a href="#" class="navButton">Log Out</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="mainContent">
+        <div class="pageHeader">
+            <h1 class="pageTitle">Find Campus Events</h1>
+            <p class="pageSubtitle">Discover amazing events happening around campus</p>
+        </div>
+
+        <div class="searchSection">
+            <div class="searchBar">
+                <input type="text" class="searchInput" id="searchInput" placeholder="Search events by title, organizer, tags, or keywords...">
+                <button class="searchButton" id="searchButton">Search</button>
+            </div>
+            
+            <div class="searchInfo">
+                <div class="resultsCount" id="resultsCount">Loading events...</div>
+                <button class="clearFilters" id="clearFilters">Clear all filters</button>
+            </div>
+            
+            <div class="activeFilters" id="activeFilters"></div>
+        </div>
+
+        <button class="mobileFiltersToggle" id="mobileFiltersToggle">Show Filters</button>
+        
+        <div class="mainLayout">
+            <aside class="filtersSidebar" id="filtersSidebar">
+                <div class="filterGroup">
+                    <h3 class="filterTitle">Category</h3>
+                    <div class="filterOptions">
+                        <div class="filterOption">
+                            <input type="checkbox" id="category-music" data-filter="category" value="Music">
+                            <label for="category-music">Music</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="category-sports" data-filter="category" value="Sports">
+                            <label for="category-sports">Sports</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="category-academic" data-filter="category" value="Academic">
+                            <label for="category-academic">Academic</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="category-workshop" data-filter="category" value="Workshop">
+                            <label for="category-workshop">Workshop</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="category-social" data-filter="category" value="Social">
+                            <label for="category-social">Social</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filterGroup">
+                    <h3 class="filterTitle">Organizer</h3>
+                    <div class="filterOptions">
+                        <div class="filterOption">
+                            <input type="checkbox" id="organizer-student-union" data-filter="organizer" value="Student Union">
+                            <label for="organizer-student-union">Student Union</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="organizer-computer-science" data-filter="organizer" value="Computer Science Dept">
+                            <label for="organizer-computer-science">Computer Science Dept</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="organizer-ai-club" data-filter="organizer" value="AI Club">
+                            <label for="organizer-ai-club">AI Club</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="organizer-arts-society" data-filter="organizer" value="Arts Society">
+                            <label for="organizer-arts-society">Arts Society</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filterGroup">
+                    <h3 class="filterTitle">Date</h3>
+                    <div class="dateInputs">
+                        <input type="date" id="dateFrom" data-filter="dateFrom">
+                        <input type="date" id="dateTo" data-filter="dateTo">
+                    </div>
+                </div>
+                
+                <div class="filterGroup">
+                    <h3 class="filterTitle">Location</h3>
+                    <div class="filterOptions">
+                        <div class="filterOption">
+                            <input type="checkbox" id="location-main-campus" data-filter="location" value="Main Campus">
+                            <label for="location-main-campus">Main Campus</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="location-student-center" data-filter="location" value="Student Center">
+                            <label for="location-student-center">Student Center</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="location-library" data-filter="location" value="Library">
+                            <label for="location-library">Library</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="location-online" data-filter="location" value="Online">
+                            <label for="location-online">Online</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filterGroup">
+                    <h3 class="filterTitle">Ticket Type</h3>
+                    <div class="filterOptions">
+                        <div class="filterOption">
+                            <input type="checkbox" id="ticket-free" data-filter="ticketType" value="Free">
+                            <label for="ticket-free">Free</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="ticket-paid" data-filter="ticketType" value="Paid">
+                            <label for="ticket-paid">Paid</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filterGroup">
+                    <h3 class="filterTitle">Event Format</h3>
+                    <div class="filterOptions">
+                        <div class="filterOption">
+                            <input type="checkbox" id="mode-inperson" data-filter="mode" value="In-person">
+                            <label for="mode-inperson">In-person</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="mode-online" data-filter="mode" value="Online">
+                            <label for="mode-online">Online</label>
+                        </div>
+                        <div class="filterOption">
+                            <input type="checkbox" id="mode-hybrid" data-filter="mode" value="Hybrid">
+                            <label for="mode-hybrid">Hybrid</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filterGroup">
+                    <h3 class="filterTitle">Accessibility</h3>
+                    <div class="filterOptions">
+                        <div class="filterOption">
+                            <input type="checkbox" id="accessibility-wheelchair" data-filter="accessibility" value="Wheelchair Accessible">
+                            <label for="accessibility-wheelchair">Wheelchair Accessible</label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <main class="resultsSection">
+                <div class="resultsHeader">
+                    <div class="activeFiltersCount" id="activeFiltersCount">No filters applied</div>
+                    <div class="sortOptions">
+                        <label for="sortBy">Sort by:</label>
+                        <select class="sortSelect" id="sortBy">
+                            <option value="date">Date</option>
+                            <option value="title">Title</option>
+                            <option value="price">Price</option>
+                            <option value="popularity">Popularity</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Loading events...</p>
+                </div>
+                
+                <div class="eventsTable" id="eventsTable">
+                    <div class="tableHeader">
+                        <div>EVENT</div>
+                        <div>DATE</div>
+                        <div>LOCATION</div>
+                        <div>SAVE</div>
+                    </div>
+                    <div id="eventsContainer"></div>
+                </div>
+                
+                <div class="noResults" id="noResults" style="display: none;">
+                    <h3 class="noResultsTitle">No events found</h3>
+                    <p class="noResultsText">Try adjusting your search criteria or filters</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="event-search.js"></script>
+</body>
+</html>
