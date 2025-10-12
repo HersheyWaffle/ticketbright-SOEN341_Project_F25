@@ -42,6 +42,3 @@ coverage/
 *.tmp
 *.swp
 
-node_modules/
-
-src/frontend/create/
