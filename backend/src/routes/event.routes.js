@@ -8,9 +8,9 @@ const router = express.Router();
 router.get("/:eventId/attendees/export", authenticateOrganizer, exportAttendees);
 
 // CREATE (auth ON for real usage)
-router.post("/", authenticateOrganizer, createEvent);
+//router.post("/", authenticateOrganizer, createEvent);
 
 // For local ad-hoc testing without a token, you can momentarily disable auth:
-//router.post("/", createEvent);
+router.post("/", createEvent);
 
 export default router;
