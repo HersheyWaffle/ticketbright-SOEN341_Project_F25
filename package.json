@@ -1,0 +1,23 @@
+{
+  "name": "ticketbright-soen341_project_f25",
+  "version": "1.0.0",
+  "description": "---",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HersheyWaffle/ticketbright-SOEN341_Project_F25.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HersheyWaffle/ticketbright-SOEN341_Project_F25/issues"
+  },
+  "homepage": "https://github.com/HersheyWaffle/ticketbright-SOEN341_Project_F25#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
