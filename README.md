@@ -64,23 +64,23 @@ The team will propose and validate an extra feature with the TA. This will serve
 
 ## Team Members and their Roles
 
-| Name                 | Student ID | Role     |
-| -------------------- | ---------- | -------- |
-| Ali El Khaled        | 40268326   | Frontend |
-| Davann Hang          | 24790383   | Frontend |
-| Nirthika Ilaiyarajah | 40298669   | Frontend |
-| Omar Ghazaly         | 40280795   | Backend  |
-| Ryan Batti           | 40299408   | Frontend |
-| Shayan Javanmardi    | 40299147   | Backend  |
-| Yasmin Tavassoli     | 40284812   | Backend  |
+| Name                 | Student ID | Role     | Username          |
+| -------------------- | ---------- | -------- | ----------------- |
+| Ali El Khaled        | 40268326   | Backend  | Ali-ElKha         |
+| Davann Hang          | 24790383   | Backend  | davanndbg         |
+| Nirthika Ilaiyarajah | 40298669   | Frontend | nirthikkaa        |
+| Omar Ghazaly         | 40280795   | Backend  | HersheyWaffle     |
+| Ryan Batti           | 40299408   | Frontend | houd162           |
+| Shayan Javanmardi    | 40299147   | Backend  | shayjaa           |
+| Yasmin Tavassoli     | 40284812   | Frontend | yasmintavassoli04 |
 
 ---
 
 ## Technologies  
 We intend to use modern web development frameworks and tools. The exact stack will be finalized as the project progresses.  
 
-- Frontend: TBD (React, Angular, Vue etc.)  
-- Backend: TBD (Node.js with Express, Django, Spring Boot etc.)  
+- Frontend: (React, Angular)
+- Backend: (Node.js with Express) 
 - Database: TBD (if required) (PostgreSQL, MySQL, MongoDB etc.)
 - Version Control: GitHub (distributed version control, issues, and project boards)  
 - Development Approach: Agile Scrum with four sprints (~3 weeks each)  
@@ -108,13 +108,13 @@ Each sprint will include deliverables that demonstrate incremental progress. Con
 <ticketbright-SOEN341_Project_F25>/
 │
 ├── Sprint1/
-│   ├── Minutes/
+│   ├── MeetingMinutes/
 │   ├── UserStories/
 │   ├── Tasks/
 │   └── Logs/
 │
 ├── Sprint2/
-│   ├── Minutes/
+│   ├── MeetingMinutes/
 │   ├── UserStories/
 │   ├── Tasks/
 │   └── Logs/

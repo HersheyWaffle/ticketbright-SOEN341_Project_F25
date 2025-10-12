@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicketBright - Purchase Tickets</title>
+    <link rel="stylesheet" href="purchase.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <a href="main.html" class="navLink">Home</a>
+                <button class="loginButton">Log In</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="purchaseContainer">
+        <div class="purchaseHeader">
+            <h1>Purchase Tickets</h1>
+            <p>Save your place at the event and purchase a ticket</p>
+        </div>
+
+        <div class="purchaseContent">
+            <!--Buyer form-->
+            <div class="formSection active" id="buyerInfo">
+                <h2>Buyer Information</h2>
+                <form class="purchaseForm">
+                    <div class="formGroup">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" class="formInput" placeholder="Enter your full name" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+                    <div class="formGroup">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" class="formInput" placeholder="Enter your email" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+                    <div class="formGroup">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" class="formInput" placeholder="Enter your phone number" required>
+                        <div class="error-message" id="phoneError"></div>
+                    </div>
+                    <div class="formGroup">
+                        <label for="ticketQuantity">Number of Tickets *</label>
+                        <select id="ticketQuantity" class="formInput" required>
+                            <option value="">Select quantity</option>
+                            <option value="1">1 Ticket</option>
+                            <option value="2">2 Tickets</option>
+                            <option value="3">3 Tickets</option>
+                            <option value="4">4 Tickets</option>
+                            <option value="5">5 Tickets</option>
+                        </select>
+                        <div class="error-message" id="quantityError"></div>
+                    </div>
+                    <div class="formGroup paymentSection">
+                        <label for="paymentMethod">Payment Method *</label>
+                        <select id="paymentMethod" class="formInput" required>
+                            <option value="">Choose payment method</option>
+                            <option value="credit">Credit Card</option>
+                            <option value="debit">Debit Card</option>
+                        </select>
+                        <div class="error-message" id="paymentError"></div>
+                    </div>
+                    
+                    <!--Payment Details-->
+                    <div class="paymentDetails" id="paymentDetails">
+                        <div class="formGroup">
+                            <label for="cardholderName">Cardholder Name *</label>
+                            <input type="text" id="cardholderName" class="formInput" placeholder="Name on card">
+                            <div class="error-message" id="cardNameError"></div>
+                        </div>
+                        <div class="formGroup">
+                            <label for="cardNumber">Card Number *</label>
+                            <input type="text" id="cardNumber" class="formInput" placeholder="1234 5678 9012 3456" maxlength="19">
+                            <div class="error-message" id="cardNumberError"></div>
+                        </div>
+                        <div class="formRow">
+                            <div class="formGroup">
+                                <label for="expiryDate">Expiration Date *</label>
+                                <input type="text" id="expiryDate" class="formInput" placeholder="MM/YY" maxlength="5">
+                                <div class="error-message" id="expiryError"></div>
+                            </div>
+                            <div class="formGroup">
+                                <label for="cvv">CVV *</label>
+                                <input type="text" id="cvv" class="formInput" placeholder="123" maxlength="3">
+                                <div class="error-message" id="cvvError"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="nextButton" id="reviewButton">Review Purchase</button>
+                </form>
+            </div>
+
+            <!--Review part-->
+            <div class="formSection" id="reviewPurchase">
+                <h2>Review Your Purchase</h2>
+                <div class="reviewSummary">
+                    <div class="eventDetails">
+                        <h3>Career Fair 2025</h3>
+                        <p class="eventInfo">December 3, 2025 • 10:00 AM - 4:00 PM</p>
+                        <p class="eventLocation">Concordia University</p>
+                    </div>
+                    
+                    <div class="purchaseDetails">
+    <div class="detailRow">
+        <span class="detailLabel">Number of Tickets:</span>
+        <span class="detailValue" id="reviewTickets">1</span>
+    </div>
+    <div class="detailRow">
+        <span class="detailLabel">Price per Ticket:</span>
+        <span class="detailValue" id="reviewPricePerTicket">$0.00</span>
+    </div>
+    <div class="detailRow">
+        <span class="detailLabel">Subtotal:</span>
+        <span class="detailValue" id="reviewSubtotal">$0.00</span>
+    </div>
+    <div class="detailRow">
+        <span class="detailLabel">Tax (15%):</span>
+        <span class="detailValue" id="reviewTax">$0.00</span>
+    </div>
+    <div class="detailRow total">
+        <span class="detailLabel">Total Amount:</span>
+        <span class="detailValue" id="reviewTotal">$0.00</span>
+    </div>
+</div>
+
+                    <div class="buyerInfoReview">
+                        <h4>Buyer Information</h4>
+                        <div class="detailRow">
+                            <span class="detailLabel">Name:</span>
+                            <span class="detailValue" id="reviewName">-</span>
+                        </div>
+                        <div class="detailRow">
+                            <span class="detailLabel">Email:</span>
+                            <span class="detailValue" id="reviewEmail">-</span>
+                        </div>
+                        <div class="detailRow">
+                            <span class="detailLabel">Phone:</span>
+                            <span class="detailValue" id="reviewPhone">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actionButtons">
+                    <button class="backButton" id="backToForm">Previous</button>
+                    <button class="confirmButton" id="confirmPurchase">Confirm Purchase</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Confirmation popup-->
+    <div class="confirmationPopup" id="confirmationPopup">
+        <div class="popupContent">
+            <div class="popupIcon">✓</div>
+            <h3>Purchase Confirmed!</h3>
+            <p>Confirmation and QR code has been sent to provided email</p>
+            <button class="closeButton" id="closePopup">Close</button>
+        </div>
+    </div>
+
+    <script src="purchase.js"></script>
+</body>
+</html>

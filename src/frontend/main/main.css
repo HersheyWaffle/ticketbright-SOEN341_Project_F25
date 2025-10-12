@@ -1,0 +1,309 @@
+/*Style*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+/*For header*/
+header {
+    background-color: #1a1a2e; 
+    color: white;
+    padding: 15px 5%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brandName {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+}
+
+.loginArea {
+    display: flex;
+    align-items: center;
+}
+
+.loginButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.loginButton:hover {
+    background-color: #2563eb;
+}
+
+/*Top Area*/
+.topArea {
+    background: url('https://www.readunwritten.com/wp-content/uploads/2016/02/concert.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.topArea::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.topArea h1,
+.topArea p,
+.topArea .searchContainer {
+    position: relative;
+    z-index: 2;
+}
+
+.topArea h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.topArea p {
+    font-size: 20px;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/*Searchbar*/
+.searchContainer {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.searchForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    gap: 15px;
+    align-items: end;
+}
+
+.searchField {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchField label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.searchInput {
+    border: 1px solid #d1d5db;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.searchInput:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filterDropdown {
+    border: 1px solid #d1d5db;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    outline: none;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.filterDropdown:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.searchButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.searchButton:hover {
+    background-color: #2563eb;
+}
+
+/*Featured events*/
+.featuredEvents {
+    padding: 0 5% 40px;
+}
+
+.sectionTitle {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #1a1a2e;
+    text-align: center;
+}
+
+.eventsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/*Categories*/
+.categories {
+    padding: 60px 5%;
+    background-color: #1a1a2e;
+    color: white;
+}
+
+.categoriesContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.categories .sectionTitle {
+    color: white;
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+.categoriesGrid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.categoryCard {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 30px 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-width: 150px;
+}
+
+.categoryCard:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.categoryName {
+    font-weight: 600;
+    color: white;
+    font-size: 18px;
+}
+
+
+@media (max-width: 1024px) {
+    .searchForm {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .categoriesGrid {
+        gap: 20px;
+    }
+    
+    .categoryCard {
+        padding: 25px 20px;
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mainPage h1 {
+        font-size: 36px;
+    }
+    
+    .mainPage p {
+        font-size: 18px;
+    }
+    
+    .searchForm {
+        grid-template-columns: 1fr;
+    }
+    
+    .searchButton {
+        width: 100%;
+    }
+    
+    .categoriesGrid {
+        gap: 15px;
+    }
+    
+    .categoryCard {
+        padding: 20px 15px;
+        min-width: 120px;
+    }
+    
+   
+    
+    .categoryName {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .categoriesGrid {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .categoryCard {
+        width: 200px;
+        padding: 20px;
+    }
+}
