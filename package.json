@@ -1,4 +1,11 @@
 {
+  "name": "ticketbright-soen341_project_f25-1",
+  "version": "1.0.0",
+  "description": "---",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "dev": "nodemon backend/src/server.js"
   "name": "ticketbright-soen341_project_f25",
   "version": "1.0.0",
   "description": "---",
@@ -24,5 +31,6 @@
     "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3"
+    "express": "^5.1.0"
   }
 }
