@@ -19,10 +19,16 @@
   },
   "homepage": "https://github.com/HersheyWaffle/ticketbright-SOEN341_Project_F25#readme",
   "dependencies": {
+    "@zxing/library": "^0.21.3",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "jimp": "^1.6.0",
     "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.16.3"
+    "jsqr": "^1.4.0",
+    "multer": "^2.0.2",
+    "pg": "^8.16.3",
+    "qrcode-reader": "^1.0.4"
   }
 }

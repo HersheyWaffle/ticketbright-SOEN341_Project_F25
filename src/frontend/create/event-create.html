@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event - TicketBright</title>
+    <link rel="stylesheet" href="event-create.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="loginArea">
+                <a href="#" class="navButton">My Events</a>
+                <a href="#" class="navButton">Log Out</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="mainContent">
+        <div class="pageHeader">
+            <h1 class="pageTitle">Create Your Event</h1>
+            <p class="pageSubtitle">Share your amazing event with the campus community</p>
+        </div>
+
+        <!-- Event Form -->
+        <form id="eventForm">
+            <!-- Section 1: Event Details -->
+            <div class="formSection">
+                <h2 class="sectionTitle">Event Information</h2>
+                
+                <div class="formGroup">
+                    <label for="title" class="required">Event Title</label>
+                    <input type="text" id="title" placeholder="Event name">
+                </div>
+                
+                <div class="formGroup">
+                    <label for="subtitle">Event Subtitle</label>
+                    <input type="text" id="subtitle" placeholder="Brief description">
+                </div>
+
+                <div class="formGroup">
+                    <label for="description" class="required">Event Description</label>
+                    <textarea id="description" placeholder="Describe your event"></textarea>
+                </div>
+
+                <div class="formGroup">
+                    <label for="speakers">Speakers or Performers</label>
+                    <textarea id="speakers" placeholder="List speakers or performers"></textarea>
+                </div>
+
+                <div class="formGroup">
+                    <label class="required">Event Categories</label>
+                    <div class="categoryOptions">
+                        <div class="categoryOption" data-value="academic">Academic</div>
+                        <div class="categoryOption" data-value="sports">Sports</div>
+                        <div class="categoryOption" data-value="cultural">Cultural</div>
+                        <div class="categoryOption" data-value="social">Social</div>
+                        <div class="categoryOption" data-value="career">Career</div>
+                        <div class="categoryOption" data-value="workshop">Workshop</div>
+                        <div class="categoryOption" data-value="arts">Arts</div>
+                        <div class="categoryOption" data-value="tech">Technology</div>
+                    </div>
+                    <div class="categoryTags" id="categoryTags"></div>
+                </div>
+
+                <div class="formGroup">
+                    <label for="tags">Event Tags</label>
+                    <input type="text" id="tags" placeholder="Keywords separated by commas">
+                </div>
+
+                <div class="formGroup">
+                    <label for="banner">Event Banner Image</label>
+                    <input type="file" id="banner" accept="image/*" class="formInput">
+                </div>
+            </div>
+
+            <!-- Section 2: Organizer Information -->
+            <div class="formSection">
+                <h2 class="sectionTitle">Organizer Details</h2>
+                
+                <div class="formGroup">
+                    <label for="organizerName" class="required">Organization Name</label>
+                    <input type="text" id="organizerName" placeholder="Organization name">
+                </div>
+                
+                <div class="formGroup">
+                    <label for="organizerEmail" class="required">Contact Email</label>
+                    <input type="email" id="organizerEmail" placeholder="Email address">
+                </div>
+
+                <div class="formGroup">
+                    <label for="organizerType" class="required">Organization Type</label>
+                    <select id="organizerType" class="formInput">
+                        <option value="">Select type</option>
+                        <option value="student">Student Club</option>
+                        <option value="department">University Department</option>
+                        <option value="faculty">Faculty</option>
+                        <option value="external">External Organization</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 3: Event Logistics -->
+            <div class="formSection">
+                <h2 class="sectionTitle">Date & Location</h2>
+                
+                <div class="formRow">
+                    <div class="formGroup">
+                        <label for="date" class="required">Event Date</label>
+                        <input type="date" id="date">
+                    </div>
+                    
+                    <div class="formGroup">
+                        <label for="time" class="required">Start Time</label>
+                        <input type="time" id="time">
+                    </div>
+                </div>
+
+                <div class="formGroup">
+                    <label for="duration" class="required">Duration</label>
+                    <div class="durationInput">
+                        <input type="number" id="durationValue" placeholder="Duration" min="1" value="60">
+                        <select id="durationUnit">
+                            <option value="minutes">Minutes</option>
+                            <option value="hours" selected>Hours</option>
+                            <option value="days">Days</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="formGroup">
+                    <label for="mode" class="required">Event Format</label>
+                    <select id="mode" class="formInput">
+                        <option value="">Select format</option>
+                        <option value="in-person">In-person</option>
+                        <option value="online">Online</option>
+                        <option value="hybrid">Hybrid</option>
+                    </select>
+                </div>
+
+                <div class="formGroup" id="eventLinkContainer">
+                    <label for="eventLink">Online Event Link</label>
+                    <input type="url" id="eventLink" placeholder="https://">
+                </div>
+
+                <div class="formGroup" id="locationContainer">
+                    <label for="location">Venue Location</label>
+                    <input type="text" id="location" placeholder="Event location">
+                </div>
+
+                <div class="formGroup">
+                    <label for="accessibility">Accessibility Information</label>
+                    <textarea id="accessibility" placeholder="Accessibility details"></textarea>
+                </div>
+            </div>
+
+            <!-- Section 4: Tickets & Registration -->
+            <div class="formSection">
+                <h2 class="sectionTitle">Tickets & Registration</h2>
+                
+                <div class="formGroup">
+                    <label for="capacity" class="required">Maximum Attendees</label>
+                    <input type="number" id="capacity" placeholder="Number of attendees" min="1">
+                </div>
+                
+                <div class="formGroup">
+                    <label class="required">Ticket Type</label>
+                    <div class="ticketTypeContainer">
+                        <div class="ticketOption selected" id="freeOption">
+                            <input type="radio" id="free" name="ticketType" value="free" checked>
+                            <label for="free">Free Event</label>
+                        </div>
+                        <div class="ticketOption" id="paidOption">
+                            <input type="radio" id="paid" name="ticketType" value="paid">
+                            <label for="paid">Paid Tickets</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="priceInput" id="priceContainer">
+                    <label for="price" class="required">Ticket Price</label>
+                    <div class="currency">
+                        <input type="number" id="price" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                </div>
+
+                <div class="formGroup">
+                    <label for="registrationDeadline" class="required">Registration Deadline</label>
+                    <input type="datetime-local" id="registrationDeadline">
+                </div>
+            </div>
+            
+            <!-- Section 5: Finalize -->
+            <div class="formActions">
+                <button type="button" class="btn btnReset" id="resetForm">Start Over</button>
+                <button type="button" class="btn btnDraft" id="saveDraft">Save Draft</button>
+                <button type="button" class="btn btnPublish" id="publishEvent">Review & Publish</button>
+            </div>
+        </form>
+        
+        <!-- Review Page -->
+        <div class="reviewPage" id="reviewPage">
+            <h2 class="reviewTitle">Ready to Publish?</h2>
+            <p class="reviewSubtitle">Please review your event details before making it live</p>
+            
+            <div class="reviewDetails" id="reviewDetails">
+                <!-- Content populated by JavaScript -->
+            </div>
+            
+            <div class="reviewActions">
+                <button type="button" class="btn btnDraft" id="editEvent">Make Changes</button>
+                <button type="button" class="btn btnPublish" id="confirmPublish">Publish Event</button>
+            </div>
+        </div>
+        
+        <!-- Saved as Draft Message -->
+        <div class="savedMessage" id="savedMessage">
+            <h2 class="savedTitle">Draft Saved Successfully!</h2>
+            <p class="savedText">Your event has been saved as a draft.</p>
+            <div class="savedActions">
+                <button class="btn btnDraft" id="createAnotherDraft">Create Another Event</button>
+                <button class="btn btnPublish" id="viewDashboard">View My Events</button>
+            </div>
+        </div>
+
+        <!-- Published Success Message -->
+        <div class="successMessage" id="successMessage">
+            <div class="successIcon">✓</div>
+            <h2 class="successTitle">Your Event is Live!</h2>
+            <p class="successText">Congratulations! Your event is now published and visible to the campus community.</p>
+            <div class="successActions">
+                <button class="btn btnDraft" id="createAnother">Create Another Event</button>
+                <button class="btn btnPublish" id="viewEvent">View Event Page</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="event-create.js"></script>
+</body>
+</html>
