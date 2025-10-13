@@ -1,10 +1,19 @@
-// backend/src/server.js
+import express from "express";
 import dotenv from "dotenv";
+import eventRoutes from "./routes/event.routes.js";
+
 dotenv.config();
 
-import app from "./app.js"; // <- use the app we configured
+const app = express();
+app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Routes
+app.use("/api/events", eventRoutes);
+
+// Base route
+app.get("/", (req, res) => {
+  res.send("Event Management Backend is running!");
 });
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
