@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import eventRoutes from "./routes/event.routes.js";
+import eventAnalyticsRoutes from "./routes/eventAnalyticsRoutes.js";
 import ticketValidationRoutes from "./routes/ticketValidationRoutes.js";
 import attendeeCSVRoutes from "./routes/attendeeCSVRoutes.js";
 
@@ -20,9 +20,9 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 // Routes
-//app.use("/api/events", eventRoutes);
-app.use("/api", ticketValidationRoutes);//Qr code validation 
-app.use("/api/events", attendeeCSVRoutes);//Qr code validation 
+app.use("/api", ticketValidationRoutes);
+app.use("/api/events", attendeeCSVRoutes);
+app.use("/api/events", eventAnalyticsRoutes);
 
 // Base route
 app.get("/", (req, res) => {
