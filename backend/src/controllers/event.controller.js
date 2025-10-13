@@ -1,4 +1,6 @@
 import { getAttendeesForEvent } from "../services/event.service.js";
+import { generateCSV } from "../utils/csvExporter.js";
+
 import { fetchEventDashboard } from "../services/event.service.js";
 import { generateCSV } from "../utils/csvExporter.js";
 
@@ -55,13 +57,12 @@ export const exportAttendees = async (req, res) => {
     res.setHeader("Content-Type", "text/csv");
     res.setHeader("Content-Disposition", `attachment; filename=attendees_${eventId}.csv`);
 
-    res.setHeader("Content-Type", "text/csv");
-    res.setHeader("Content-Disposition", `attachment; filename=attendees_${eventId}.csv`);
     return res.status(200).send(csv);
   } catch (error) {
     console.error("Error exporting attendees:", error);
     return res.status(500).json({ message: "Failed to export attendee list." });
   }
+};
 };
 
 export const getEventDashboard = async (req, res) => {
