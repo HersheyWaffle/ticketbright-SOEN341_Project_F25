@@ -66,7 +66,7 @@ The team will propose and validate an extra feature with the TA. This will serve
 
 | Name                 | Student ID | Role     | Username          |
 | -------------------- | ---------- | -------- | ----------------- |
-| Ali El Khaled        | 40268326   | Frontend | Ali-ElKha         |
+| Ali El Khaled        | 40268326   | Backend  | Ali-ElKha         |
 | Davann Hang          | 24790383   | Backend  | davanndbg         |
 | Nirthika Ilaiyarajah | 40298669   | Frontend | nirthikkaa        |
 | Omar Ghazaly         | 40280795   | Backend  | HersheyWaffle     |
@@ -79,8 +79,8 @@ The team will propose and validate an extra feature with the TA. This will serve
 ## Technologies  
 We intend to use modern web development frameworks and tools. The exact stack will be finalized as the project progresses.  
 
-- Frontend: TBD (React, Angular, Vue etc.)  
-- Backend: TBD (Node.js with Express, Django, Spring Boot etc.)  
+- Frontend: (React, Angular)
+- Backend: (Node.js with Express) 
 - Database: TBD (if required) (PostgreSQL, MySQL, MongoDB etc.)
 - Version Control: GitHub (distributed version control, issues, and project boards)  
 - Development Approach: Agile Scrum with four sprints (~3 weeks each)  

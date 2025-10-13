@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicketBright</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="loginArea">
+                <button class="loginButton">Log In</button>
+            </div>
+        </div>
+    </header>
+
+   <!--Search section -->
+    <section class="topArea">
+        <h1>Ticket Search</h1>
+        <p>Find the event for you.</p>
+        <div class="searchContainer">
+            <form class="searchForm">
+                <div class="searchField">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" class="searchInput" placeholder="Location">
+                </div>
+                <div class="searchField">
+                    <label for="date">Date</label>
+                    <input type="text" id="date" class="searchInput" placeholder="Date">
+                </div>
+                <div class="searchField">
+                    <label for="search">Search</label>
+                    <input type="text" id="search" class="searchInput" placeholder="Specific artist or event">
+                </div>
+                <div class="searchField">
+                    <label for="filters">Category</label>
+                    <select id="filters" class="filterDropdown">
+                        <option value="">All Categories</option>
+                        <option value="concerts">Concerts</option>
+                        <option value="sports">Sports</option>
+                        <option value="theater">Theater</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="arts">Arts</option>
+                    </select>
+                </div>
+                <button type="submit" class="searchButton">Search</button>
+            </form>
+        </div>
+    </section>
+
+    <!--Featured (EMPTY FOR NOW)-->
+    <section class="featuredEvents">
+        <h2 class="sectionTitle">Featured Events</h2>
+        <div class="eventsGrid">
+        </div>
+    </section>
+
+    <!--Categories-->
+    <section class="categories">
+        <div class="categoriesContainer">
+            <h2 class="sectionTitle">Browse By Category</h2>
+            <div class="categoriesGrid">
+                <div class="categoryCard">
+                    
+                    <div class="categoryName">Concerts</div>
+                </div>
+                
+                <div class="categoryCard">
+                   
+                    <div class="categoryName">Sports</div>
+                </div>
+                <div class="categoryCard">
+                    
+                    <div class="categoryName">Theater</div>
+                </div>
+                <div class="categoryCard">
+                    
+                    <div class="categoryName">Comedy</div>
+                </div>
+                <div class="categoryCard">
+                    
+                    <div class="categoryName">Arts</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="main.js"></script>
+</body>
+</html>
