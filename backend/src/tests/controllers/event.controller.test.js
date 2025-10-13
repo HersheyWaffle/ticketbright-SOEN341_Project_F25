@@ -12,3 +12,16 @@ describe("GET /api/events/:eventId/attendees/export", () => {
     expect(res.headers["content-type"]).toMatch(/text\/csv/);
   });
 });
+
+describe("GET /api/events/:eventId/dashboard", () => {
+  it("returns dashboard JSON for existing event", async () => {
+    const res = await request(app).get("/api/events/1/dashboard").expect(200);
+    expect(res.body).toHaveProperty("eventId");
+    expect(res.body).toHaveProperty("ticketsIssued");
+    expect(res.body).toHaveProperty("attendanceRate");
+  });
+
+  it("returns 404 for non-existing event", async () => {
+    await request(app).get("/api/events/999999/dashboard").expect(404);
+  });
+});
