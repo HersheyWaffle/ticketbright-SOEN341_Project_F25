@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Events - Admin Moderation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <a href="main.html" class="navLink">Home</a>
+                <div class="adminDropdown">
+                    <button class="adminButton">Admin</button>
+                    <div class="dropdownContent">
+                        <a href="orgManagement.html" class="dropdownLink">Manage Organizations</a>
+                        <a href="adminAnalytics.html" class="dropdownLink active">Analytics</a>
+                        <a href="#" class="dropdownLink">System Settings</a>
+                    </div>
+                </div>
+                <button class="logoutButton">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Events Table -->
+        <div class="events-table-container">
+            <div class="table-header">
+                <h2>Event Submissions</h2>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event Title</th>
+                        <th>Organizer</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="events-table-body">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
