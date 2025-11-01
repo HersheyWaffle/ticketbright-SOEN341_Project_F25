@@ -38,6 +38,7 @@ header {
 .loginArea {
     display: flex;
     align-items: center;
+    gap: 20px;
 }
 
 .loginButton {
@@ -49,6 +50,7 @@ header {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s;
+    text-decoration: none;
 }
 
 .loginButton:hover {

@@ -21,11 +21,7 @@ document.querySelector('.searchForm').addEventListener('submit', function(e) {
     }
 });
 
-//Log in button
-document.querySelector('.loginButton').addEventListener('click', function() {
-    alert('Login functionality would go here');
-    
-});
+
 
 //For the date
 document.getElementById('date').addEventListener('focus', function() {
