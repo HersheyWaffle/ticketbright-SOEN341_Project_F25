@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const paymentMethod = document.getElementById('paymentMethod');
     const paymentDetails = document.getElementById('paymentDetails');
 
+    let TB;
+    import('../js/student-features.js')
+  .then(m => { TB = m; })
+  .catch(err => console.warn('student-features not loaded:', err));
+
     const eventData = {
         name: "Career Fair 2025",
         date: "December 3, 2025",
@@ -230,7 +235,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     confirmButton.addEventListener('click', function() {
-        confirmationPopup.classList.add('active');
+(async () => {
+    try {
+        // derive event + purchase info
+        const params = new URLSearchParams(location.search);
+        const eventId  = params.get('id') || 'EVT-DEMO-001';
+        const title    = (eventData && eventData.name) ? eventData.name : 'Event';
+        const quantity = parseInt(document.getElementById('ticketQuantity').value || '1', 10);
+        const price    = Number((eventData && eventData.price) || 0);
+
+        if (TB && TB.claimTicket && TB.renderTicketQR) {
+            // create local ticket
+            const t = await TB.claimTicket({ eventId, title, price, quantity });
+
+            // ensure a canvas exists inside the popup
+            let canvas = document.getElementById('ticketQR');
+            if (!canvas) {
+                const holder = confirmationPopup.querySelector('.popupContent') || confirmationPopup;
+                const wrap = document.createElement('div');
+                wrap.style.marginTop = '16px';
+
+                canvas = document.createElement('canvas');
+                canvas.id = 'ticketQR';
+                canvas.width = 220;
+                canvas.height = 220;
+
+                const pid = document.createElement('p');
+                pid.id = 'ticketIdLine';
+                pid.textContent = `Ticket ID: ${t.ticketId}`;
+
+                wrap.appendChild(canvas);
+                wrap.appendChild(pid);
+                holder.appendChild(wrap);
+            }
+
+            // draw QR for this ticket
+            await TB.renderTicketQR(canvas, t);
+        }
+    } catch (e) {
+        console.warn('QR render skipped:', e);
+    }
+})();
+    confirmationPopup.classList.add('active');
+
     });
 
 
