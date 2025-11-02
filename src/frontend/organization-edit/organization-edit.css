@@ -1,0 +1,423 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Main Content */
+.mainContent {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pageHeader {
+    margin-bottom: 40px;
+}
+
+.backSection {
+    margin-bottom: 20px;
+}
+
+.pageTitle {
+    font-size: 36px;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+}
+
+.pageSubtitle {
+    font-size: 18px;
+    color: #666;
+}
+
+/* Form Sections */
+.formSection {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.sectionTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a2e;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 10px;
+}
+
+.sectionHeader .sectionTitle {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+/* Form Elements */
+.formGroup {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+}
+
+.required::after {
+    content: " *";
+    color: #dc2626;
+}
+
+.formInput {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.formInput:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btnPrimary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btnPrimary:hover {
+    background-color: #2563eb;
+}
+
+.btnSecondary {
+    background-color: #6b7280;
+    color: white;
+}
+
+.btnSecondary:hover {
+    background-color: #4b5563;
+}
+
+.btnDanger {
+    background-color: #dc2626;
+    color: white;
+}
+
+.btnDanger:hover {
+    background-color: #b91c1c;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+/* Table */
+.tableContainer {
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.membersTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.membersTable th {
+    background-color: #f8f9fa;
+    padding: 15px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #1a1a2e;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.membersTable td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.membersTable tr:last-child td {
+    border-bottom: none;
+}
+
+.membersTable tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Role Badges */
+.roleBadge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 12px;
+    text-align: center;
+    min-width: 80px;
+}
+
+.role-admin {
+    background: rgba(59, 130, 246, 0.15);
+    color: #1d4ed8;
+}
+
+.role-member {
+    background: rgba(107, 114, 128, 0.15);
+    color: #374151;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Role Permissions */
+.rolePermissions {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.permissionsTitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 15px;
+}
+
+.permissionsGrid {
+    display: grid;
+    gap: 12px;
+}
+
+.permissionItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+
+.permissionText {
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Modal */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.modalOverlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: translateY(-20px);
+    transition: transform 0.3s;
+}
+
+.modalOverlay.active .modal {
+    transform: translateY(0);
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 25px 0;
+    margin-bottom: 20px;
+}
+
+.modalTitle {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.modalClose {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.modalClose:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.modalBody {
+    padding: 0 25px;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 25px;
+    margin-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Empty State */
+.emptyState {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.emptyStateIcon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.emptyStateTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+}
+
+.emptyStateText {
+    font-size: 14px;
+}
+
+/* User Found Notification */
+.userFound {
+    background-color: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 10px;
+    display: none;
+}
+
+.userFound.active {
+    display: block;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #0369a1;
+    font-weight: 500;
+}
+
+.userHelp {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #475569;
+}
+
+.nameHelp {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .sectionHeader {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .actions {
+        flex-direction: column;
+    }
+    
+    .pageTitle {
+        font-size: 28px;
+    }
+    
+    .modalActions {
+        flex-direction: column;
+    }
+    
+    .modalBody {
+        padding: 0 20px;
+    }
+    
+    .modalHeader {
+        padding: 20px 20px 0;
+    }
+    
+    .permissionItem {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
