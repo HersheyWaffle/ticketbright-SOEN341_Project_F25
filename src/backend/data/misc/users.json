@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "Test Organizer",
+    "email": "organizer@test.com",
+    "role": "organizer",
+    "status": "rejected"
+  },
+  {
+    "id": 2,
+    "name": "Another Org",
+    "email": "another@test.com",
+    "role": "organizer",
+    "status": "rejected"
+  }
+]

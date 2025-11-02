@@ -8,27 +8,37 @@ import eventAnalyticsRoutes from "./routes/eventAnalyticsRoutes.js";
 import ticketValidationRoutes from "./routes/ticketValidationRoutes.js";
 import attendeeCSVRoutes from "./routes/attendeeCSVRoutes.js";
 
-dotenv.config()
+import adminRouter from "./routes/admin.routes.js";
+import orgRouter from "./routes/organizations.routes.js";
+
+dotenv.config();
 
 const app = express();
-app.use(cors());   
+app.use(cors());
 app.use(express.json());
+
+// TEMP mock admin (keep above routes for now)
+app.use((req, _res, next) => {
+  req.user = { id: 1, role: "admin" };
+  next();
+});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// Routes
+// ---- ROUTES (now that app exists) ----
 app.use("/api", ticketValidationRoutes);
 app.use("/api/events", attendeeCSVRoutes);
 app.use("/api/events", eventAnalyticsRoutes);
+app.use("/api/admin/organizations", orgRouter);  // <-- mount here
+app.use("/api/admin", adminRouter);
+// --------------------------------------
 
-// Base route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/main/main.html"));
 });
-
 app.get("/analytics", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/analytics/analytics.html"));
 });

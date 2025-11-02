@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "CS Society",
+    "description": "",
+    "status": "active",
+    "members": []
+  },
+  {
+    "id": 2,
+    "name": "Robotics & AI Society",
+    "description": "Updated description",
+    "status": "active",
+    "members": []
+  }
+]
