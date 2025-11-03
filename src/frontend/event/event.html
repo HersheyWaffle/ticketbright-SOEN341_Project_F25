@@ -60,6 +60,9 @@
                     
                     <button class="ticket-button" id="ticketButton" >Get tickets</button>
                     
+                    
+                    <button class="loginButton" data-action="add-to-calendar">Add to Calendar</button>
+                    <button class="loginButton" data-action="claim-ticket">Claim Free Ticket</button>
                 </div>
             </div>
         </div>
@@ -79,6 +82,30 @@
         </div>
     </main>
 
+
+    <div id="ticketModal" class="tb-modal">
+        <div class="tb-modal__card">
+            <h3>Your Ticket</h3>
+            <canvas id="ticketQR" width="220" height="220"></canvas>
+            <p>Ticket ID: <span id="ticketIdText">–</span></p>
+            <button id="closeTicketModal" class="loginButton">Close</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { wireEventPage } from "../js/student-features.js";
+        const getEvent = async () => ({
+            id: (new URLSearchParams(location.search)).get("id") || "EVT-DEMO-001",
+            title: document.querySelector("h1")?.textContent?.trim() || "Sample Event",
+            description: document.querySelector(".event-description")?.textContent?.trim() || "",
+            location: "Concordia University",
+            startsAt: new Date(Date.now() + 24*3600e3).toISOString(),
+            endsAt: new Date(Date.now() + 26*3600e3).toISOString(),
+            price: 0
+        });
+
+        wireEventPage({ getEvent });
+    </script>
 
     <script src="script.js"></script>
 </body>

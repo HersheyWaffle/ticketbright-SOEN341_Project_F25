@@ -29,6 +29,15 @@ let activeFilters = {
 document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     loadInitialEvents();
+    
+    eventsContainer.addEventListener('click', (e) => {
+        const row = e.target.closest('[data-event-id]');
+        if (!row) return;
+        const id = row.getAttribute('data-event-id');
+        if (id) {
+            location.href = `../event/event.html?id=${encodeURIComponent(id)}`;
+        }
+    });
 });
 
 // Set up event listeners
@@ -243,6 +252,7 @@ function displayEvents(eventsToDisplay) {
     }
     
     // Backend team: Implement event row generation based on API response
+    // (When you create each row/card, include data-event-id="<EVENT_ID>" on the clickable wrapper.)
 }
 
 // Format date for display

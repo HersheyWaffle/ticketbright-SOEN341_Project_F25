@@ -1,8 +1,3 @@
-import pool from "../config/db.js"; // TODO add PostgreSQL connection pool
-
-export const getAttendeesForEvent = async (eventId, organizerId) => {
-  const client = await pool.connect();
-
 // backend/src/services/event.service.js
 import pool from "../config/db.js";
 

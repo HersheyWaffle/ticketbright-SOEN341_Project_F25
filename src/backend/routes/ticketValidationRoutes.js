@@ -1,6 +1,7 @@
-const express = require('express');
-const multer = require('multer');
-const { validateTicket } = require('../controllers/ticketValidationController');
+import express from "express";
+import multer from "multer";
+import { validateTicket } from "../controllers/ticketValidationController.js";
+
 const router = express.Router();
 
 const upload = multer({
@@ -8,6 +9,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 } 
 });
 
+// POST /api/tickets/validate
 router.post('/tickets/validate', upload.single('file'), validateTicket);
 
-module.exports = router;
+export default router;

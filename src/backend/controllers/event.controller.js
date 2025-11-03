@@ -1,13 +1,7 @@
-import { getAttendeesForEvent } from "../services/event.service.js";
-import { generateCSV } from "../utils/csvExporter.js";
-
-import { fetchEventDashboard } from "../services/event.service.js";
-import { generateCSV } from "../utils/csvExporter.js";
-
 //TODO clean out redundant csv export code
 // backend/src/controllers/event.controller.js
 import { getAttendeesForEvent, createEventService } from "../services/event.service.js";
-import { generateCSV } from "../utils/csvExporter.js";
+import { fetchEventDashboard } from "../services/event.service.js";
 
 //helper local to this
 const toInt = (v) => {
@@ -62,7 +56,6 @@ export const exportAttendees = async (req, res) => {
     console.error("Error exporting attendees:", error);
     return res.status(500).json({ message: "Failed to export attendee list." });
   }
-};
 };
 
 export const getEventDashboard = async (req, res) => {
