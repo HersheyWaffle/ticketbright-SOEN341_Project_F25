@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Members - TicketBright</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="organization-edit.css">
+</head>
+<body>
+    <div class="mainContent">
+        <div class="pageHeader">
+            <div class="backSection">
+                <button class="btn btnSecondary" id="backBtn" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Organizations
+                </button>
+            </div>
+            <h1 class="pageTitle" id="orgTitle">Computer Science Club</h1>
+        </div>
+
+        <!-- Organization Members -->
+        <section class="formSection">
+            <div class="sectionHeader">
+                <h2 class="sectionTitle">Organization Members</h2>
+                <button class="btn btnPrimary" id="addMemberBtn">
+                    <i class="fas fa-plus"></i>
+                    Add Member
+                </button>
+            </div>
+
+            <div class="tableContainer">
+                <table class="membersTable">
+                    <thead>
+                        <tr>
+                            <th style="width:25%">Member</th>
+                            <th style="width:30%">Email</th>
+                            <th style="width:20%">Role</th>
+                            <th style="width:25%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="membersTable">
+                        <!-- Filled by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="rolePermissions">
+                <h3 class="permissionsTitle">Role Permissions</h3>
+                <div class="permissionsGrid">
+                    <div class="permissionItem">
+                        <span class="roleBadge role-admin">Admin</span>
+                        <span class="permissionText">Can edit organization details and manage members</span>
+                    </div>
+                    <div class="permissionItem">
+                        <span class="roleBadge role-member">Member</span>
+                        <span class="permissionText">Can view organization details and members</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div class="modalOverlay" id="addMemberModal">
+        <div class="modal">
+            <div class="modalHeader">
+                <h3 class="modalTitle">Add New Member</h3>
+                <button class="modalClose" id="closeModal">&times;</button>
+            </div>
+            <div class="modalBody">
+                <div class="formGroup">
+                    <label for="memberEmail" class="required">Email Address</label>
+                    <input type="email" id="memberEmail" class="formInput" placeholder="Enter member's email" oninput="checkExistingOrganizer()">
+                    <div class="userFound" id="userFound">
+                        <div class="userInfo">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Organizer found: <span id="foundUserName"></span></span>
+                        </div>
+                        <div class="userHelp">
+                        </div>
+                    </div>
+                </div>
+                <div class="formGroup">
+                    <label for="memberName" class="required">Full Name</label>
+                    <input type="text" id="memberName" class="formInput" placeholder="Enter member's full name">
+                    <div class="nameHelp">
+                    </div>
+                </div>
+                <div class="formGroup">
+                    <label for="memberRole" class="required">Role</label>
+                    <select id="memberRole" class="formInput">
+                        <option value="member">Member</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modalActions">
+                <button class="btn btnSecondary" id="cancelAdd">Cancel</button>
+                <button class="btn btnPrimary" id="confirmAdd">Add Member</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="organization-edit.js"></script>
+</body>
+</html>

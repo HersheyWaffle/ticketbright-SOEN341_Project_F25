@@ -8,22 +8,33 @@
 </head>
 <body>
     <!-- Header -->
+
     <header>
         <div class="headerContainer">
             <div class="brandName">TicketBright</div>
-            <div class="loginArea">
-                <a href="#" class="navButton">My Events</a>
-                <a href="#" class="navButton">Log Out</a>
+            <div class="navArea">
+                
+                <div class="organizerDropdown">
+                    <button class="organizerButton">Organizer</button>
+                    <div class="dropdownContent">
+                        <a href="../analytics/analytics.html" class="dropdownLink">Analytics</a>
+                        <a href="event-create.html" class="dropdownLink active">Create Event</a>
+                    </div>
+                </div>
+                <button class="logoutButton">Log Out</button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="mainContent">
-        <div class="pageHeader">
+    <div class="pageHeader">
             <h1 class="pageTitle">Create Your Event</h1>
             <p class="pageSubtitle">Share your amazing event with the campus community</p>
-        </div>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="mainContent">
+        
 
         <!-- Event Form -->
         <form id="eventForm">

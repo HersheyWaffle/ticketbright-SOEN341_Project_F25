@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicketBright - Manage Organizations</title>
+    <link rel="stylesheet" href="orgManagement.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <a href="main.html" class="navLink">Home</a>
+                <div class="adminDropdown">
+                    <button class="adminButton">Admin</button>
+                    <div class="dropdownContent">
+                        <a href="orgManagement.html" class="dropdownLink active">Manage Organizations</a>
+                        <a href="#" class="dropdownLink">System Settings</a>
+                    </div>
+                </div>
+                <button class="logoutButton">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="orgManagementHeader">
+        <h1>Overview of Organizations</h1>
+        <p>List of all registered organizations on the platform</p>
+    </section>
+
+    <section class="orgManagementContainer">
+        <!-- Statistics Summary -->
+        <div class="statsSummary">
+            <div class="statCard">
+                <div class="statValue" id="totalOrganizations">1</div>
+                <div class="statLabel">Total Organizations</div>
+            </div>
+        </div>
+
+        <!-- Organizations List -->
+        <div class="organizationsList">
+            <h2>Organization Listing</h2>
+            <div class="organizationsTable">
+                <div class="tableHeader">
+                    <div class="tableCell">Organization Name</div>
+                    <div class="tableCell">Organizers</div>
+                    <div class="tableCell actionsHeader">Actions</div>
+                </div>
+                
+                <div class="tableBody">
+                    <!-- Engineering Club -->
+                    <div class="tableRow">
+                        <div class="tableCell">
+                            <div class="orgName">Engineering Club</div>
+                        </div>
+                        <div class="tableCell">
+                            <div class="organizersInfo">
+                                <div class="organizersCount">3 organizers</div>
+                            </div>
+                        </div>
+                        <div class="tableCell actionsCell">
+                            <button class="manageButton" data-org-id="1">Manage Organization</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="orgManagement.js"></script>
+</body>
+</html>

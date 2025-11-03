@@ -51,12 +51,12 @@ header {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.organizerDropdown {
+.adminDropdown {
     position: relative;
     display: inline-block;
 }
 
-.organizerButton {
+.adminButton {
     background-color: #3b82f6;
     color: white;
     border: none;
@@ -67,7 +67,7 @@ header {
     transition: background-color 0.3s;
 }
 
-.organizerButton:hover {
+.adminButton:hover {
     background-color: #2563eb;
 }
 
@@ -75,7 +75,7 @@ header {
     display: none;
     position: absolute;
     background-color: white;
-    min-width: 160px;
+    min-width: 200px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     border-radius: 4px;
     z-index: 1000;
@@ -89,11 +89,11 @@ header {
     transition: background-color 0.3s;
 }
 
-.dropdownContent .dropdownLink:hover {
+.dropdownContent .dropdownLink:hover, .dropdownContent .dropdownLink.active {
     background-color: #f1f1f1;
 }
 
-.organizerDropdown:hover .dropdownContent {
+.adminDropdown:hover .dropdownContent {
     display: block;
 }
 
@@ -112,24 +112,24 @@ header {
     background-color: #b91c1c;
 }
 
-.analyticsHeader {
+.orgManagementHeader {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: white;
     text-align: center;
     padding: 60px 20px;
 }
 
-.analyticsHeader h1 {
+.orgManagementHeader h1 {
     font-size: 42px;
     margin-bottom: 15px;
 }
 
-.analyticsHeader p {
+.orgManagementHeader p {
     font-size: 18px;
     opacity: 0.9;
 }
 
-.analyticsContainer {
+.orgManagementContainer {
     padding: 40px 5%;
     max-width: 1200px;
     margin: 0 auto;
@@ -163,101 +163,82 @@ header {
     font-size: 16px;
 }
 
-.eventsAnalytics h2 {
+.organizationsList h2 {
     font-size: 28px;
     margin-bottom: 25px;
     color: #1a1a2e;
 }
 
-.eventsList {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.eventAnalyticsCard {
+.organizationsTable {
     background: white;
     border-radius: 12px;
-    padding: 25px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
 }
 
-.eventAnalyticsCard:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.eventBasicInfo h3 {
-    font-size: 20px;
-    color: #1a1a2e;
-    margin-bottom: 8px;
-}
-
-.eventDate {
-    color: #666;
-    margin-bottom: 20px;
-}
-
-.eventStats {
+.tableHeader {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.statItem {
-    text-align: center;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-}
-
-.statNumber {
-    display: block;
-    font-size: 24px;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 5px;
-}
-
-.statDesc {
-    font-size: 14px;
-    color: #666;
-}
-
-.eventActions {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    flex-wrap: wrap;
-
-}
-
-.exportButton {
-    background-color: #10b981;
+    grid-template-columns: 2fr 1fr 1fr;
+    background: #1a1a2e;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
     font-weight: 600;
-    cursor: pointer;
+    padding: 20px;
+}
+
+.tableCell {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.actionsHeader {
+    justify-content: center;
+}
+
+.tableBody {
+    display: flex;
+    flex-direction: column;
+}
+
+.tableRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
     transition: background-color 0.3s;
 }
 
-.exportButton:hover {
-    background-color: #059669;
+.tableRow:hover {
+    background-color: #f8f9fa;
 }
 
-.qrValidation {
+.tableRow:last-child {
+    border-bottom: none;
+}
+
+.orgName {
+    font-weight: 600;
+    color: #1a1a2e;
+    font-size: 16px;
+}
+
+.organizersInfo {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+}
+
+.organizersCount {
+    color: #666;
+    font-weight: 500;
+}
+
+.actionsCell {
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-
-
-.validateButton {
+.manageButton {
     background-color: #3b82f6;
     color: white;
     border: none;
@@ -266,37 +247,43 @@ header {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s;
-    text-decoration: none;
+    font-size: 14px;
 }
 
-.validateButton:hover {
+.manageButton:hover {
     background-color: #2563eb;
 }
 
+@media (max-width: 1024px) {
+    .tableHeader,
+    .tableRow {
+        grid-template-columns: 2fr 1fr 1fr;
+    }
+}
+
 @media (max-width: 768px) {
-    .analyticsHeader h1 {
+    .orgManagementHeader h1 {
         font-size: 32px;
     }
     
-    .statsSummary {
-        grid-template-columns: 1fr 1fr;
+    .tableHeader,
+    .tableRow {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
     }
     
-    .eventStats {
-        grid-template-columns: 1fr 1fr;
+    .tableHeader {
+        display: none;
     }
     
-    .eventActions {
-        flex-direction: column;
-        align-items: stretch;
+    .tableCell {
+        padding: 10px;
+        justify-content: center;
     }
     
-    .qrValidation {
-        flex-direction: column;
-    }
-    
-    .qrInput {
-        min-width: auto;
+    .organizersInfo {
+        align-items: center;
     }
     
     .navArea {
@@ -310,14 +297,6 @@ header {
 }
 
 @media (max-width: 480px) {
-    .statsSummary {
-        grid-template-columns: 1fr;
-    }
-    
-    .eventStats {
-        grid-template-columns: 1fr;
-    }
-    
     .headerContainer {
         flex-direction: column;
         gap: 15px;
@@ -327,84 +306,8 @@ header {
         width: 100%;
         justify-content: center;
     }
-}
-
-
-.eventsHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.eventsTabs {
-    display: flex;
-    background: #f1f5f9;
-    border-radius: 8px;
-    padding: 4px;
-}
-
-.tabButton {
-    background: transparent;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: #64748b;
-}
-
-.tabButton.active {
-    background: white;
-    color: #1a1a2e;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.tabButton:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.5);
-    color: #1a1a2e;
-}
-
-.tabContent {
-    display: none;
-}
-
-.tabContent.active {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.eventStatus {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-left: 10px;
-}
-
-.eventStatus.current {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.eventStatus.past {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-
-@media (max-width: 768px) {
-    .eventsHeader {
-        flex-direction: column;
-        align-items: stretch;
-    }
     
-    .eventsTabs {
-        justify-content: center;
+    .statsSummary {
+        grid-template-columns: 1fr;
     }
 }
