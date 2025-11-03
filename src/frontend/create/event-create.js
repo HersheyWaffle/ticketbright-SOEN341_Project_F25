@@ -1,4 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+    const logoutButton = document.querySelector('.logoutButton');
+
+
+    // Logout functionality
+    document.querySelector('.logoutButton').addEventListener('click', function() {
+    if(confirm('Are you sure you want to log out?')) {
+        window.location.href = '../main/main.html';
+        }
+    });
+
+
     // Elements
     const eventForm = document.getElementById('eventForm');
     const reviewPage = document.getElementById('reviewPage');
