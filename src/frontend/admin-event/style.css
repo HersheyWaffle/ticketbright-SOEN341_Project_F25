@@ -124,6 +124,24 @@ header {
     background-color: #b91c1c;
 }
 
+.sectionHeader {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.sectionHeader h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.sectionHeader p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+
 /* Main Content Styles */
 .main-content {
     max-width: 1200px;

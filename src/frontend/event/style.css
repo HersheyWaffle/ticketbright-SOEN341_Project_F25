@@ -11,6 +11,75 @@ body {
     color: #333;
 }
 
+header {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 15px 5%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brandName {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+}
+
+.navArea {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.navLink:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.homeButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.homeButton:hover {
+    background-color: #2563eb;
+}
+
+.logoutButton {
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logoutButton:hover {
+    background-color: #b91c1c;
+}
 
 /* Main Section */
 .event-container {

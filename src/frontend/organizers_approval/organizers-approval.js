@@ -170,3 +170,11 @@ els.rejectSelected.addEventListener('click',  () => updateSelectedStatus('reject
 /* --------- Init --------- */
 renderStats();
 renderTable();
+
+
+// Logout functionality
+document.querySelector('.logoutButton').addEventListener('click', function() {
+if(confirm('Are you sure you want to log out?')) {
+    window.location.href = '../main/main.html';
+    }
+});

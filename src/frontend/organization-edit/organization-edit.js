@@ -6,11 +6,11 @@ const currentOrganization = {
 
 // Current organization members data
 let organizationMembers = [
-    { id: 1, name: "Alex Johnson", email: "alex.johnson@gmail.com", role: "admin" },
-    { id: 2, name: "Sarah Chen", email: "sarah.chen@gmail.com", role: "admin" },
-    { id: 3, name: "Mike Rodriguez", email: "mike.rodriguez@gmail.com", role: "member" },
-    { id: 4, name: "Emily Watson", email: "emily.watson@gmail.com", role: "member" },
-    { id: 5, name: "David Kim", email: "david.kim@gmail.com", role: "member" }
+    { id: 1, name: "Alex Johnson", email: "alex.johnson@gmail.com", role: "editor" },
+    { id: 2, name: "Sarah Chen", email: "sarah.chen@gmail.com", role: "editor" },
+    { id: 3, name: "Mike Rodriguez", email: "mike.rodriguez@gmail.com", role: "viewer" },
+    { id: 4, name: "Emily Watson", email: "emily.watson@gmail.com", role: "viewer" },
+    { id: 5, name: "David Kim", email: "david.kim@gmail.com", role: "viewer" }
 ];
 
 // Existing organizers from our system (would come from API)
@@ -123,8 +123,8 @@ function renderMembersTable() {
                 </td>
                 <td class="actions">
                     <select class="formInput btn-sm" onchange="changeRole(${member.id}, this.value)">
-                        <option value="member" ${member.role === 'member' ? 'selected' : ''}>Member</option>
-                        <option value="admin" ${member.role === 'admin' ? 'selected' : ''}>Admin</option>
+                        <option value="editor" ${member.role === 'editor' ? 'selected' : ''}>Editor</option>
+                        <option value="viewer" ${member.role === 'viewer' ? 'selected' : ''}>Viewer</option>
                     </select>
                     <button class="btn btnDanger btn-sm" onclick="removeMember(${member.id})">
                         <i class="fas fa-trash"></i>
@@ -223,8 +223,8 @@ function removeMember(memberId) {
 // Go back to previous page
 function goBack() {
     // In a real app, this would use history.back() or router
-    alert('Going back to organizations dashboard...');
-    // window.history.back(); // Uncomment for real implementation
+    alert('Going back to Organizations Management dashboard...');
+    window.location.href = '../orgranization-management/orgManagement.html';
 }
 
 // Utility function to validate email

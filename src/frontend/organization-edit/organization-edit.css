@@ -192,12 +192,12 @@ label {
     min-width: 80px;
 }
 
-.role-admin {
+.role-editor {
     background: rgba(59, 130, 246, 0.15);
     color: #1d4ed8;
 }
 
-.role-member {
+.role-viewer {
     background: rgba(107, 114, 128, 0.15);
     color: #374151;
 }

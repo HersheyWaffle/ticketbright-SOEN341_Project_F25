@@ -74,12 +74,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-
+    
     // Logout functionality
-    logoutButton.addEventListener('click', function() {
-        if(confirm('Are you sure you want to log out?')) {
-            alert('Logging out...');
-            window.location.href = 'main.html';
+    document.querySelector('.logoutButton').addEventListener('click', function() {
+    if(confirm('Are you sure you want to log out?')) {
+        window.location.href = '../main/main.html';
         }
     });
 

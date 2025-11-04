@@ -12,6 +12,23 @@ const sortBy = document.getElementById('sortBy');
 const mobileFiltersToggle = document.getElementById('mobileFiltersToggle');
 const filtersSidebar = document.getElementById('filtersSidebar');
 
+    const myEventsButton = document.querySelector('.myEventsButton');
+    const logoutButton = document.querySelector('.logoutButton');
+
+    // // Home functionality
+    document.querySelector('.myEventsButton').addEventListener('click', function() {
+        window.location.href = '../main/main.html';   
+    });
+
+    // Logout functionality
+    document.querySelector('.logoutButton').addEventListener('click', function() {
+    if(confirm('Are you sure you want to log out?')) {
+        window.location.href = '../main/main.html';
+        }
+    });
+
+
+
 // State
 let activeFilters = {
     search: '',

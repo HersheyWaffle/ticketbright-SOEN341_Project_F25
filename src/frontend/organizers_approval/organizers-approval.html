@@ -14,20 +14,31 @@
 </head>
 <body>
   <!-- Header -->
-  <header>
-    <div class="headerContainer">
-      <div class="brandName">TicketBright Admin</div>
-      <div class="loginArea">
-        <a class="navButton" href="#">Dashboard</a>
-        <a class="navButton" href="#">Log Out</a>
-      </div>
-    </div>
-  </header>
-
-  <div class="mainContent">
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <a href="../main/main.html" class="navLink">Home</a>
+                <div class="adminDropdown">
+                    <button class="adminButton">Admin</button>
+                    <div class="dropdownContent">
+                        <a href="../admin-analytics/adminAnalytics.html" class="dropdownLink">Analytics</a>
+                        <a href="../organizers_approval/organizers-approval.html" class="dropdownLink active">Organizer Accounts</a>
+                        <a href="../admin-event/admin-event.html" class="dropdownLink">Event Management</a>
+                        <a href="../orgranization-management/orgManagement.html" class="dropdownLink">Organizations Management</a>                        
+                    </div>
+                </div>
+                <button class="logoutButton">Log Out</button>
+            </div>
+        </div>
+    </header>
+    
     <div class="pageHeader">
       <h1 class="pageTitle">Organizer Account Approvals</h1>
+      <p>Manage organizer accounts requests</p>
     </div>
+
+  <div class="mainContent">
 
     <!-- Overview / Stats -->
     <section class="formSection">
