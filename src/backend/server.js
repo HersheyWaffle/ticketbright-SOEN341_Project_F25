@@ -32,7 +32,8 @@ app.use(express.static(path.join(__dirname, "../frontend")));
 app.use("/api", ticketValidationRoutes);
 app.use("/api/events", attendeeCSVRoutes);
 app.use("/api/events", eventAnalyticsRoutes);
-app.use("/api/admin/organizations", orgRouter);  // <-- mount here
+//app.use("/api/admin/organizations", orgRouter);  // <-- mount here
+app.use("/api/organizations", orgRouter);
 app.use("/api/admin", adminRouter);
 // --------------------------------------
 

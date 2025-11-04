@@ -1,16 +1,46 @@
 [
   {
     "id": 1,
-    "name": "CS Society",
-    "description": "",
+    "name": "Engineering Club",
+    "description": "Student engineering society",
     "status": "active",
-    "members": []
+    "members": [
+      {
+        "userId": 1,
+        "role": "member"
+      },
+      {
+        "userId": 2,
+        "role": "member"
+      },
+      {
+        "userId": 3,
+        "role": "owner"
+      },
+      {
+        "userId": 6,
+        "role": "member"
+      },
+      {
+        "userId": 7,
+        "role": "owner"
+      }
+    ]
   },
   {
     "id": 2,
-    "name": "Robotics & AI Society",
-    "description": "Updated description",
+    "name": "Computer Science Society",
+    "description": "Software & AI projects",
     "status": "active",
-    "members": []
+    "members": [
+      {
+        "userId": 6,
+        "role": "member"
+      },
+      {
+        "userId": 7,
+        "role": "member"
+      }
+    ]
   }
 ]

@@ -86,28 +86,58 @@ function renderEvents() {
 }
 
 
+
+
 // Approve event
-function approveEvent(eventId) {
+async function approveEvent(eventId) {
     const eventIndex = events.findIndex(ev => ev.id === eventId);
     if (eventIndex !== -1) {
         const eventTitle = events[eventIndex].title;
-        events.splice(eventIndex, 1);
-        renderEvents();
-        alert(`Event "${eventTitle}" has been approved.`);
+
+        try {
+            const res = await fetch(`/api/admin/events/${eventId}/moderate`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "approve" })
+            });
+
+            if (res.ok) {
+                events.splice(eventIndex, 1);
+                renderEvents();
+            } else {
+                console.error(`Error approving "${eventTitle}"`);
+            }
+        } catch (err) {
+            console.error(`Network error while approving "${eventTitle}":`, err);
+        }
     }
 }
 
 // Reject event
-function rejectEvent(eventId) {
+async function rejectEvent(eventId) {
     const eventIndex = events.findIndex(ev => ev.id === eventId);
     if (eventIndex !== -1) {
         const eventTitle = events[eventIndex].title;
-        events.splice(eventIndex, 1);
-        renderEvents();
-        alert(`Event "${eventTitle}" has been rejected.`);
+        const reason = prompt(`Enter reason for rejecting "${eventTitle}":`) || "No reason provided";
+
+        try {
+            const res = await fetch(`/api/admin/events/${eventId}/moderate`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "reject", reason })
+            });
+
+            if (res.ok) {
+                events.splice(eventIndex, 1);
+                renderEvents();
+            } else {
+                console.error(`Error rejecting "${eventTitle}"`);
+            }
+        } catch (err) {
+            console.error(`Network error while rejecting "${eventTitle}":`, err);
+        }
     }
 }
-
 
 
 
