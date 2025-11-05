@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Alex Johnson",
+    "email": "alex.johnson@gmail.com",
+    "role": "organizer",
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "name": "Sarah Chen",
+    "email": "sarah.chen@gmail.com",
+    "role": "organizer",
+    "status": "active"
+  },
+  {
+    "id": 3,
+    "name": "Mike Rodriguez",
+    "email": "mike.rodriguez@gmail.com",
+    "role": "student",
+    "status": "active"
+  },
+  {
+    "id": 4,
+    "name": "Emily Watson",
+    "email": "emily.watson@gmail.com",
+    "role": "student",
+    "status": "active"
+  },
+  {
+    "id": 5,
+    "name": "Emma Wilson",
+    "email": "emma.wilson@gmail.com",
+    "role": "student",
+    "status": "pending_organizer"
+  },
+  {
+    "id": 6,
+    "name": "Frank Liu",
+    "email": "frank.liu@outlook.com",
+    "role": "student",
+    "status": "rejected"
+  },
+  {
+    "id": 7,
+    "name": "Grace Kim",
+    "email": "grace.kim@gmail.com",
+    "role": "student",
+    "status": "pending_organizer"
+  },
+  {
+    "id": 8,
+    "name": "Henry Brown",
+    "email": "henry.brown@gmail.com",
+    "role": "student",
+    "status": "pending_organizer"
+  }
+]

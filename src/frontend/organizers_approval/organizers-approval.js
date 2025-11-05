@@ -121,23 +121,74 @@ function renderTable(){
 }
 
 // Single update
-function updateStatus(id,status){
-  const org = organizers.find(o => o.id === id);
-  if(!org) return;
-  org.status = status;
-  renderStats(); renderTable();
+// ---- SINGLE: Approve/Reject one organizer via backend ----
+async function updateStatus(id, nextStatus) {
+  const row = organizers.find(o => o.id === id);
+  if (!row) return;
+
+  const url = `/api/admin/organizers/${id}/${nextStatus === 'approved' ? 'approve' : 'reject'}`;
+
+  try {
+    const res = await fetch(url, { method: 'POST' });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      console.error(`Failed to ${nextStatus} #${id}:`, data.message || res.statusText);
+      return;
+    }
+    // server ok → update local row and rerender
+    row.status = nextStatus;
+    renderStats();
+    renderTable();
+  } catch (err) {
+    console.error(`Network error ${nextStatus} #${id}:`, err);
+  }
 }
+// function updateStatus(id,status){
+//   const org = organizers.find(o => o.id === id);
+//   if(!org) return;
+//   org.status = status;
+//   renderStats(); renderTable();
+// }
 
 // Bulk update
-function updateSelectedStatus(status){
+// ---- BULK: Approve/Reject selected organizers via backend ----
+async function updateSelectedStatus(nextStatus) {
   const ids = [...document.querySelectorAll('.row-checkbox:checked')]
-                .map(cb => parseInt(cb.dataset.id,10));
-  if(ids.length === 0) return;
-  organizers.forEach(o => {
-    if(ids.includes(o.id) && o.status === "pending") o.status = status;
-  });
-  renderStats(); renderTable();
+    .map(cb => parseInt(cb.dataset.id, 10));
+
+  if (!ids.length) return;
+
+  try {
+    await Promise.all(
+      ids.map(id =>
+        fetch(`/api/admin/organizers/${id}/${nextStatus === 'approved' ? 'approve' : 'reject'}`, {
+          method: 'POST'
+        }).then(r => {
+          if (!r.ok) throw new Error(`${nextStatus} failed for id ${id} (HTTP ${r.status})`);
+        })
+      )
+    );
+
+    // server ok → update local rows and rerender
+    organizers.forEach(o => {
+      if (ids.includes(o.id) && o.status === 'pending') o.status = nextStatus;
+    });
+    renderStats();
+    renderTable();
+  } catch (err) {
+    console.error('Bulk update error:', err);
+  }
 }
+
+// function updateSelectedStatus(status){
+//   const ids = [...document.querySelectorAll('.row-checkbox:checked')]
+//                 .map(cb => parseInt(cb.dataset.id,10));
+//   if(ids.length === 0) return;
+//   organizers.forEach(o => {
+//     if(ids.includes(o.id) && o.status === "pending") o.status = status;
+//   });
+//   renderStats(); renderTable();
+// }
 
 /* --------- Events --------- */
 els.table.addEventListener('click', (e) => {

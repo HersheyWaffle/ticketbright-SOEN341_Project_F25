@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "name": "Engineering Club",
+    "description": "Student engineering society",
+    "status": "active",
+    "members": [
+      {
+        "userId": 1,
+        "role": "member"
+      },
+      {
+        "userId": 2,
+        "role": "member"
+      },
+      {
+        "userId": 3,
+        "role": "owner"
+      },
+      {
+        "userId": 6,
+        "role": "member"
+      },
+      {
+        "userId": 7,
+        "role": "owner"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Computer Science Society",
+    "description": "Software & AI projects",
+    "status": "active",
+    "members": [
+      {
+        "userId": 6,
+        "role": "member"
+      },
+      {
+        "userId": 7,
+        "role": "member"
+      }
+    ]
+  }
+]
