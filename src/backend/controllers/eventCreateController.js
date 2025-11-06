@@ -1,4 +1,4 @@
-import Event from "../models/Event.js";
+
 import { Op } from "sequelize";
 import fs from "fs";
 import path from "path";
