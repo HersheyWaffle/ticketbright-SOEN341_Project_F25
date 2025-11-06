@@ -1,0 +1,44 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Unit & Integration (Jest)
+        run: npm run test
+
+      # If/when you want E2E in CI, uncomment the next steps
+      # - name: Install Playwright browsers
+      #   run: npx playwright install --with-deps
+      # - name: Start app (test mode)
+      #   env:
+      #     NODE_ENV: test
+      #     PORT: 3000
+      #   run: |
+      #     npm run start:test & \
+      #     npx wait-on http://localhost:3000
+      # - name: E2E tests (Playwright)
+      #   run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
