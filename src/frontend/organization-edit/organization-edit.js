@@ -153,72 +153,193 @@ function closeAddMemberModal() {
 }
 
 // Add new member
-function addNewMember() {
-    const email = els.memberEmail.value.trim();
-    const name = els.memberName.value.trim();
-    const role = els.memberRole.value;
-    
-    if (!email) {
-        alert('Please enter an email address');
-        return;
+// --- role mapping: UI label/value -> backend value (case-insensitive) ---
+const ROLE_MAP = {
+  Admin: "owner",  admin: "owner",
+  Owner: "owner",  owner: "owner",
+  Manager: "manager", manager: "manager",
+  Member: "member",  member: "member"
+};
+
+// Add new member (backend-connected, no alerts)
+async function addNewMember() {
+  const email  = els.memberEmail.value.trim();
+  const name   = els.memberName.value.trim();
+  const uiRole = (els.memberRole.value || "").trim();   // e.g., "member" or "admin"
+  const role   = ROLE_MAP[uiRole];
+
+  if (!email) { console.error("Email required"); return; }
+  if (!isValidEmail(email)) { console.error("Invalid email"); return; }
+  if (!name) { console.error("Name required"); return; }
+  if (!role) { console.error("Invalid role selected:", uiRole); return; }
+  if (organizationMembers.some(m => m.email === email)) {
+    console.error("Email already in this organization"); return;
+  }
+
+  const nextUserId = organizationMembers.length
+    ? Math.max(...organizationMembers.map(m => Number(m.id) || 0)) + 1
+    : 1;
+
+  try {
+    const res = await fetch(`/api/organizations/${currentOrganization.id}/members`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: nextUserId, role })
+    });
+
+    if (res.status === 201) {
+      organizationMembers.push({ id: nextUserId, name, email, role });
+      renderMembersTable();
+      closeAddMemberModal();
+      console.log(`Added ${name} (${email}) as ${role}`);
+    } else {
+      const data = await res.json().catch(() => ({}));
+      console.error("Add member failed:", data.message || res.statusText);
     }
-    
-    if (!isValidEmail(email)) {
-        alert('Please enter a valid email address');
-        return;
-    }
-    
-    if (!name) {
-        alert('Please enter the member\'s name');
-        return;
-    }
-    
-    // Check if member already exists in organization
-    if (organizationMembers.some(member => member.email === email)) {
-        alert('This email is already a member of the organization');
-        return;
-    }
-    
-    // Add new member
-    const newMember = {
-        id: organizationMembers.length + 1,
-        name: name,
-        email: email,
-        role: role
-    };
-    
-    organizationMembers.push(newMember);
-    renderMembersTable();
-    closeAddMemberModal();
-    
-    alert(`Successfully added ${name} to the organization`);
+  } catch (err) {
+    console.error("Network error adding member:", err);
+  }
 }
+
+
+
+// function addNewMember() {
+//     const email = els.memberEmail.value.trim();
+//     const name = els.memberName.value.trim();
+//     const role = els.memberRole.value;
+    
+//     if (!email) {
+//         alert('Please enter an email address');
+//         return;
+//     }
+    
+//     if (!isValidEmail(email)) {
+//         alert('Please enter a valid email address');
+//         return;
+//     }
+    
+//     if (!name) {
+//         alert('Please enter the member\'s name');
+//         return;
+//     }
+    
+//     // Check if member already exists in organization
+//     if (organizationMembers.some(member => member.email === email)) {
+//         alert('This email is already a member of the organization');
+//         return;
+//     }
+    
+//     // Add new member
+//     const newMember = {
+//         id: organizationMembers.length + 1,
+//         name: name,
+//         email: email,
+//         role: role
+//     };
+    
+//     organizationMembers.push(newMember);
+//     renderMembersTable();
+//     closeAddMemberModal();
+    
+//     alert(`Successfully added ${name} to the organization`);
+// }
 
 // Change member role
-function changeRole(memberId, newRole) {
+// Change member role (backend-connected and uses same ROLE_MAP)
+async function changeRole(memberId, newRoleLabel) {
+  const member = organizationMembers.find(m => m.id === memberId);
+  if (!member) return;
+
+  // map UI role (Admin/Member etc.) → backend value (owner/manager/member)
+  const backendRole = ROLE_MAP[newRoleLabel] || newRoleLabel;
+
+  if (!backendRole) {
+    console.error("Invalid role:", newRoleLabel);
+    renderMembersTable();
+    return;
+  }
+
+  // Confirm role change
+  if (!confirm(`Change ${member.name}'s role to ${newRoleLabel}?`)) {
+    renderMembersTable();
+    return;
+  }
+
+  try {
+    // PATCH /api/organizations/:orgId/members/:userId
+    const res = await fetch(`/api/organizations/${currentOrganization.id}/members/${memberId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ role: backendRole })
+    });
+
+    if (res.ok) {
+      member.role = backendRole;   // update UI to match backend
+      renderMembersTable();
+      console.log(`Successfully changed ${member.name}'s role to ${backendRole}`);
+    } else {
+      const data = await res.json().catch(() => ({}));
+      console.error(`Failed to change role: ${data.message || res.statusText}`);
+      renderMembersTable(); // revert if fail
+    }
+  } catch (err) {
+    console.error("Network error changing role:", err);
+    renderMembersTable(); // revert UI
+  }
+}
+
+// function changeRole(memberId, newRole) {
+//     const member = organizationMembers.find(m => m.id === memberId);
+//     if (!member) return;
+    
+//     if (confirm(`Change ${member.name}'s role to ${newRole}?`)) {
+//         member.role = newRole;
+//         renderMembersTable();
+//         alert(`Successfully changed ${member.name}'s role to ${newRole}`);
+//     } else {
+//         renderMembersTable(); // Reset the select
+//     }
+// }
+
+// Remove member
+// Remove member (backend-connected)
+async function removeMember(memberId) {
     const member = organizationMembers.find(m => m.id === memberId);
     if (!member) return;
-    
-    if (confirm(`Change ${member.name}'s role to ${newRole}?`)) {
-        member.role = newRole;
-        renderMembersTable();
-        alert(`Successfully changed ${member.name}'s role to ${newRole}`);
-    } else {
-        renderMembersTable(); // Reset the select
+
+    if (confirm(`Remove ${member.name} from the organization?`)) {
+        try {
+            const res = await fetch(`/api/organizations/${currentOrganization.id}/members/${memberId}`, {
+                method: "DELETE",
+            });
+
+            if (res.status === 204) {
+                // success: update UI
+                organizationMembers = organizationMembers.filter(m => m.id !== memberId);
+                renderMembersTable();
+                console.log(`Successfully removed ${member.name} from the organization`);
+            } else if (res.status === 404) {
+                console.error(`Member or organization not found (${res.status}).`);
+            } else {
+                const data = await res.json().catch(() => ({}));
+                console.error(`Error removing member: ${data.message || res.statusText}`);
+            }
+        } catch (err) {
+            console.error("Network error while removing member:", err);
+        }
     }
 }
 
-// Remove member
-function removeMember(memberId) {
-    const member = organizationMembers.find(m => m.id === memberId);
-    if (!member) return;
+// function removeMember(memberId) {
+//     const member = organizationMembers.find(m => m.id === memberId);
+//     if (!member) return;
     
-    if (confirm(`Remove ${member.name} from the organization?`)) {
-        organizationMembers = organizationMembers.filter(m => m.id !== memberId);
-        renderMembersTable();
-        alert(`Successfully removed ${member.name} from the organization`);
-    }
-}
+//     if (confirm(`Remove ${member.name} from the organization?`)) {
+//         organizationMembers = organizationMembers.filter(m => m.id !== memberId);
+//         renderMembersTable();
+//         alert(`Successfully removed ${member.name} from the organization`);
+//     }
+// }
 
 // Go back to previous page
 function goBack() {
