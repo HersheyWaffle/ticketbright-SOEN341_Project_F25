@@ -51,7 +51,7 @@ header {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.loginButton {
+.homeButton {
     background-color: #3b82f6;
     color: white;
     border: none;
@@ -62,30 +62,47 @@ header {
     transition: background-color 0.3s;
 }
 
-.loginButton:hover {
+.homeButton:hover {
     background-color: #2563eb;
 }
+
+.logoutButton {
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logoutButton:hover {
+    background-color: #b91c1c;
+}
+
+.purchaseHeader {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.purchaseHeader h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.purchaseHeader p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
 
 .purchaseContainer {
     padding: 40px 5%;
     max-width: 600px;
     margin: 0 auto;
-}
-
-.purchaseHeader {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.purchaseHeader h1 {
-    font-size: 36px;
-    color: #1a1a2e;
-    margin-bottom: 10px;
-}
-
-.purchaseHeader p {
-    font-size: 18px;
-    color: #666;
 }
 
 .formSection {

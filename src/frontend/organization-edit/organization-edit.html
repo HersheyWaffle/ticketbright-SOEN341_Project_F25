@@ -49,6 +49,23 @@
                 <h3 class="permissionsTitle">Role Permissions</h3>
                 <div class="permissionsGrid">
                     <div class="permissionItem">
+                        <span class="roleBadge role-editor">Editor</span>
+                        <span class="permissionText">Can create events, validate QR code, view stats and export the attendee list in CSV.</span>
+                    </div>
+                    <div class="permissionItem">
+                        <span class="roleBadge role-member">Viewer</span>
+                        <span class="permissionText">Can validate QC code, view stats and export the attendee list in CSV.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<!--             
+            <div class="rolePermissions">
+                <h3 class="permissionsTitle">Role Permissions</h3>
+                <div class="permissionsGrid">
+                    <div class="permissionItem">
                         <span class="roleBadge role-admin">Admin</span>
                         <span class="permissionText">Can edit organization details and manage members</span>
                     </div>
@@ -59,7 +76,7 @@
                 </div>
             </div>
         </section>
-    </div>
+    </div> -->
 
     <!-- Add Member Modal -->
     <div class="modalOverlay" id="addMemberModal">
@@ -90,8 +107,8 @@
                 <div class="formGroup">
                     <label for="memberRole" class="required">Role</label>
                     <select id="memberRole" class="formInput">
-                        <option value="member">Member</option>
-                        <option value="admin">Admin</option>
+                        <option value="viewer">Viewer</option>
+                        <option value="editor">Editor</option>
                     </select>
                 </div>
             </div>

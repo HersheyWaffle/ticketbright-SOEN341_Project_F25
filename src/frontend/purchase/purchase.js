@@ -10,7 +10,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const closePopup = document.getElementById('closePopup');
     const confirmationPopup = document.getElementById('confirmationPopup');
     const paymentMethod = document.getElementById('paymentMethod');
-    const paymentDetails = document.getElementById('paymentDetails');
+    const paymentDetails = document.getElementById('paymentDetails');    
+    const homeButton = document.querySelector('.homeButton');
+    const logoutButton = document.querySelector('.logoutButton');
+
+    // Home functionality
+    document.querySelector('.homeButton').addEventListener('click', function() {
+    if(confirm('Are you sure you want to cancel transaction and go back to home page?')) {
+        window.location.href = '../main/main.html';
+        }
+    });
+
+    // Logout functionality
+    document.querySelector('.logoutButton').addEventListener('click', function() {
+    if(confirm('Are you sure you want to cancel transaction and log out?')) {
+        window.location.href = '../main/main.html';
+        }
+    });
+
 
     let TB;
     import('../js/student-features.js')

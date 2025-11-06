@@ -29,20 +29,21 @@ manageButtons.forEach(button => {
             
     //         console.log(`Managing organization: ${orgName} (ID: ${orgId})`);
             
-    //         // Redirect to organization management page
-    //         // In real app, this would be: window.location.href = `manage-organization.html?id=${orgId}`;
-    //         alert(`Redirecting to manage organization: ${orgName}\nOrganization ID: ${orgId}\n\nThis would redirect to the organization management page created by your teammate.`);
-    //     });
-    // });
+            // Redirect to organization management page
+            // In real app, this would be: window.location.href = `manage-organization.html?id=${orgId}`;
+            // alert(`Redirecting to manage organization: ${orgName}\nOrganization ID: ${orgId}\n\nThis would redirect to the organization management page created by your teammate.`);
+            window.location.href = '../organization-edit/organization-edit.html';
+
+        });
+    });
 
     // Logout functionality
-    logoutButton.addEventListener('click', function() {
-        if(confirm('Are you sure you want to log out?')) {
-            alert('Logging out...');
-            // Redirect to login page
-            window.location.href = 'main.html';
+    document.querySelector('.logoutButton').addEventListener('click', function() {
+    if(confirm('Are you sure you want to log out?')) {
+        window.location.href = '../main/main.html';
         }
     });
+
 
     console.log('Organization management page loaded successfully');
     console.log(`Total organizations: ${totalOrgs}`);
