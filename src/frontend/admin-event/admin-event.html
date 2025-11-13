@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Events - Admin Moderation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <a href="../main/main.html" class="navLink">Home</a>
+                <div class="adminDropdown">
+                    <button class="adminButton">Admin</button>
+                    <div class="dropdownContent">
+                        <a href="../admin-analytics/adminAnalytics.html" class="dropdownLink">Analytics</a>
+                        <a href="../organizers_approval/organizers-approval.html" class="dropdownLink">Organizer Accounts</a>
+                        <a href="../admin-event/admin-event.html" class="dropdownLink active">Event Management</a>
+                        <a href="../orgranization-management/orgManagement.html" class="dropdownLink">Organizations Management</a>                        
+                    </div>
+                </div>
+                <button class="logoutButton">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="sectionHeader">
+        <h1>Event Management</h1>
+        <p>Moderate event listings for policy compliance</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Events Table -->
+        <div class="events-table-container">
+            <div class="table-header">
+                <h2>Event Submissions</h2>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event Title</th>
+                        <th>Organizer</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="events-table-body">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

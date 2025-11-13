@@ -1,49 +1,55 @@
-//For searching
-document.querySelector('.searchForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const location = document.getElementById('location').value;
-    const date = document.getElementById('date').value;
-    const search = document.getElementById('search').value;
-    const filters = document.getElementById('filters').value;
-    
-    const searchData = {
-        location: location,
-        date: date,
-        search: search,
-        category: filters
-    };
-    
-    if (location.trim() !== '' || date.trim() !== '' || search.trim() !== '') {
-        alert(`Searching with:\nLocation: ${location || 'Any'}\nDate: ${date || 'Any'}\nSearch: ${search || 'Any'}\nCategory: ${filters || 'All'}`);
-        
+document.addEventListener("DOMContentLoaded", () => {
+    const authArea = document.getElementById("authArea");
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+        const user = JSON.parse(storedUser);
+
+        // Replace signup/login with username + logout
+        authArea.innerHTML = `
+      <span class="welcome">Welcome, <strong>${user.username}</strong></span>
+      <button id="logoutBtn" class="loginButton">Logout</button>
+    `;
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.removeItem("user");
+                window.location.reload();
+            }
+        });
     } else {
-        alert('Please enter at least one search criteria');
+        // Show default links if not logged in
+        authArea.innerHTML = `
+      <a class="loginButton" href="../signup-login/signup.html">Sign Up</a>
+      <a class="loginButton" href="../signup-login/login.html">Log In</a>
+    `;
     }
 });
 
-//Log in button
-document.querySelector('.loginButton').addEventListener('click', function() {
-    alert('Login functionality would go here');
-    
+//For searching
+document.querySelector(".searchForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const query = document.getElementById("search").value.trim();
+    if (query) {
+        window.location.href = `../search/event-search.html?query=${encodeURIComponent(query)}`;
+    }
 });
 
 //For the date
-document.getElementById('date').addEventListener('focus', function() {
+document.getElementById('date').addEventListener('focus', function () {
     this.type = 'date';
 });
 
-document.getElementById('date').addEventListener('blur', function() {
+document.getElementById('date').addEventListener('blur', function () {
     if (!this.value) {
         this.type = 'text';
     }
 });
 
 //Category
-const categoryCards = document.querySelectorAll('.categoryCard');
-categoryCards.forEach(card => {
-    card.addEventListener('click', function() {
-        const categoryName = this.querySelector('.categoryName').textContent;
-        alert(`Browsing ${categoryName} events`);
-        
+document.querySelectorAll(".categoryCard").forEach(card => {
+    card.addEventListener("click", () => {
+        const category = card.dataset.category;
+        window.location.href = `../search/event-search.html?category=${encodeURIComponent(category)}`;
     });
 });

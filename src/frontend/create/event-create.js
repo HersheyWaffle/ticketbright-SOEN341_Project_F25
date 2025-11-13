@@ -1,3 +1,9 @@
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user || (user.role !== "admin" && user.role !== "organizer")) {
+    alert("Please log in to access this page.");
+    window.location.href = "../signup-login/login.html";
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     // Elements
     const eventForm = document.getElementById('eventForm');
@@ -170,6 +176,13 @@ document.addEventListener('DOMContentLoaded', function () {
             populateReviewPage();
             eventForm.style.display = 'none';
             reviewPage.style.display = 'block';
+        }
+    });
+
+    document.querySelector('.logoutButton').addEventListener('click', function () {
+        if (confirm('Are you sure you want to log out?')) {
+            localStorage.removeItem("user");
+            window.location.href = '../main/main.html';
         }
     });
 

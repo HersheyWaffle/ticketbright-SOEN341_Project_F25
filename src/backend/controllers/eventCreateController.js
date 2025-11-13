@@ -2,6 +2,7 @@
 import { Op } from "sequelize";
 import fs from "fs";
 import path from "path";
+import Event from "../models/event.js";
 
 function makeEventID(title) {
   return title
@@ -33,12 +34,12 @@ export const createEvent = async (req, res) => {
     }
 
     // create data folder
-    const eventDir = path.join("src", "backend", "data", "events", eventID);
-    if (!fs.existsSync(eventDir)) fs.mkdirSync(eventDir, { recursive: true });
+    const backendDataDir = path.join(process.cwd(), "src", "backend", "data", "events", eventID);
+    if (!fs.existsSync(backendDataDir)) fs.mkdirSync(backendDataDir, { recursive: true });
 
     // if banner uploaded, move to event folder
     if (req.file) {
-      data.bannerPath = path.join(eventDir, req.file.filename).replace(/\\/g, "/");
+      data.bannerPath = path.posix.join("data", "events", eventID, req.file.filename);
     }
 
     let savedEvent;
@@ -141,5 +142,51 @@ export const updateEventStats = async (req, res) => {
   } catch (err) {
     console.error("Update stats failed:", err);
     res.status(500).json({ error: "Failed to update event stats" });
+  }
+};
+
+export const searchFields = async (req, res) => {
+  try {
+    const { query = "", category } = req.query;
+    const where = {};
+
+    // filter by title, description, tags, organizerName, etc.
+    if (query) {
+      where[Op.or] = [
+        { title: { [Op.like]: `%${query}%` } },
+        { description: { [Op.like]: `%${query}%` } },
+        { tags: { [Op.like]: `%${query}%` } },
+        { organizerName: { [Op.like]: `%${query}%` } },
+      ];
+    }
+
+    if (category) where.categories = { [Op.like]: `%${category}%` };
+
+    const events = await Event.findAll({
+      where,
+      order: [["date", "ASC"]],
+    });
+
+    res.json(events);
+  } catch (err) {
+    console.error("Search failed:", err);
+    res.status(500).json({ error: "Failed to fetch events" });
+  }
+};
+
+export const incrementTicket = async (req, res) => {
+  try {
+    const event = await Event.findByPk(req.params.id);
+    if (!event) return res.status(404).json({ error: "Event not found" });
+
+    const incrementBy = parseInt(req.body.incrementBy || 1, 10);
+    const newCount = (event.ticketsSold || 0) + incrementBy;
+
+    await event.update({ ticketsSold: newCount });
+
+    res.json({ success: true, ticketsSold: newCount });
+  } catch (err) {
+    console.error("Failed to update tickets:", err);
+    res.status(500).json({ error: "Failed to update tickets" });
   }
 };

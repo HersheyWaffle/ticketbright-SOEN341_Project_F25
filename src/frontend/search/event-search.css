@@ -41,7 +41,7 @@ header {
     gap: 15px;
 }
 
-.navButton {
+.myEventsButton {
     background-color: #3b82f6;
     color: white;
     border: none;
@@ -54,9 +54,25 @@ header {
     font-size: 14px;
 }
 
-.navButton:hover {
+.myEventsButton:hover {
     background-color: #2563eb;
 }
+
+.logoutButton {
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logoutButton:hover {
+    background-color: #b91c1c;
+}
+
 
 .mainContent {
     max-width: 1200px;

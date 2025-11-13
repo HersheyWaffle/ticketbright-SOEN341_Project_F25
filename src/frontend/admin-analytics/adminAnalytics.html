@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicketBright - Admin Analytics</title>
+    <link rel="stylesheet" href="adminAnalytics.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <a href="../main/main.html" class="navLink">Home</a>
+                <div class="adminDropdown">
+                    <button class="adminButton">Admin</button>
+                    <div class="dropdownContent">
+                        <a href="../admin-analytics/adminAnalytics.html" class="dropdownLink active">Analytics</a>
+                        <a href="../organizers_approval/organizers-approval.html" class="dropdownLink">Organizer Accounts</a>
+                        <a href="../admin-event/admin-event.html" class="dropdownLink">Event Management</a>
+                        <a href="../orgranization-management/orgManagement.html" class="dropdownLink">Organizations Management</a>                        
+                    </div>
+                </div>
+                <button class="logoutButton">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="analyticsHeader">
+        <h1>Admin Analytics Dashboard</h1>
+        <p>General statistics and participation trends across all organizations</p>
+    </section>
+
+    <section class="analyticsContainer">
+        <!-- Global Statistics -->
+        <div class="statsSummary">
+            <div class="statCard">
+                <div class="statValue">100</div>
+                <div class="statLabel">Total Events</div>
+            </div>
+            <div class="statCard">
+                <div class="statValue">10,000</div>
+                <div class="statLabel">Total Tickets Issued</div>
+            </div>
+            <div class="statCard">
+                <div class="statValue">85%</div>
+                <div class="statLabel">Average Attendance Rate</div>
+            </div>
+            <div class="statCard">
+                <div class="statValue">4.5</div>
+                <div class="statLabel">Average Event Rating</div>
+            </div>
+        </div>
+
+        <!-- Participation Trends Graph -->
+        <div class="analyticsSection">
+            <h2>Participation Trends</h2>
+            <p>Monthly ticket sales across all events</p>
+            <div class="graphContainer">
+                <canvas id="participationChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="adminAnalytics.js"></script>
+</body>
+</html>

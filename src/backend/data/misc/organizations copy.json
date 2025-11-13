@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "name": "Engineering Club",
+    "description": "Student engineering society",
+    "status": "active",
+    "members": [ { "userId": 101, "role": "owner" }, { "userId": 102, "role": "manager" } ]
+  }
+]

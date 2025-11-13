@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Organizer Account Approvals — Admin Dashboard</title>
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!-- Page styles -->
+  <link rel="stylesheet" href="orgganizers-approval.css" />
+</head>
+<body>
+  <!-- Header -->
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <a href="../main/main.html" class="navLink">Home</a>
+                <div class="adminDropdown">
+                    <button class="adminButton">Admin</button>
+                    <div class="dropdownContent">
+                        <a href="../admin-analytics/adminAnalytics.html" class="dropdownLink">Analytics</a>
+                        <a href="../organizers_approval/organizers-approval.html" class="dropdownLink active">Organizer Accounts</a>
+                        <a href="../admin-event/admin-event.html" class="dropdownLink">Event Management</a>
+                        <a href="../orgranization-management/orgManagement.html" class="dropdownLink">Organizations Management</a>                        
+                    </div>
+                </div>
+                <button class="logoutButton">Log Out</button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="pageHeader">
+      <h1 class="pageTitle">Organizer Account Approvals</h1>
+      <p>Manage organizer accounts requests</p>
+    </div>
+
+  <div class="mainContent">
+
+    <!-- Overview / Stats -->
+    <section class="formSection">
+      <h2 class="sectionTitle">Overview</h2>
+      <div class="statsGrid" id="orgStats"></div>
+    </section>
+
+    <!-- Organizers List -->
+    <section class="formSection">
+      <h2 class="sectionTitle">Organizers</h2>
+
+      <div class="searchRow">
+        <input type="text" id="searchInput" class="searchInput"
+               placeholder="Search by name, email, or organization"/>
+        <button class="btn btn-primary" id="searchBtn">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+
+      <div class="filters">
+        <select id="statusFilter" class="filterSelect">
+          <option value="all">All Statuses</option>
+          <option value="pending" selected>Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+
+        <select id="sortBy" class="filterSelect">
+          <option value="date_desc" selected>Newest First</option>
+          <option value="date_asc">Oldest First</option>
+          <option value="name_asc">Name A–Z</option>
+          <option value="name_desc">Name Z–A</option>
+        </select>
+
+        <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+          <input type="checkbox" id="selectAll" class="checkbox" />
+          <label for="selectAll">Select All</label>
+        </div>
+      </div>
+
+      <div class="tableContainer">
+        <table class="organizersTable">
+          <thead>
+            <tr>
+              <th style="width:5%"></th>
+              <th style="width:20%">Name</th>
+              <th style="width:25%">Email</th>
+              <th style="width:20%">Organization</th>
+              <th style="width:12%">Status</th>
+              <th style="width:18%">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="organizersTable"></tbody>
+        </table>
+      </div>
+
+      <div class="bulkActions">
+        <div class="selectedCount" id="selectedCount">0 organizers selected</div>
+        <div class="bulkButtons">
+          <button class="btn btn-danger" id="rejectSelected" disabled>
+            <i class="fas fa-times"></i> Reject Selected
+          </button>
+          <button class="btn btn-success" id="approveSelected" disabled>
+            <i class="fas fa-check"></i> Approve Selected
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Page script -->
+  <script src="organizers-approval.js"></script>
+</body>
+</html>

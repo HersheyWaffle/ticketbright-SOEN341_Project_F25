@@ -231,6 +231,7 @@ header {
     gap: 15px;
     align-items: center;
     flex-wrap: wrap;
+
 }
 
 .exportButton {
@@ -254,20 +255,7 @@ header {
     align-items: center;
 }
 
-.qrInput {
-    border: 1px solid #d1d5db;
-    padding: 10px 15px;
-    border-radius: 6px;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.3s;
-    min-width: 200px;
-}
 
-.qrInput:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
 
 .validateButton {
     background-color: #3b82f6;
@@ -278,6 +266,7 @@ header {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s;
+    text-decoration: none;
 }
 
 .validateButton:hover {
