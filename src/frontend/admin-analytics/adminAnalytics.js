@@ -1,7 +1,13 @@
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user || user.role !== "admin") {
+    alert("You are not authorized to access this page.");
+    window.location.href = "../main/main.html";
+}
+
 // Admin Analytics functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const logoutButton = document.querySelector('.logoutButton');
-    
+
     // Sample data for the chart (would come from API in real app)
     const monthlyData = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -74,11 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // Logout functionality
-    document.querySelector('.logoutButton').addEventListener('click', function() {
-    if(confirm('Are you sure you want to log out?')) {
-        window.location.href = '../main/main.html';
+    document.querySelector('.logoutButton').addEventListener('click', function () {
+        if (confirm('Are you sure you want to log out?')) {
+            localStorage.removeItem("user");
+            window.location.href = '../main/main.html';
         }
     });
 
@@ -87,19 +94,19 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             // Add new data point for current month (simulated)
             const newTickets = Math.floor(Math.random() * 500) + 800;
-            
+
             //Update chart data
             participationChart.data.datasets[0].data.push(newTickets);
             participationChart.data.labels.push('Now');
-            
+
             //Remove first data point to keep 12 months visible
             if (participationChart.data.labels.length > 12) {
                 participationChart.data.labels.shift();
                 participationChart.data.datasets[0].data.shift();
             }
-            
+
             participationChart.update();
-            
+
             console.log('Chart updated with new ticket data:', newTickets);
         }, 5000);
     }
