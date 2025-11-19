@@ -10,6 +10,8 @@ import attendeeCSVRoutes from "./routes/attendeeCSVRoutes.js";
 
 import adminRouter from "./routes/admin.routes.js";
 import orgRouter from "./routes/organizations.routes.js";
+import chatRoutes from "./routes/chat.routes.js";
+
 
 dotenv.config();
 
@@ -32,9 +34,10 @@ app.use(express.static(path.join(__dirname, "../frontend")));
 app.use("/api", ticketValidationRoutes);
 app.use("/api/events", attendeeCSVRoutes);
 app.use("/api/events", eventAnalyticsRoutes);
-//app.use("/api/admin/organizations", orgRouter);  // <-- mount here
-app.use("/api/organizations", orgRouter);
+app.use("/api/admin/organizations", orgRouter);  // <-- mount here
 app.use("/api/admin", adminRouter);
+app.use("/api/chat", chatRoutes);
+
 // --------------------------------------
 
 app.get("/", (req, res) => {
