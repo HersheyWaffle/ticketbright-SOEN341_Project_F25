@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>TicketBright</title>
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
     <header>
         <div class="headerContainer">
             <div class="brandName">TicketBright</div>
-            <div class="loginArea">
+            <div class="loginArea" id="authArea">
                 <a class="loginButton" href="../signup-login/signup.html">Sign Up</a>
                 <a class="loginButton" href="../signup-login/login.html">Log In</a>
                 <!-- <a class="loginButton" href="../validate/index.html">Validate Tickets (QR)</a> -->
@@ -18,7 +20,7 @@
     </header>
 
 
-   <!--Search section -->
+    <!--Search section -->
     <section class="topArea">
         <h1>Ticket Search</h1>
         <p>Find the event for you.</p>
@@ -64,31 +66,26 @@
         <div class="categoriesContainer">
             <h2 class="sectionTitle">Browse By Category</h2>
             <div class="categoriesGrid">
-                <div class="categoryCard">
-                    
+                <div class="categoryCard" data-category="concerts">
                     <div class="categoryName">Concerts</div>
                 </div>
-                
-                <div class="categoryCard">
-                   
+
+                <div class="categoryCard" data-category="sports">
                     <div class="categoryName">Sports</div>
                 </div>
-                <div class="categoryCard">
-                    
+                <div class="categoryCard" data-category="theater">
                     <div class="categoryName">Theater</div>
                 </div>
-                <div class="categoryCard">
-                    
+                <div class="categoryCard" data-category="comedy">
                     <div class="categoryName">Comedy</div>
                 </div>
-                <div class="categoryCard">
-                    
+                <div class="categoryCard" data-category="arts">
                     <div class="categoryName">Arts</div>
                 </div>
             </div>
         </div>
     </section>
-
     <script src="main.js"></script>
 </body>
+
 </html>

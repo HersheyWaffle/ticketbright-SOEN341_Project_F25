@@ -1,3 +1,8 @@
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user || user.role !== "admin") {
+  alert("You are not authorized to access this page.");
+  window.location.href = "../main/main.html";
+}
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Logout functionality
     document.querySelector('.logoutButton').addEventListener('click', function() {
     if(confirm('Are you sure you want to log out?')) {
+        localStorage.removeItem("user");
         window.location.href = '../main/main.html';
         }
     });

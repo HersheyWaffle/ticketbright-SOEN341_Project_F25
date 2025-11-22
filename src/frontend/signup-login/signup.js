@@ -5,22 +5,45 @@ const password_input = document.getElementById('passwordInput')
 const confirm_password_input = document.getElementById('confirmPasswordInput')
 const error_message = document.getElementById('errorMessage')
 
-form.addEventListener('submit', (e) => {
-  let errors = []
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-  if(username_input){
-    errors = isSignupValid(username_input.value, email_input.value, password_input.value, confirm_password_input.value)
-  }
-  else{
-    errors = isLoginValid(email_input.value, password_input.value)
+  const errors = isSignupValid(
+    username_input.value,
+    email_input.value,
+    password_input.value,
+    confirm_password_input.value
+  );
+
+  if (errors.length > 0) {
+    error_message.innerText = errors.join(". ");
+    return;
   }
 
-  if(errors.length > 0){
-    // If there are any errors
-    e.preventDefault()
-    error_message.innerText  = errors.join(". ")
+  const role = document.getElementById("roleSelect").value;
+
+  const userData = {
+    username: username_input.value,
+    email: email_input.value,
+    password: password_input.value,
+    role
+  };
+
+  try {
+    const res = await fetch("/api/users/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData)
+    });
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || "Signup failed");
+    alert(data.message);
+    window.location.href = "login.html";
+  } catch (err) {
+    error_message.innerText = err.message;
   }
-})
+});
 
 function isSignupValid(username, email, password, confirmPassword){
   let errors = []

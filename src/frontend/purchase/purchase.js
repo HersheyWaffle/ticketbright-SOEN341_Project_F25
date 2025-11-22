@@ -1,7 +1,20 @@
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user) {
+    alert("Please log in to access this page.");
+    window.location.href = "../signup-login/login.html";
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+const params = new URLSearchParams(window.location.search);
+const eventId = params.get("id");
+
+if (!eventId) {
+    alert("Invalid event. Please select an event again.");
+    window.location.href = "../search/event-search.html";
+}
+
+document.addEventListener('DOMContentLoaded', function () {
     console.log('Page loaded - JavaScript is running!');
-    
+
     const buyerInfoSection = document.getElementById('buyerInfo');
     const reviewSection = document.getElementById('reviewPurchase');
     const reviewButton = document.getElementById('reviewButton');
@@ -10,29 +23,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const closePopup = document.getElementById('closePopup');
     const confirmationPopup = document.getElementById('confirmationPopup');
     const paymentMethod = document.getElementById('paymentMethod');
-    const paymentDetails = document.getElementById('paymentDetails');    
+    const paymentDetails = document.getElementById('paymentDetails');
     const homeButton = document.querySelector('.homeButton');
     const logoutButton = document.querySelector('.logoutButton');
 
     // Home functionality
-    document.querySelector('.homeButton').addEventListener('click', function() {
-    if(confirm('Are you sure you want to cancel transaction and go back to home page?')) {
-        window.location.href = '../main/main.html';
+    document.querySelector('.homeButton').addEventListener('click', function () {
+        if (confirm('Are you sure you want to cancel transaction and go back to home page?')) {
+            window.location.href = '../main/main.html';
         }
     });
 
     // Logout functionality
-    document.querySelector('.logoutButton').addEventListener('click', function() {
-    if(confirm('Are you sure you want to cancel transaction and log out?')) {
-        window.location.href = '../main/main.html';
+    document.querySelector('.logoutButton').addEventListener('click', function () {
+        if (confirm('Are you sure you want to cancel transaction and log out?')) {
+            window.location.href = '../main/main.html';
         }
     });
 
 
     let TB;
     import('../js/student-features.js')
-  .then(m => { TB = m; })
-  .catch(err => console.warn('student-features not loaded:', err));
+        .then(m => { TB = m; })
+        .catch(err => console.warn('student-features not loaded:', err));
 
     const eventData = {
         name: "Career Fair 2025",
@@ -42,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         price: 0.00
     };
 
-    paymentMethod.addEventListener('change', function() {
+    paymentMethod.addEventListener('change', function () {
         console.log('Payment method changed:', this.value);
         if (this.value) {
             paymentDetails.classList.add('show');
@@ -51,13 +64,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('cardNumber').addEventListener('input', function(e) {
+    document.getElementById('cardNumber').addEventListener('input', function (e) {
         let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
         let formattedValue = value.match(/.{1,4}/g)?.join(' ');
         e.target.value = formattedValue || value;
     });
 
-    document.getElementById('expiryDate').addEventListener('input', function(e) {
+    document.getElementById('expiryDate').addEventListener('input', function (e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length >= 2) {
             value = value.substring(0, 2) + '/' + value.substring(2, 4);
@@ -65,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         e.target.value = value;
     });
 
-    document.getElementById('cvv').addEventListener('input', function(e) {
+    document.getElementById('cvv').addEventListener('input', function (e) {
         e.target.value = e.target.value.replace(/\D/g, '');
     });
 
@@ -93,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const errorElement = document.getElementById(elementId);
         const inputId = elementId.replace('Error', '');
         const inputElement = document.getElementById(inputId);
-        
+
         if (errorElement && inputElement) {
             errorElement.textContent = message;
             errorElement.classList.add('show');
@@ -105,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const errorElement = document.getElementById(elementId);
         const inputId = elementId.replace('Error', '');
         const inputElement = document.getElementById(inputId);
-        
+
         if (errorElement && inputElement) {
             errorElement.classList.remove('show');
             inputElement.classList.remove('error');
@@ -208,22 +221,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    reviewButton.addEventListener('click', function() {
+    reviewButton.addEventListener('click', function () {
         console.log('Review button clicked!');
-        
+
         if (validateForm()) {
             console.log('Validation passed - moving to review page');
-            
-     
+
+
             const fullName = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
             const ticketQuantity = parseInt(document.getElementById('ticketQuantity').value);
 
-        
+
             const pricePerTicket = eventData.price;
             const subtotal = pricePerTicket * ticketQuantity;
-            const tax = subtotal * 0.15; 
+            const tax = subtotal * 0.15;
             const total = subtotal + tax;
 
 
@@ -236,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('reviewEmail').textContent = email;
             document.getElementById('reviewPhone').textContent = phone;
 
-    
+
             buyerInfoSection.classList.remove('active');
             reviewSection.classList.add('active');
         } else {
@@ -244,86 +257,94 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-  
-    backButton.addEventListener('click', function() {
+
+    backButton.addEventListener('click', function () {
         reviewSection.classList.remove('active');
         buyerInfoSection.classList.add('active');
     });
 
 
-    confirmButton.addEventListener('click', function() {
-(async () => {
-    try {
-        // derive event + purchase info
-        const params = new URLSearchParams(location.search);
-        const eventId  = params.get('id') || 'EVT-DEMO-001';
-        const title    = (eventData && eventData.name) ? eventData.name : 'Event';
-        const quantity = parseInt(document.getElementById('ticketQuantity').value || '1', 10);
-        const price    = Number((eventData && eventData.price) || 0);
+    confirmButton.addEventListener('click', function () {
+        (async () => {
+            try {
+                const params = new URLSearchParams(location.search);
+                const eventId = params.get('id') || 'EVT-DEMO-001';
+                const quantity = parseInt(document.getElementById('ticketQuantity').value || '1', 10);
 
-        if (TB && TB.claimTicket && TB.renderTicketQR) {
-            // create local ticket
-            const t = await TB.claimTicket({ eventId, title, price, quantity });
+                // Increment ticketsSold in backend
+                const res = await fetch(`/api/events/${eventId}/increment`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ incrementBy: quantity })
+                });
 
-            // ensure a canvas exists inside the popup
-            let canvas = document.getElementById('ticketQR');
-            if (!canvas) {
-                const holder = confirmationPopup.querySelector('.popupContent') || confirmationPopup;
-                const wrap = document.createElement('div');
-                wrap.style.marginTop = '16px';
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.error || "Failed to update tickets");
+                console.log("Tickets sold updated:", result);
 
-                canvas = document.createElement('canvas');
-                canvas.id = 'ticketQR';
-                canvas.width = 220;
-                canvas.height = 220;
+                // Continue with QR generation as before
+                if (TB && TB.claimTicket && TB.renderTicketQR) {
+                    const t = await TB.claimTicket({ eventId, title: eventData.name, price: eventData.price, quantity });
 
-                const pid = document.createElement('p');
-                pid.id = 'ticketIdLine';
-                pid.textContent = `Ticket ID: ${t.ticketId}`;
+                    let canvas = document.getElementById('ticketQR');
+                    if (!canvas) {
+                        const holder = confirmationPopup.querySelector('.popupContent') || confirmationPopup;
+                        const wrap = document.createElement('div');
+                        wrap.style.marginTop = '16px';
 
-                wrap.appendChild(canvas);
-                wrap.appendChild(pid);
-                holder.appendChild(wrap);
+                        canvas = document.createElement('canvas');
+                        canvas.id = 'ticketQR';
+                        canvas.width = 220;
+                        canvas.height = 220;
+
+                        const pid = document.createElement('p');
+                        pid.id = 'ticketIdLine';
+                        pid.textContent = `Ticket ID: ${t.ticketId}`;
+
+                        wrap.appendChild(canvas);
+                        wrap.appendChild(pid);
+                        holder.appendChild(wrap);
+                    }
+
+                    await TB.renderTicketQR(canvas, t);
+                }
+
+                confirmationPopup.classList.add('active');
+            } catch (e) {
+                console.error("Purchase error:", e);
+                alert("Something went wrong while confirming your purchase.");
             }
-
-            // draw QR for this ticket
-            await TB.renderTicketQR(canvas, t);
-        }
-    } catch (e) {
-        console.warn('QR render skipped:', e);
-    }
-})();
-    confirmationPopup.classList.add('active');
-
+        })();
     });
 
 
-    closePopup.addEventListener('click', function() {
+
+    closePopup.addEventListener('click', function () {
         confirmationPopup.classList.remove('active');
-        window.location.href = 'main.html';
+        window.location.href = '../main/main.html';
     });
 
- 
-    confirmationPopup.addEventListener('click', function(e) {
+
+    confirmationPopup.addEventListener('click', function (e) {
         if (e.target === confirmationPopup) {
             confirmationPopup.classList.remove('active');
-            window.location.href = 'main.html';
+            window.location.href = '../main/main.html';
         }
     });
 
 
     document.querySelectorAll('.formInput').forEach(input => {
-        input.addEventListener('input', function() {
+        input.addEventListener('input', function () {
             const errorId = this.id + 'Error';
             hideError(errorId);
         });
     });
 
-    document.getElementById('ticketQuantity').addEventListener('change', function() {
+    document.getElementById('ticketQuantity').addEventListener('change', function () {
         hideError('quantityError');
     });
 
-    document.getElementById('paymentMethod').addEventListener('change', function() {
+    document.getElementById('paymentMethod').addEventListener('change', function () {
         hideError('paymentError');
     });
 

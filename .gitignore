@@ -1,6 +1,9 @@
 #Testing data
 src/backend/data/events/
 
+#Database
+database.sqlite
+
 # Node modules (don’t commit dependencies)
 node_modules/
 
