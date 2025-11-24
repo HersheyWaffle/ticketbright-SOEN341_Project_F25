@@ -1,23 +1,18 @@
 {
-  "name": "ticketbright-soen341_project_f25-1",
+  "name": "ticketbright-soen341-project-f25",
   "version": "1.0.0",
-  "description": "---",
+  "description": "Full-stack ticketing website for SOEN341 Project F25",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node src/backend/server.js",
-    "dev": "nodemon src/backend/server.js"
+    "start": "node server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests",
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/unit --runInBand",
+    "test:integration": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js tests/integration --runInBand",
+    "test:e2e": "playwright test",
+    "start:test": "cross-env NODE_ENV=test node server.js",
+    "build": "echo \"(optional)\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HersheyWaffle/ticketbright-SOEN341_Project_F25.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/HersheyWaffle/ticketbright-SOEN341_Project_F25/issues"
-  },
-  "homepage": "https://github.com/HersheyWaffle/ticketbright-SOEN341_Project_F25#readme",
   "dependencies": {
     "@zxing/library": "^0.21.3",
     "bcrypt": "^6.0.0",
@@ -37,8 +32,17 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.6.1",
+    "cross-env": "^10.1.0",
     "jest": "^30.2.0",
     "nodemon": "^3.1.10",
-    "supertest": "^7.1.4"
-  }
+    "playwright": "^1.56.1",
+    "supertest": "^7.1.4",
+    "wait-on": "^9.0.1"
+  },
+  "author": "Shayan and Team",
+  "license": "MIT"
 }
