@@ -180,18 +180,30 @@ async loadMessagesFromBackend() {
             minute: '2-digit' 
         });
     }
-
     handleTyping() {
-        if (!this.isTyping) {
-            this.isTyping = true;
-            this.showTypingIndicator('You');
-        }
-
-        clearTimeout(this.typingTimer);
-        this.typingTimer = setTimeout(() => {
-            this.stopTyping();
-        }, 1000);
+    if (!this.isTyping) {
+        this.isTyping = true;
+        this.showTypingIndicator(this.currentUser);  // ✅ use actual username
     }
+
+    clearTimeout(this.typingTimer);
+    this.typingTimer = setTimeout(() => {
+        this.stopTyping();
+    }, 1000);
+}
+
+
+    // handleTyping() {
+    //     if (!this.isTyping) {
+    //         this.isTyping = true;
+    //         this.showTypingIndicator('You');
+    //     }
+
+    //     clearTimeout(this.typingTimer);
+    //     this.typingTimer = setTimeout(() => {
+    //         this.stopTyping();
+    //     }, 1000);
+    // }
 
     showTypingIndicator(username) {
         this.typingUser.textContent = username;
