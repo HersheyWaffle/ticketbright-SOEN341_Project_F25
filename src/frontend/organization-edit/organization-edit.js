@@ -1,3 +1,10 @@
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user || user.role !== "admin") {
+  alert("You are not authorized to access this page.");
+  window.location.href = "../main/main.html";
+}
+
+
 // Current organization data (would come from URL parameters or API)
 const currentOrganization = {
     id: 1,

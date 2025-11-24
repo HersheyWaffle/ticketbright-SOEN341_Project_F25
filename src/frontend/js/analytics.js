@@ -1,3 +1,9 @@
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user || (user.role !== "admin" && user.role !== "organizer")) {
+  alert("Please log in to access this page.");
+  window.location.href = "../signup-login/login.html";
+}
+
 //Analytics seems cursed, moving it was the only way my browser would recognize when serving express
 document.querySelectorAll('.tabButton').forEach(button => {
     button.addEventListener('click', function () {
@@ -14,54 +20,55 @@ document.querySelectorAll('.tabButton').forEach(button => {
 
 document.querySelector('.logoutButton').addEventListener('click', function () {
     if (confirm('Are you sure you want to log out?')) {
-        alert('Logging out...');
+        localStorage.removeItem("user");
+        window.location.href = '../main/main.html';
     }
 });
 
 (async () => {
-  const eventCards = document.querySelectorAll('.eventAnalyticsCard');
+    const eventCards = document.querySelectorAll('.eventAnalyticsCard');
 
-  let totalTicketsSold = 0;
-  let totalAttendances = 0;
-  let totalWeightedRating = 0;
-  let totalEventsWithRating = 0;
+    let totalTicketsSold = 0;
+    let totalAttendances = 0;
+    let totalWeightedRating = 0;
+    let totalEventsWithRating = 0;
 
-  for (const card of eventCards) {
-    const eventName = card.querySelector('h3').textContent.trim();
-    const eventId = eventName.toLowerCase().replace(/\s+/g, '_');
+    for (const card of eventCards) {
+        const eventName = card.querySelector('h3').textContent.trim();
+        const eventId = eventName.toLowerCase().replace(/\s+/g, '_');
 
-    try {
-      const res = await fetch(`/api/events/${eventId}/analytics`);
-      if (!res.ok) throw new Error('Failed to fetch analytics');
-      const data = await res.json();
+        try {
+            const res = await fetch(`/api/events/${eventId}/analytics`);
+            if (!res.ok) throw new Error('Failed to fetch analytics');
+            const data = await res.json();
 
-      card.querySelector('.ticketsSold .statNumber').textContent = data.ticketsSold;
-      card.querySelector('.attendances .statNumber').textContent = data.attendances;
-      card.querySelector('.attendanceRate .statNumber').textContent = `${data.attendanceRate}%`;
-      card.querySelector('.rating .statNumber').textContent = data.averageRating.toFixed(1);
-      card.querySelector('.remainingCapacity .statNumber').textContent = data.remainingCapacity;
+            card.querySelector('.ticketsSold .statNumber').textContent = data.ticketsSold;
+            card.querySelector('.attendances .statNumber').textContent = data.attendances;
+            card.querySelector('.attendanceRate .statNumber').textContent = `${data.attendanceRate}%`;
+            card.querySelector('.rating .statNumber').textContent = data.averageRating.toFixed(1);
+            card.querySelector('.remainingCapacity .statNumber').textContent = data.remainingCapacity;
 
-      totalTicketsSold += data.ticketsSold;
-      totalAttendances += data.attendances;
-      if (data.averageRating > 0) {
-        totalWeightedRating += data.averageRating;
-        totalEventsWithRating++;
-      }
-    } catch (err) {
-      console.error(`Error loading analytics for ${eventId}:`, err);
+            totalTicketsSold += data.ticketsSold;
+            totalAttendances += data.attendances;
+            if (data.averageRating > 0) {
+                totalWeightedRating += data.averageRating;
+                totalEventsWithRating++;
+            }
+        } catch (err) {
+            console.error(`Error loading analytics for ${eventId}:`, err);
+        }
     }
-  }
 
-  const overallAttendanceRate = totalTicketsSold
-    ? ((totalAttendances / totalTicketsSold) * 100).toFixed(2)
-    : 0;
-  const overallAverageRating = totalEventsWithRating
-    ? (totalWeightedRating / totalEventsWithRating).toFixed(2)
-    : 0;
+    const overallAttendanceRate = totalTicketsSold
+        ? ((totalAttendances / totalTicketsSold) * 100).toFixed(2)
+        : 0;
+    const overallAverageRating = totalEventsWithRating
+        ? (totalWeightedRating / totalEventsWithRating).toFixed(2)
+        : 0;
 
-  document.querySelector('.ticketsSoldTotal .statValue').textContent = totalTicketsSold;
-  document.querySelector('.attendanceRateTotal .statValue').textContent = `${overallAttendanceRate}%`;
-  document.querySelector('.ratingAverage .statValue').textContent = overallAverageRating;
+    document.querySelector('.ticketsSoldTotal .statValue').textContent = totalTicketsSold;
+    document.querySelector('.attendanceRateTotal .statValue').textContent = `${overallAttendanceRate}%`;
+    document.querySelector('.ratingAverage .statValue').textContent = overallAverageRating;
 })();
 
 document.addEventListener("click", async (e) => {

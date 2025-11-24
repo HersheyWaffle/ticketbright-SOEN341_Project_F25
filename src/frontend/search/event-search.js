@@ -1,3 +1,9 @@
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user) {
+    alert("Please log in to access this page.");
+    window.location.href = "../signup-login/login.html";
+}
+
 // DOM elements
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
@@ -12,22 +18,42 @@ const sortBy = document.getElementById('sortBy');
 const mobileFiltersToggle = document.getElementById('mobileFiltersToggle');
 const filtersSidebar = document.getElementById('filtersSidebar');
 
-    const myEventsButton = document.querySelector('.myEventsButton');
-    const logoutButton = document.querySelector('.logoutButton');
+const myEventsButton = document.querySelector('.myEventsButton');
+const logoutButton = document.querySelector('.logoutButton');
 
-    // // Home functionality
-    document.querySelector('.myEventsButton').addEventListener('click', function() {
-        window.location.href = '../main/main.html';   
-    });
+function loadSearchParams() {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("query");
+    const category = params.get("category");
 
-    // Logout functionality
-    document.querySelector('.logoutButton').addEventListener('click', function() {
-    if(confirm('Are you sure you want to log out?')) {
+    if (query) {
+        searchInput.value = query;
+        performSearch();
+    } else if (category) {
+        activeFilters.category = [category];
+        performSearch();
+    } else {
+        loadInitialEvents();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    setupEventListeners();
+    loadSearchParams();
+});
+
+// // Home functionality
+document.querySelector('.myEventsButton').addEventListener('click', function () {
+    window.location.href = '../main/main.html';
+});
+
+// Logout functionality
+document.querySelector('.logoutButton').addEventListener('click', function () {
+    if (confirm('Are you sure you want to log out?')) {
+        localStorage.removeItem("user");
         window.location.href = '../main/main.html';
-        }
-    });
-
-
+    }
+});
 
 // State
 let activeFilters = {
@@ -43,10 +69,10 @@ let activeFilters = {
 };
 
 // Initialize the page
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     setupEventListeners();
     loadInitialEvents();
-    
+
     eventsContainer.addEventListener('click', (e) => {
         const row = e.target.closest('[data-event-id]');
         if (!row) return;
@@ -60,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Set up event listeners
 function setupEventListeners() {
     searchButton.addEventListener('click', performSearch);
-    searchInput.addEventListener('keyup', function(event) {
+    searchInput.addEventListener('keyup', function (event) {
         if (event.key === 'Enter') {
             performSearch();
         }
@@ -76,9 +102,9 @@ function setupEventListeners() {
     clearFiltersBtn.addEventListener('click', clearAllFilters);
     sortBy.addEventListener('change', performSearch);
 
-    mobileFiltersToggle.addEventListener('click', function() {
+    mobileFiltersToggle.addEventListener('click', function () {
         filtersSidebar.classList.toggle('active');
-        this.textContent = filtersSidebar.classList.contains('active') ? 
+        this.textContent = filtersSidebar.classList.contains('active') ?
             'Hide Filters' : 'Show Filters';
     });
 }
@@ -122,22 +148,22 @@ function handleDateFilterChange() {
 function updateActiveFiltersDisplay() {
     activeFiltersContainer.innerHTML = '';
     let filterCount = 0;
-    
+
     if (activeFilters.search) {
         addActiveFilterTag('Search', activeFilters.search, 'search');
         filterCount++;
     }
-    
+
     activeFilters.category.forEach(category => {
         addActiveFilterTag('Category', category, 'category', category);
         filterCount++;
     });
-    
+
     activeFilters.organizer.forEach(organizer => {
         addActiveFilterTag('Organizer', organizer, 'organizer', organizer);
         filterCount++;
     });
-    
+
     if (activeFilters.dateFrom || activeFilters.dateTo) {
         let dateText = '';
         if (activeFilters.dateFrom && activeFilters.dateTo) {
@@ -150,22 +176,22 @@ function updateActiveFiltersDisplay() {
         addActiveFilterTag('Date', dateText, 'date');
         filterCount++;
     }
-    
+
     activeFilters.location.forEach(location => {
         addActiveFilterTag('Location', location, 'location', location);
         filterCount++;
     });
-    
+
     activeFilters.ticketType.forEach(ticketType => {
         addActiveFilterTag('Ticket', ticketType, 'ticketType', ticketType);
         filterCount++;
     });
-    
+
     activeFilters.mode.forEach(mode => {
         addActiveFilterTag('Mode', mode, 'mode', mode);
         filterCount++;
     });
-    
+
     activeFilters.accessibility.forEach(accessibility => {
         addActiveFilterTag('Accessibility', accessibility, 'accessibility', accessibility);
         filterCount++;
@@ -183,8 +209,8 @@ function addActiveFilterTag(type, value, filterType, specificValue = null) {
         <button type="button" class="remove" data-filter-type="${filterType}" data-value="${specificValue}">×</button>
     `;
     activeFiltersContainer.appendChild(filterTag);
-    
-    filterTag.querySelector('.remove').addEventListener('click', function() {
+
+    filterTag.querySelector('.remove').addEventListener('click', function () {
         removeFilter(filterType, specificValue);
     });
 }
@@ -204,7 +230,7 @@ function removeFilter(filterType, value) {
         const checkbox = document.querySelector(`input[data-filter="${filterType}"][value="${value}"]`);
         if (checkbox) checkbox.checked = false;
     }
-    
+
     updateActiveFiltersDisplay();
     performSearch();
 }
@@ -222,54 +248,65 @@ function clearAllFilters() {
         mode: [],
         accessibility: []
     };
-    
+
     searchInput.value = '';
-    
+
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
         checkbox.checked = false;
     });
-    
+
     document.getElementById('dateFrom').value = '';
     document.getElementById('dateTo').value = '';
-    
+
     updateActiveFiltersDisplay();
     performSearch();
 }
 
 // Perform search with current filters
-function performSearch() {
+async function performSearch() {
     loading.style.display = 'block';
     eventsContainer.innerHTML = '';
     noResults.style.display = 'none';
-    
-    activeFilters.search = searchInput.value.trim();
-    updateActiveFiltersDisplay();
-    
-    setTimeout(() => {
-        const filteredEvents = [];
-        
-        resultsCount.textContent = `${filteredEvents.length} event${filteredEvents.length !== 1 ? 's' : ''} found`;
-        
-        displayEvents(filteredEvents);
-        
+
+    const query = searchInput.value.trim();
+    const category = activeFilters.category[0] || "";
+
+    try {
+        const res = await fetch(`/api/events/search?query=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`);
+        const events = await res.json();
+        console.log("Search response:", events);
+
         loading.style.display = 'none';
-        
-        if (filteredEvents.length === 0) {
+        resultsCount.textContent = `${events.length} event${events.length !== 1 ? 's' : ''} found`;
+
+        if (events.length === 0) {
             noResults.style.display = 'block';
+        } else {
+            displayEvents(events);
         }
-    }, 500);
+    } catch (err) {
+        console.error("Search error:", err);
+        resultsCount.textContent = "Error loading events.";
+        loading.style.display = 'none';
+    }
 }
 
 // Display events in the table
-function displayEvents(eventsToDisplay) {
-    eventsContainer.innerHTML = '';
-    
-    if (eventsToDisplay.length === 0) {
-        return;
-    }
-    
-    // Backend team: Implement event row generation based on API response
-    // (When you create each row/card, include data-event-id="<EVENT_ID>" on the clickable wrapper.)
+function displayEvents(events) {
+  eventsContainer.innerHTML = '';
+
+  for (const e of events) {
+    const eventRow = document.createElement("div");
+    eventRow.classList.add("eventRow");
+    eventRow.dataset.eventId = e.id;
+    eventRow.innerHTML = `
+      <div>${e.title}</div>
+      <div>${formatDate(e.date)}</div>
+      <div>${e.location || "N/A"}</div>
+      <div><button class="saveBtn">♡</button></div>
+    `;
+    eventsContainer.appendChild(eventRow);
+  }
 }
 
 // Format date for display
