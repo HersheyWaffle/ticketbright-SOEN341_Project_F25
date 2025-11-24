@@ -1,7 +1,7 @@
 // tests/acceptance/admin.organizer-management.accept.test.js
 
 import request from "supertest";
-import app from "../../src/backend/app.js"; // ⬅️ adjust path
+import app from "src/backend/app.js"; // ⬅️ adjust path
 
 async function createPendingOrganizer() {
   const res = await request(app)

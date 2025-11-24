@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app } from "../../src/backend/app.js";
+import { app } from "src/backend/app.js";
 
 describe.skip("US-01 Auth & role-based access (acceptance)", () => {
   it("attendee logs in successfully", async () => {

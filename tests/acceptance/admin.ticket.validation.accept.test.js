@@ -1,7 +1,7 @@
 // tests/acceptance/admin.ticket.validation.accept.test.js
 
 import request from "supertest";
-import app from "../../src/backend/app.js";   // adjust path if needed
+import app from "src/backend/app.js";   // adjust path if needed
 
 async function createEventAndTicket() {
   // 1) Create event

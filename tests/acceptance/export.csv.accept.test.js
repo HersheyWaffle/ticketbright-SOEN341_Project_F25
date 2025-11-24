@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app } from "../../src/backend/app.js";
+import { app } from "src/backend/app.js";
 
 describe("US-05 Export attendees CSV (acceptance)", () => {
   it("Organizer downloads CSV for an event", async () => {

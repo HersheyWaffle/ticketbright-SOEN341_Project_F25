@@ -1,7 +1,7 @@
 // tests/acceptance/admin.analytics.accept.test.js
 
 import request from "supertest";
-import app from "../../src/backend/app.js"; // ⬅️ adjust path
+import app from "src/backend/app.js"; 
 
 async function seedEventsAndTickets() {
   // Event 1

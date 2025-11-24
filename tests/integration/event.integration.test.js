@@ -1,7 +1,7 @@
 // src/backend/tests/integration/event.integration.test.js
 
 import request from "supertest";
-import app from "../../app.js"; // ⬅️ ADJUST THIS PATH to whatever your app export is
+import app from "src/backend/app.js"; 
 
 // If you have a test DB reset helper, you can use it here
 // import { resetTestDatabase } from "../utils/dbUtils.js";

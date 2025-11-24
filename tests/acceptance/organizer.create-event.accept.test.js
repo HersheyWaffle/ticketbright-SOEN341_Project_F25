@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app } from "../../src/backend/app.js";
+import { app } from "src/backend/app.js";
 
 describe.skip("US-02 Organizer creates an event (acceptance)", () => {
   it("creates a valid event", async () => {
