@@ -24,3 +24,4 @@ app.get("/api/events/:eventId/dashboard", (req, res) => {
 });
 
 export default app;
+module.exports = app; 
