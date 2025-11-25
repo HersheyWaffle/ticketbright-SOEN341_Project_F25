@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 15px 5%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brandName {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+}
+
+.navArea {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.navLink:hover, .navLink.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.loginButton {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.loginButton:hover {
+    background-color: #2563eb;
+}
+
+.eventsHeader {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.eventsHeader h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.eventsContainer {
+    padding: 40px 5%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.eventsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.eventItem {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    border-left: 4px solid #3b82f6;
+}
+
+.eventItem:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: #f8f9fa;
+}
+
+.eventName {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+@media (max-width: 768px) {
+    .eventsHeader h1 {
+        font-size: 32px;
+    }
+    
+    .navArea {
+        gap: 10px;
+    }
+    
+    .navLink {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .headerContainer {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .navArea {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .eventsContainer {
+        padding: 20px;
+    }
+}

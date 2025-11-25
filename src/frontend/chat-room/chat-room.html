@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Chat - Ticketing System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="headerContainer">
+            <div class="brandName">TicketBright</div>
+            <div class="navArea">
+                <!-- <a href="../main/main.html" class="navLink">Home</a> -->
+                <button class="homeButton">Home</button>
+                <button class="logoutButton">Log Out</button>               
+            </div>
+        </div>
+    </header>
+
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Event Chat Room</h2>
+            <div class="event-info">
+                <span class="event-name" id="eventName">AI & Machine Learning Workshop 2025</span>
+                <span class="online-count">Online: <span id="onlineCount">12</span></span>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be loaded here -->
+        </div>
+        
+        <div class="chat-input-container">
+            <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                <span id="typingUser"></span> is typing...
+            </div>
+            <div class="input-group">
+                <input type="text" id="messageInput" placeholder="Type your message..." maxlength="500">
+                <button id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

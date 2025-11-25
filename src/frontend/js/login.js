@@ -28,6 +28,7 @@ form.addEventListener('submit', async (e) => {
 
     alert("Welcome back, " + data.user.username + "!");
     localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("username", data.user.username);
     if (data.user.role === "admin") window.location.href = "../admin-analytics/adminAnalytics.html";
     else if (data.user.role === "organizer") window.location.href = "../analytics/analytics.html";
     else window.location.href = "../main/main.html";

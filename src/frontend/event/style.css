@@ -142,17 +142,17 @@ header {
     padding-bottom: 0;
 }
 
-.calendar-button, .map-button {       
-    color: #ed8e7b;
+.calendar-button, .map-button, .loginButton {       
+    color: #0e5d91;
     border: none;
-    padding: 8px 20px;
+    padding: 8px ;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 5px;
 }
-.calendar-button:hover, .map-button:hover {
-    font-weight: 600;
-    color: #d1334d;
+.calendar-button:hover, .map-button:hover, .loginButton {
+    /* font-weight: 600; */
+    color: #0e5d91;
 }
 
 /* Ticket Section */
