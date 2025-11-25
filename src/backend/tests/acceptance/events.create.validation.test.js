@@ -1,6 +1,6 @@
 // src/backend/tests/events.create.validation.test.js
 
-const { isValidEventPayload } = require("../utils/eventValidation");
+const { isValidEventPayload } = require("../../utils/eventValidation");
 
 describe("isValidEventPayload - validation", () => {
   it("returns false when title is missing", () => {

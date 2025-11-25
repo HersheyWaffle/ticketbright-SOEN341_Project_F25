@@ -1,6 +1,6 @@
 // src/backend/tests/events.list.simple.test.js
 
-const { isValidEventPayload } = require("../utils/eventValidation");
+const { isValidEventPayload } = require("../../utils/eventValidation");
 
 describe("event payload list", () => {
   it("all events in a list can be valid", () => {

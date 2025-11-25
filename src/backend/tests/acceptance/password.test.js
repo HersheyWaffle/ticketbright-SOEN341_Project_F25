@@ -1,6 +1,6 @@
 // src/backend/tests/password.test.js
 
-const { isStrongPassword } = require("../utils/password");
+const { isStrongPassword } = require("../../utils/password");
 
 describe("isStrongPassword", () => {
   it("rejects non-string values", () => {

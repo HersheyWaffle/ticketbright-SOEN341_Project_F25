@@ -1,6 +1,6 @@
 // src/backend/tests/events.byId.test.js
 
-const { isValidEventPayload } = require("../utils/eventValidation");
+const { isValidEventPayload } = require("../../utils/eventValidation");
 
 describe("isValidEventPayload - invalid payloads", () => {
   it("returns false for non-object payloads", () => {

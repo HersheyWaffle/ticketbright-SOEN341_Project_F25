@@ -1,5 +1,5 @@
 
-const { isValidUsername } = require("../utils/validation"); // relative path
+const { isValidUsername } = require("../../utils/validation"); // relative path
 
 describe("isValidUsername", () => {
   it("returns false for null", () => {

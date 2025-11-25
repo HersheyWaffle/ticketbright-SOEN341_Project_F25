@@ -1,6 +1,6 @@
 // src/backend/tests/events.create.missingDate.test.js
 
-const { isValidEventPayload } = require("../utils/eventValidation");
+const { isValidEventPayload } = require("../../utils/eventValidation");
 
 describe("isValidEventPayload - missing date", () => {
   it("returns false when date is missing", () => {

@@ -1,6 +1,6 @@
 // src/backend/tests/events.create.success.test.js
 
-const { isValidEventPayload } = require("../utils/eventValidation");
+const { isValidEventPayload } = require("../../utils/eventValidation");
 
 describe("isValidEventPayload - success case", () => {
   it("returns true for a minimal valid event", () => {
