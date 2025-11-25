@@ -74,5 +74,16 @@ app.get("/analytics", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/analytics/analytics.html"));
 });
 
+app.get("/create", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/create/event-create.html"));
+});
+
+sequelize.sync({ alter: true })
+  .then(async () => {
+    console.log("Database synced");
+    await adminSetup(); // run AFTER sync completes
+  })
+  .catch(err => console.error("Database sync failed:", err));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
