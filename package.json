@@ -36,6 +36,7 @@
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.6.1",
+    "bcrypt": "^6.0.0",
     "cross-env": "^10.1.0",
     "jest": "^30.2.0",
     "nodemon": "^3.1.10",
