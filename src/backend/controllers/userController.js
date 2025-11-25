@@ -3,29 +3,51 @@ import User from "../models/user.js";
 
 export const signupUser = async (req, res) => {
   try {
-    const { username, email, password, role } = req.body;
+    const {
+      username,
+      email,
+      password,
+      role,
+      organizationName,
+      organizationType
+    } = req.body;
 
     const existing = await User.findOne({ where: { email } });
     if (existing) {
+      if (existing.approved === -1) {
+        return res.status(403).json({ error: "This email has been rejected." });
+      }
       return res.status(400).json({ error: "User already exists" });
     }
 
-    // ✅ hash password before saving
+    // basic organizer validation
+    if (role === "organizer") {
+      if (!organizationName || !organizationName.trim()) {
+        return res.status(400).json({ error: "Organization name is required for organizers." });
+      }
+      if (!organizationType || !organizationType.trim()) {
+        return res.status(400).json({ error: "Organization type is required for organizers." });
+      }
+    }
+
     const hashed = await bcrypt.hash(password, 10);
 
-    const approved = role === "student"; // only students auto-approved
+    // students auto-approved = 1, organizers pending = 0
+    const approved = role === "student" ? 1 : 0;
 
     const newUser = await User.create({
       username,
       email,
       password: hashed,
       role,
-      approved
+      approved,
+      organizationName: role === "organizer" ? organizationName.trim() : null,
+      organizationType: role === "organizer" ? organizationType.trim() : null,
     });
 
     res.status(201).json({
       success: true,
-      message: approved
+      message: approved === 1
         ? "Account created successfully!"
         : "Organizer signup pending admin approval.",
       user: {
@@ -33,7 +55,9 @@ export const signupUser = async (req, res) => {
         username: newUser.username,
         email: newUser.email,
         role: newUser.role,
-        approved: newUser.approved
+        approved: newUser.approved,
+        organizationName: newUser.organizationName,
+        organizationType: newUser.organizationType
       }
     });
   } catch (err) {
@@ -54,8 +78,11 @@ export const loginUser = async (req, res) => {
     if (!valid)
       return res.status(401).json({ error: "Invalid password" });
 
-    if (!user.approved)
+    if (user.approved === 0)
       return res.status(403).json({ error: "Account pending admin approval" });
+
+    if (user.approved === -1)
+      return res.status(403).json({ error: "This account has been rejected." });
 
     res.json({
       success: true,
@@ -69,5 +96,31 @@ export const loginUser = async (req, res) => {
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ error: "Login failed" });
+  }
+};
+
+export const getUserByUsername = async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const user = await User.findOne({
+      where: { username },
+      attributes: [
+        "id",
+        "username",
+        "email",
+        "role",
+        "organizationName",
+        "organizationType",
+        "approved"
+      ]
+    });
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json(user);
+  } catch (err) {
+    console.error("getUserByUsername failed:", err);
+    res.status(500).json({ error: "Failed to fetch user" });
   }
 };

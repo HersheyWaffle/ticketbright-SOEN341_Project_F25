@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Signup</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../js/signup-login.css">
 </head>
 
 <body>
@@ -51,8 +51,39 @@
         </label>
         <input type="password" name="confirmPassword" id="confirmPasswordInput" placeholder="Confirm Password">
       </div>
+      <div class="form-group" id="organizationNameGroup" style="display:none;">
+        <label for="organizationNameInput">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3">
+            <path
+              d="M120-120v-720h720v720H120Zm80-80h160v-160H200v160Zm0-240h160v-160H200v160Zm0-240h160v-160H200v160Zm240 480h160v-160H440v160Zm0-240h160v-160H440v160Zm0-240h160v-160H440v160Zm240 480h80v-160h-80v160Zm0-240h80v-160h-80v160Zm0-240h80v-160h-80v160Z" />
+          </svg>
+        </label>
+        <input type="text" name="organizationName" id="organizationNameInput"
+          placeholder="Organization name">
+      </div>
+      <div class="form-group" id="organizationTypeGroup" style="display:none;">
+        <label for="organizationTypeSelect">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3">
+            <path
+              d="M480-120 120-360v-480l360-240 360 240v480L480-120Zm0-92 280-186v-372L480-954 200-770v372l280 186Zm0-372Z" />
+          </svg>
+        </label>
+        <select id="organizationTypeSelect" name="organizationType">
+          <option value="" selected disabled>Select organization type</option>
+          <option value="Student Club">Student Club</option>
+          <option value="University Department">University Department</option>
+          <option value="Faculty">Faculty</option>
+          <option value="External">External</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
       <div class="form-group">
-        <label for="roleSelect">User Type</label>
+        <label for="roleSelect">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3">
+            <path
+              d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0 320q-85 0-158-31.5T198-278q-29-15-46.5-43.5T134-384v-96q0-34 17.5-62.5T198-586q62-31 126-46.5T480-648q66 0 130 15.5T736-586q29 15 46.5 43.5T800-480v96q0 34-17.5 62.5T736-278q-51 55-124 86.5T480-160Z" />
+          </svg>
+        </label>
         <select id="roleSelect" name="role">
           <option value="student" selected>Student</option>
           <option value="organizer">Organizer</option>
@@ -60,9 +91,9 @@
       </div>
       <button type="submit">Sign Up</button>
     </form>
-    <p>Already have an account? <a href="login.html">Login here</a> </p>
+    <p>Already have an account? <a href="../../login">Login here</a> </p>
   </div>
-  <script src="signup.js"></script>
+  <script src="../js/signup.js"></script>
 </body>
 
 </html>

@@ -6,10 +6,6 @@
     "status": "active",
     "members": [
       {
-        "userId": 1,
-        "role": "member"
-      },
-      {
         "userId": 2,
         "role": "member"
       },

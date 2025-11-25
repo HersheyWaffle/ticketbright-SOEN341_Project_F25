@@ -11,6 +11,7 @@ const Event = sequelize.define("Event", {
   tags: DataTypes.JSON,         // array of strings
   organizerName: { type: DataTypes.STRING, allowNull: false },
   organizerEmail: { type: DataTypes.STRING, allowNull: false },
+  organizerUsername: { type: DataTypes.STRING, allowNull: true },
   organizerType: DataTypes.STRING,
   date: DataTypes.DATEONLY,
   time: DataTypes.TIME,

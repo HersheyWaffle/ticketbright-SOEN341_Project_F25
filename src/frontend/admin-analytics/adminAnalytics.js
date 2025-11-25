@@ -4,115 +4,82 @@ if (!user || user.role !== "admin") {
     window.location.href = "../main/main.html";
 }
 
-// Admin Analytics functionality
-document.addEventListener('DOMContentLoaded', function () {
-    const logoutButton = document.querySelector('.logoutButton');
-
-    // Sample data for the chart (would come from API in real app)
-    const monthlyData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        tickets: [800, 1200, 900, 1100, 1300, 1500, 1400, 1600, 1200, 1000, 900, 700]
-    };
-
-    // Initialize the chart
-    const ctx = document.getElementById('participationChart').getContext('2d');
-    const participationChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: monthlyData.labels,
-            datasets: [
-                {
-                    label: 'Tickets Sold',
-                    data: monthlyData.tickets,
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Monthly Ticket Sales',
-                    font: {
-                        size: 16,
-                        weight: 'bold'
-                    }
-                },
-                legend: {
-                    position: 'top',
-                    labels: {
-                        font: {
-                            size: 12
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Tickets Sold'
-                    },
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.1)'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Month'
-                    },
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.1)'
-                    }
-                }
-            },
-            interaction: {
-                intersect: false,
-                mode: 'index'
-            }
-        }
-    });
-
-    // Logout functionality
-    document.querySelector('.logoutButton').addEventListener('click', function () {
-        if (confirm('Are you sure you want to log out?')) {
+document.addEventListener("DOMContentLoaded", async () => {
+    // Logout
+    document.querySelector(".logoutButton").addEventListener("click", () => {
+        if (confirm("Are you sure you want to log out?")) {
             localStorage.removeItem("user");
-            window.location.href = '../main/main.html';
+            window.location.href = "../main/main.html";
         }
     });
 
-    //Simulate real-time updates
-    function simulateDataUpdate() {
-        setTimeout(() => {
-            // Add new data point for current month (simulated)
-            const newTickets = Math.floor(Math.random() * 500) + 800;
+    // Elements
+    const totalEventsEl = document.getElementById("totalEventsValue");
+    const totalTicketsEl = document.getElementById("totalTicketsValue");
 
-            //Update chart data
-            participationChart.data.datasets[0].data.push(newTickets);
-            participationChart.data.labels.push('Now');
+    // 1) Load top stats
+    async function loadStats() {
+        const res = await fetch("/api/admin/analytics/stats");
+        if (!res.ok) throw new Error(`Stats HTTP ${res.status}`);
+        const data = await res.json();
 
-            //Remove first data point to keep 12 months visible
-            if (participationChart.data.labels.length > 12) {
-                participationChart.data.labels.shift();
-                participationChart.data.datasets[0].data.shift();
-            }
-
-            participationChart.update();
-
-            console.log('Chart updated with new ticket data:', newTickets);
-        }, 5000);
+        totalEventsEl.textContent = data.totalEvents.toLocaleString();
+        totalTicketsEl.textContent = data.totalTicketsIssued.toLocaleString();
     }
 
-    //Start simulated updates
-    simulateDataUpdate();
+    // 2) Load monthly chart data
+    async function loadMonthlyChart() {
+        const res = await fetch("/api/admin/analytics/monthly");
+        if (!res.ok) throw new Error(`Monthly HTTP ${res.status}`);
+        const rows = await res.json();
 
-    console.log('Admin analytics dashboard loaded successfully');
+        // Convert to labels + data for Chart.js
+        // labels like "2025-01" -> "Jan 2025" (simple formatting)
+        const labels = rows.map(r => r.month);
+        const tickets = rows.map(r => Number(r.tickets) || 0);
+
+        const ctx = document.getElementById("participationChart").getContext("2d");
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: "Tickets Sold",
+                        data: tickets,
+                        borderColor: "#3b82f6",
+                        backgroundColor: "rgba(59, 130, 246, 0.1)",
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "Monthly Ticket Sales",
+                        font: { size: 16, weight: "bold" },
+                    },
+                    legend: { position: "top" },
+                },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: "Tickets Sold" } },
+                    x: { title: { display: true, text: "Month" } },
+                },
+                interaction: { intersect: false, mode: "index" },
+            },
+        });
+    }
+
+    try {
+        await loadStats();
+        await loadMonthlyChart();
+        console.log("Admin analytics loaded from DB.");
+    } catch (err) {
+        console.error(err);
+    }
 });

@@ -10,6 +10,7 @@ import {
     updateEventStats,
     searchFields,
     incrementTicket,
+    getOrganizationsFromEvents,
 } from "../controllers/eventCreateController.js";
 
 const router = express.Router();
@@ -42,8 +43,9 @@ router.post("/", upload.single("banner"), createEvent);              // POST /ap
 router.get("/", getAllEvents);                                       // GET /api/events
 router.get("/summary", getEventSummary);                             // GET /api/events/summary
 router.get("/search", searchFields);                                 // GET /api/events/search?query=something
+router.get("/organizations/summary", getOrganizationsFromEvents);    // GET /api/events/organizations/summary
 router.get("/:id", getEventById);                                    // GET /api/events/:id
-router.patch("/:id/tickets", incrementTicket);                       // PATCH /api/events/:id/tickets
+router.patch("/:id/increment", incrementTicket);                       // PATCH /api/events/:id/increment
 router.patch("/:id", updateEventStats);                              // PATCH /api/events/:id
 
 export default router;

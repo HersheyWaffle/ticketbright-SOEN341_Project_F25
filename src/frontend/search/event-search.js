@@ -5,21 +5,49 @@ if (!user) {
 }
 
 // DOM elements
-const searchInput = document.getElementById('searchInput');
-const searchButton = document.getElementById('searchButton');
-const resultsCount = document.getElementById('resultsCount');
-const clearFiltersBtn = document.getElementById('clearFilters');
-const activeFiltersContainer = document.getElementById('activeFilters');
-const activeFiltersCount = document.getElementById('activeFiltersCount');
-const eventsContainer = document.getElementById('eventsContainer');
-const noResults = document.getElementById('noResults');
-const loading = document.getElementById('loading');
-const sortBy = document.getElementById('sortBy');
-const mobileFiltersToggle = document.getElementById('mobileFiltersToggle');
-const filtersSidebar = document.getElementById('filtersSidebar');
+const searchInput = document.getElementById("searchInput");
+const searchButton = document.getElementById("searchButton");
+const resultsCount = document.getElementById("resultsCount");
+const clearFiltersBtn = document.getElementById("clearFilters");
+const activeFiltersContainer = document.getElementById("activeFilters");
+const activeFiltersCount = document.getElementById("activeFiltersCount");
+const eventsContainer = document.getElementById("eventsContainer");
+const noResults = document.getElementById("noResults");
+const loading = document.getElementById("loading");
+const sortBy = document.getElementById("sortBy");
+const mobileFiltersToggle = document.getElementById("mobileFiltersToggle");
+const filtersSidebar = document.getElementById("filtersSidebar");
 
-const myEventsButton = document.querySelector('.myEventsButton');
-const logoutButton = document.querySelector('.logoutButton');
+// Header buttons
+document.querySelector(".myEventsButton").addEventListener("click", () => {
+    window.location.href = "../main/main.html";
+});
+document.querySelector(".logoutButton").addEventListener("click", () => {
+    if (confirm("Are you sure you want to log out?")) {
+        localStorage.removeItem("user");
+        window.location.href = "../main/main.html";
+    }
+});
+
+// State
+let activeFilters = {
+    search: "",
+    category: [],
+    organizer: [],
+    dateFrom: "",
+    dateTo: "",
+    ticketType: [],
+    mode: [],
+};
+
+let backendResults = [];   // raw results from API after query/category
+let filteredResults = [];  // after client filters + sort
+
+document.addEventListener("DOMContentLoaded", () => {
+    setupEventListeners();
+    loadSearchParams();
+    wireRowClicks();
+});
 
 function loadSearchParams() {
     const params = new URLSearchParams(window.location.search);
@@ -28,289 +56,327 @@ function loadSearchParams() {
 
     if (query) {
         searchInput.value = query;
+        activeFilters.search = query;
         performSearch();
     } else if (category) {
         activeFilters.category = [category];
+        // auto-check the matching category box if it exists
+        const cb = document.querySelector(`input[data-filter="category"][value="${category}"]`);
+        if (cb) cb.checked = true;
         performSearch();
     } else {
-        loadInitialEvents();
+        performSearch(); // load all
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    setupEventListeners();
-    loadSearchParams();
-});
-
-// // Home functionality
-document.querySelector('.myEventsButton').addEventListener('click', function () {
-    window.location.href = '../main/main.html';
-});
-
-// Logout functionality
-document.querySelector('.logoutButton').addEventListener('click', function () {
-    if (confirm('Are you sure you want to log out?')) {
-        localStorage.removeItem("user");
-        window.location.href = '../main/main.html';
-    }
-});
-
-// State
-let activeFilters = {
-    search: '',
-    category: [],
-    organizer: [],
-    dateFrom: '',
-    dateTo: '',
-    location: [],
-    ticketType: [],
-    mode: [],
-    accessibility: []
-};
-
-// Initialize the page
-document.addEventListener('DOMContentLoaded', function () {
-    setupEventListeners();
-    loadInitialEvents();
-
-    eventsContainer.addEventListener('click', (e) => {
-        const row = e.target.closest('[data-event-id]');
-        if (!row) return;
-        const id = row.getAttribute('data-event-id');
-        if (id) {
-            location.href = `../event/event.html?id=${encodeURIComponent(id)}`;
-        }
-    });
-});
-
-// Set up event listeners
 function setupEventListeners() {
-    searchButton.addEventListener('click', performSearch);
-    searchInput.addEventListener('keyup', function (event) {
-        if (event.key === 'Enter') {
+    searchButton.addEventListener("click", () => {
+        activeFilters.search = searchInput.value.trim();
+        performSearch();
+    });
+
+    searchInput.addEventListener("keyup", e => {
+        if (e.key === "Enter") {
+            activeFilters.search = searchInput.value.trim();
             performSearch();
         }
     });
 
-    document.querySelectorAll('input[data-filter]').forEach(input => {
-        input.addEventListener('change', handleFilterChange);
+    document.querySelectorAll("input[data-filter]").forEach(input => {
+        input.addEventListener("change", handleFilterChange);
     });
 
-    document.getElementById('dateFrom').addEventListener('change', handleDateFilterChange);
-    document.getElementById('dateTo').addEventListener('change', handleDateFilterChange);
+    document.getElementById("dateFrom").addEventListener("change", handleDateFilterChange);
+    document.getElementById("dateTo").addEventListener("change", handleDateFilterChange);
 
-    clearFiltersBtn.addEventListener('click', clearAllFilters);
-    sortBy.addEventListener('change', performSearch);
+    clearFiltersBtn.addEventListener("click", clearAllFilters);
+    sortBy.addEventListener("change", () => {
+        applyFiltersAndSort();
+        displayEvents(filteredResults);
+    });
 
-    mobileFiltersToggle.addEventListener('click', function () {
-        filtersSidebar.classList.toggle('active');
-        this.textContent = filtersSidebar.classList.contains('active') ?
-            'Hide Filters' : 'Show Filters';
+    mobileFiltersToggle.addEventListener("click", function () {
+        filtersSidebar.classList.toggle("active");
+        this.textContent = filtersSidebar.classList.contains("active")
+            ? "Hide Filters"
+            : "Show Filters";
     });
 }
 
-// Load initial events
-function loadInitialEvents() {
-    setTimeout(() => {
-        loading.style.display = 'none';
-        resultsCount.textContent = '0 events found';
-        noResults.style.display = 'block';
-    }, 1000);
-}
-
-// Handle filter changes
+// ---------- Filters ----------
 function handleFilterChange(event) {
-    const filterType = event.target.getAttribute('data-filter');
+    const filterType = event.target.getAttribute("data-filter");
     const value = event.target.value;
     const isChecked = event.target.checked;
 
-    if (['category', 'organizer', 'location', 'ticketType', 'mode', 'accessibility'].includes(filterType)) {
-        if (isChecked) {
-            activeFilters[filterType].push(value);
-        } else {
-            activeFilters[filterType] = activeFilters[filterType].filter(item => item !== value);
-        }
+    if (["category", "organizer", "ticketType", "mode"].includes(filterType)) {
+        if (isChecked) activeFilters[filterType].push(value);
+        else activeFilters[filterType] = activeFilters[filterType].filter(v => v !== value);
     }
 
     updateActiveFiltersDisplay();
-    performSearch();
+    applyFiltersAndSort();
+    displayEvents(filteredResults);
 }
 
-// Handle date filter changes
 function handleDateFilterChange() {
-    activeFilters.dateFrom = document.getElementById('dateFrom').value;
-    activeFilters.dateTo = document.getElementById('dateTo').value;
+    activeFilters.dateFrom = document.getElementById("dateFrom").value;
+    activeFilters.dateTo = document.getElementById("dateTo").value;
     updateActiveFiltersDisplay();
-    performSearch();
+    applyFiltersAndSort();
+    displayEvents(filteredResults);
 }
 
-// Update active filters display
+function clearAllFilters() {
+    activeFilters = {
+        search: "",
+        category: [],
+        organizer: [],
+        dateFrom: "",
+        dateTo: "",
+        ticketType: [],
+        mode: [],
+    };
+
+    searchInput.value = "";
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => (cb.checked = false));
+    document.getElementById("dateFrom").value = "";
+    document.getElementById("dateTo").value = "";
+
+    updateActiveFiltersDisplay();
+    applyFiltersAndSort();
+    displayEvents(filteredResults);
+}
+
 function updateActiveFiltersDisplay() {
-    activeFiltersContainer.innerHTML = '';
+    activeFiltersContainer.innerHTML = "";
     let filterCount = 0;
 
     if (activeFilters.search) {
-        addActiveFilterTag('Search', activeFilters.search, 'search');
+        addActiveFilterTag("Search", activeFilters.search, "search");
         filterCount++;
     }
 
-    activeFilters.category.forEach(category => {
-        addActiveFilterTag('Category', category, 'category', category);
+    activeFilters.category.forEach(c => {
+        addActiveFilterTag("Category", c, "category", c);
         filterCount++;
     });
 
-    activeFilters.organizer.forEach(organizer => {
-        addActiveFilterTag('Organizer', organizer, 'organizer', organizer);
+    activeFilters.organizer.forEach(o => {
+        addActiveFilterTag("Organizer", o, "organizer", o);
         filterCount++;
     });
 
     if (activeFilters.dateFrom || activeFilters.dateTo) {
-        let dateText = '';
-        if (activeFilters.dateFrom && activeFilters.dateTo) {
-            dateText = `${activeFilters.dateFrom} to ${activeFilters.dateTo}`;
-        } else if (activeFilters.dateFrom) {
-            dateText = `From ${activeFilters.dateFrom}`;
-        } else {
-            dateText = `Until ${activeFilters.dateTo}`;
-        }
-        addActiveFilterTag('Date', dateText, 'date');
+        let dateText = activeFilters.dateFrom && activeFilters.dateTo
+            ? `${activeFilters.dateFrom} to ${activeFilters.dateTo}`
+            : activeFilters.dateFrom
+                ? `From ${activeFilters.dateFrom}`
+                : `Until ${activeFilters.dateTo}`;
+
+        addActiveFilterTag("Date", dateText, "date");
         filterCount++;
     }
 
-    activeFilters.location.forEach(location => {
-        addActiveFilterTag('Location', location, 'location', location);
+    activeFilters.ticketType.forEach(t => {
+        addActiveFilterTag("Ticket", t, "ticketType", t);
         filterCount++;
     });
 
-    activeFilters.ticketType.forEach(ticketType => {
-        addActiveFilterTag('Ticket', ticketType, 'ticketType', ticketType);
+    activeFilters.mode.forEach(m => {
+        addActiveFilterTag("Mode", m, "mode", m);
         filterCount++;
     });
 
-    activeFilters.mode.forEach(mode => {
-        addActiveFilterTag('Mode', mode, 'mode', mode);
-        filterCount++;
-    });
-
-    activeFilters.accessibility.forEach(accessibility => {
-        addActiveFilterTag('Accessibility', accessibility, 'accessibility', accessibility);
-        filterCount++;
-    });
-
-    activeFiltersCount.textContent = filterCount === 0 ? 'No filters applied' : `${filterCount} filter${filterCount !== 1 ? 's' : ''} applied`;
+    activeFiltersCount.textContent =
+        filterCount === 0
+            ? "No filters applied"
+            : `${filterCount} filter${filterCount !== 1 ? "s" : ""} applied`;
 }
 
-// Add an active filter tag
 function addActiveFilterTag(type, value, filterType, specificValue = null) {
-    const filterTag = document.createElement('div');
-    filterTag.className = 'filter-tag';
-    filterTag.innerHTML = `
-        ${type}: ${value}
-        <button type="button" class="remove" data-filter-type="${filterType}" data-value="${specificValue}">×</button>
-    `;
-    activeFiltersContainer.appendChild(filterTag);
+    const tag = document.createElement("div");
+    tag.className = "filterTag";
+    tag.innerHTML = `
+    ${type}: ${value}
+    <button type="button" class="remove" data-filter-type="${filterType}" data-value="${specificValue}">×</button>
+  `;
+    activeFiltersContainer.appendChild(tag);
 
-    filterTag.querySelector('.remove').addEventListener('click', function () {
+    tag.querySelector(".remove").addEventListener("click", () => {
         removeFilter(filterType, specificValue);
     });
 }
 
-// Remove a specific filter
 function removeFilter(filterType, value) {
-    if (filterType === 'search') {
-        activeFilters.search = '';
-        searchInput.value = '';
-    } else if (filterType === 'date') {
-        activeFilters.dateFrom = '';
-        activeFilters.dateTo = '';
-        document.getElementById('dateFrom').value = '';
-        document.getElementById('dateTo').value = '';
-    } else if (['category', 'organizer', 'location', 'ticketType', 'mode', 'accessibility'].includes(filterType)) {
-        activeFilters[filterType] = activeFilters[filterType].filter(item => item !== value);
-        const checkbox = document.querySelector(`input[data-filter="${filterType}"][value="${value}"]`);
-        if (checkbox) checkbox.checked = false;
+    if (filterType === "search") {
+        activeFilters.search = "";
+        searchInput.value = "";
+    } else if (filterType === "date") {
+        activeFilters.dateFrom = "";
+        activeFilters.dateTo = "";
+        document.getElementById("dateFrom").value = "";
+        document.getElementById("dateTo").value = "";
+    } else if (["category", "organizer", "ticketType", "mode"].includes(filterType)) {
+        activeFilters[filterType] = activeFilters[filterType].filter(v => v !== value);
+        const cb = document.querySelector(`input[data-filter="${filterType}"][value="${value}"]`);
+        if (cb) cb.checked = false;
     }
 
     updateActiveFiltersDisplay();
-    performSearch();
+    applyFiltersAndSort();
+    displayEvents(filteredResults);
 }
 
-// Clear all filters
-function clearAllFilters() {
-    activeFilters = {
-        search: '',
-        category: [],
-        organizer: [],
-        dateFrom: '',
-        dateTo: '',
-        location: [],
-        ticketType: [],
-        mode: [],
-        accessibility: []
-    };
-
-    searchInput.value = '';
-
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-        checkbox.checked = false;
-    });
-
-    document.getElementById('dateFrom').value = '';
-    document.getElementById('dateTo').value = '';
-
-    updateActiveFiltersDisplay();
-    performSearch();
-}
-
-// Perform search with current filters
+// ---------- Search ----------
 async function performSearch() {
-    loading.style.display = 'block';
-    eventsContainer.innerHTML = '';
-    noResults.style.display = 'none';
+    loading.style.display = "block";
+    eventsContainer.innerHTML = "";
+    noResults.style.display = "none";
 
-    const query = searchInput.value.trim();
+    const query = activeFilters.search.trim();
     const category = activeFilters.category[0] || "";
 
     try {
-        const res = await fetch(`/api/events/search?query=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`);
-        const events = await res.json();
-        console.log("Search response:", events);
+        const res = await fetch(
+            `/api/events/search?query=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`
+        );
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-        loading.style.display = 'none';
-        resultsCount.textContent = `${events.length} event${events.length !== 1 ? 's' : ''} found`;
+        backendResults = await res.json();
 
-        if (events.length === 0) {
-            noResults.style.display = 'block';
-        } else {
-            displayEvents(events);
-        }
+        loading.style.display = "none";
+        applyFiltersAndSort();
+        resultsCount.textContent = `${filteredResults.length} event${filteredResults.length !== 1 ? "s" : ""} found`;
+
+        if (filteredResults.length === 0) noResults.style.display = "block";
+        else displayEvents(filteredResults);
+
     } catch (err) {
         console.error("Search error:", err);
         resultsCount.textContent = "Error loading events.";
-        loading.style.display = 'none';
+        loading.style.display = "none";
     }
 }
 
-// Display events in the table
-function displayEvents(events) {
-  eventsContainer.innerHTML = '';
+// ---------- Apply client-side filters + sort ----------
+function applyFiltersAndSort() {
+    filteredResults = backendResults.filter(e => {
+        // organizer type (model field: organizerType)
+        if (activeFilters.organizer.length) {
+            if (!activeFilters.organizer.includes(e.organizerType)) return false;
+        }
 
-  for (const e of events) {
-    const eventRow = document.createElement("div");
-    eventRow.classList.add("eventRow");
-    eventRow.dataset.eventId = e.id;
-    eventRow.innerHTML = `
-      <div>${e.title}</div>
-      <div>${formatDate(e.date)}</div>
-      <div>${e.location || "N/A"}</div>
-      <div><button class="saveBtn">♡</button></div>
-    `;
-    eventsContainer.appendChild(eventRow);
-  }
+        // ticket type (model field: ticketType)
+        if (activeFilters.ticketType.length) {
+            if (!activeFilters.ticketType.includes(e.ticketType)) return false;
+        }
+
+        // mode (model field: mode)
+        if (activeFilters.mode.length) {
+            if (!activeFilters.mode.includes(e.mode)) return false;
+        }
+
+        // date range (model field: date)
+        if (activeFilters.dateFrom) {
+            if (!e.date || e.date < activeFilters.dateFrom) return false;
+        }
+        if (activeFilters.dateTo) {
+            if (!e.date || e.date > activeFilters.dateTo) return false;
+        }
+
+        return true;
+    });
+
+    // Sorting
+    const sortKey = sortBy.value;
+
+    filteredResults.sort((a, b) => {
+        if (sortKey === "date") {
+            return (a.date || "").localeCompare(b.date || "");
+        }
+        if (sortKey === "title") {
+            return (a.title || "").localeCompare(b.title || "");
+        }
+        if (sortKey === "price") {
+            return (Number(a.price) || 0) - (Number(b.price) || 0);
+        }
+        if (sortKey === "popularity") {
+            return (Number(b.ticketsSold) || 0) - (Number(a.ticketsSold) || 0);
+        }
+        return 0;
+    });
 }
 
-// Format date for display
-function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+// ---------- Render ----------
+function displayEvents(events) {
+    eventsContainer.innerHTML = "";
+
+    for (const e of events) {
+        // ---- normalize categories to an array of strings ----
+        let categories = [];
+        if (Array.isArray(e.categories)) {
+            categories = e.categories;
+        } else if (typeof e.categories === "string") {
+            try {
+                const parsed = JSON.parse(e.categories);
+                categories = Array.isArray(parsed) ? parsed : [e.categories];
+            } catch {
+                categories = [e.categories];
+            }
+        }
+
+        const categoryText = categories.filter(Boolean).join(", ");
+
+        // ---- banner url ----
+        let bannerUrl = "/event/eventBanner.jpg"; // default
+
+        if (e.bannerPath) {
+            // normalize and ensure leading slash for web
+            const clean = e.bannerPath.replace(/\\/g, "/").replace(/^\/+/, "");
+            bannerUrl = "/" + clean;   // -> "/data/events/..../file.jpg"
+        }
+
+        const row = document.createElement("div");
+        row.classList.add("tableRow");
+        row.setAttribute("data-event-id", e.id);
+
+        row.innerHTML = `
+      <div class="eventInfo">
+        <img class="eventImage" src="${bannerUrl}" alt="${e.title} banner"
+             onerror="this.src='/event/eventBanner.jpg'"/>
+        <div class="eventDetails">
+          <div class="eventTitle">${e.title}</div>
+          <div class="eventMeta">
+            <span class="eventCategory">${categoryText || ""}</span>
+            <span class="eventOrganizer">${e.organizerName || e.organizerEmail || ""}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="eventDate">${formatDateShort(e.date)}</div>
+      <div class="eventLocation">${e.location || "N/A"}</div>
+      <div class="eventActions">
+        <button class="saveButton"><span class="heart">♡</span></button>
+      </div>
+    `;
+
+        eventsContainer.appendChild(row);
+    }
+}
+
+function formatDateShort(dateString) {
+    if (!dateString) return "—";
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
+}
+
+// ---------- Click to open event ----------
+function wireRowClicks() {
+    eventsContainer.addEventListener("click", e => {
+        const row = e.target.closest("[data-event-id]");
+        if (!row) return;
+        const id = row.getAttribute("data-event-id");
+        location.href = `../event/event.html?id=${encodeURIComponent(id)}`;
+    });
 }

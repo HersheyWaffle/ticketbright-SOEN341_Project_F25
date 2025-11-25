@@ -12,7 +12,7 @@ body {
 }
 
 header {
-    background-color: #1a1a2e; 
+    background-color: #1a1a2e;
     color: white;
     padding: 15px 5%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -348,13 +348,9 @@ header {
 .eventImage {
     width: 80px;
     height: 60px;
-    background-color: #e5e7eb;
     border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6b7280;
-    font-size: 12px;
+    object-fit: cover;
+    background-color: #e5e7eb;
     flex-shrink: 0;
 }
 
@@ -473,7 +469,9 @@ header {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .mobileFiltersToggle {
@@ -494,54 +492,55 @@ header {
     .mainLayout {
         flex-direction: column;
     }
-    
+
     .filtersSidebar {
         display: none;
         width: 100%;
     }
-    
+
     .filtersSidebar.active {
         display: block;
     }
-    
+
     .mobileFiltersToggle {
         display: block;
     }
-    
-    .tableHeader, .tableRow {
+
+    .tableHeader,
+    .tableRow {
         grid-template-columns: 1fr;
         gap: 10px;
         text-align: left;
     }
-    
+
     .tableHeader {
         display: none;
     }
-    
+
     .pageTitle {
         font-size: 28px;
     }
-    
+
     .searchBar {
         flex-direction: column;
     }
-    
+
     .searchInput {
         border-radius: 6px;
         margin-bottom: 10px;
     }
-    
+
     .searchButton {
         border-radius: 6px;
         padding: 12px;
     }
-    
+
     .resultsHeader {
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
     }
-    
+
     .eventActions {
         justify-content: flex-start;
     }

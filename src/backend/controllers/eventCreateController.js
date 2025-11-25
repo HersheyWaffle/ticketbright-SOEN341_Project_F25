@@ -37,8 +37,18 @@ export const createEvent = async (req, res) => {
     const backendDataDir = path.join(process.cwd(), "src", "backend", "data", "events", eventID);
     if (!fs.existsSync(backendDataDir)) fs.mkdirSync(backendDataDir, { recursive: true });
 
-    // if banner uploaded, move to event folder
+    // IMPORTANT: never trust bannerPath coming from client
+    delete data.bannerPath;
+
+    // if banner uploaded, move to event folder and save RELATIVE path
     if (req.file) {
+      const tmpPath = req.file.path.replace(/\\/g, "/"); // multer temp location
+      const destPath = path.join(backendDataDir, req.file.filename);
+
+      // move file into your event folder
+      fs.renameSync(tmpPath, destPath);
+
+      // store RELATIVE path in DB (what frontend should use)
       data.bannerPath = path.posix.join("data", "events", eventID, req.file.filename);
     }
 
@@ -77,10 +87,22 @@ export const getAllEvents = async (req, res) => {
  */
 export const getEventById = async (req, res) => {
   try {
-    const event = await Event.findByPk(req.params.id);
+    const param = req.params.id;
+
+    // Try UUID primary key first, then fallback to eventID slug
+    const event = await Event.findOne({
+      where: {
+        [Op.or]: [
+          { id: param },        // UUID
+          { eventID: param },
+        ],
+      },
+    });
+
     if (!event) return res.status(404).json({ error: "Event not found" });
     res.json(event);
   } catch (err) {
+    console.error("Failed to fetch event:", err);
     res.status(500).json({ error: "Failed to fetch event" });
   }
 };
@@ -188,5 +210,50 @@ export const incrementTicket = async (req, res) => {
   } catch (err) {
     console.error("Failed to update tickets:", err);
     res.status(500).json({ error: "Failed to update tickets" });
+  }
+};
+
+export const getOrganizationsFromEvents = async (req, res) => {
+  try {
+    const events = await Event.findAll({
+      attributes: ["organizerName", "organizerUsername", "organizerEmail"],
+    });
+
+    const orgMap = new Map();
+
+    for (const e of events) {
+      const orgName = e.organizerName || "Unknown Organization";
+      const username = e.organizerUsername || null;
+      const email = e.organizerEmail || null;
+
+      if (!orgMap.has(orgName)) {
+        orgMap.set(orgName, {
+          name: orgName,
+          organizers: new Map(), // key = email or username
+          eventCount: 0,
+        });
+      }
+
+      const org = orgMap.get(orgName);
+      org.eventCount += 1;
+
+      // Use email first as key (more stable), fallback to username
+      const key = email || username || Math.random().toString(36);
+      if (!org.organizers.has(key)) {
+        org.organizers.set(key, { username, email });
+      }
+    }
+
+    const result = Array.from(orgMap.values()).map(org => ({
+      name: org.name,
+      eventCount: org.eventCount,
+      organizers: Array.from(org.organizers.values()),
+      organizerCount: org.organizers.size,
+    }));
+
+    res.json(result);
+  } catch (err) {
+    console.error("Org summary fetch failed:", err);
+    res.status(500).json({ error: "Failed to fetch organizations from events" });
   }
 };

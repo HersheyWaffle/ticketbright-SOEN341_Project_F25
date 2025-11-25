@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event description</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <div class="headerContainer">
@@ -13,7 +15,7 @@
             <div class="navArea">
                 <!-- <a href="../main/main.html" class="navLink">Home</a> -->
                 <button class="homeButton">Home</button>
-                <button class="logoutButton">Log Out</button>               
+                <button class="logoutButton">Log Out</button>
             </div>
         </div>
     </header>
@@ -23,73 +25,66 @@
             <h1 class="event-title">Wine and Cheese Networking </h1>
             <div class="event-host">
                 <!-- link to host's other events -->
-                Hosted by <a id="orgID" href="#">Concordia University</a>                 
-        </div>
-
-        <div class="event-content">
-            <div class="event-details">
-                <div class="event-image">
-                    <!-- Picture of event uploaded by organizer -->
-                    <img id="eventBanner" src=eventBanner.jpg>
-                </div>
-                
-                <div class="event-info">
-                    <div class="info-date-time">
-                        <h3>Date and Time</h3>
-                        <p>December 12, 2025</p>
-                        <p>18:30 - 20:30 EST</p>
-                        <button class="calendar-button" id="calendarButton">Add to Calendar</button>
-                    </div>
-                    
-                    <div class="info-location">
-                        <h3>Location</h3>
-                        <p>Hall Building</p>
-                        <p>1455 Blvd. De Maisonneuve Ouest, Montreal, QC H3G 1M8</p>                        
-                        <button class="map-button" id="mapButton">View Map</button>
-                    </div>                  
-                </div>
+                Hosted by <a id="orgID" href="#">Concordia University</a>
             </div>
-            
-            <div class="ticket-section">
-                <div class="ticket-container">                    
-                    <div class="ticket-options">
-                        <div class="ticket-type">
-                            <div class="ticket-details">
-                                <h3>General Admission</h3>
-                                <p class="ticket-price">$25.00 CAD</p>
+
+            <div class="event-content">
+                <div class="event-details">
+                    <div class="event-image">
+                        <!-- Picture of event uploaded by organizer -->
+                        <img id="eventBanner" src=eventBanner.jpg>
+                    </div>
+
+                    <div class="event-info">
+                        <div class="info-date-time">
+                            <h3>Date and Time</h3>
+                            <p>December 12, 2025</p>
+                            <p>18:30 - 20:30 EST</p>
+                            <button class="calendar-button" class="loginButton" data-action="add-to-calendar">Add to Calendar</button>
+                        </div>
+
+                        <div class="info-location">
+                            <h3>Location</h3>
+                            <p>Hall Building</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ticket-section">
+                    <div class="ticket-container">
+                        <div class="ticket-options">
+                            <div class="ticket-type">
+                                <div class="ticket-details">
+                                    <h3>General Admission</h3>
+                                    <p class="ticket-price">$25.00 CAD</p>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="ticket-type">
-                            <div class="ticket-details">
-                                <h3>Early Bird Discount</h3>
-                                <p class="ticket-price">$15.00 CAD</p>
-                            </div>
-                        </div>                        
-                    </div>                    
-                    
-                    <button class="ticket-button" id="ticketButton" >Get tickets</button>
-                    
-                    
-                    <button class="loginButton" data-action="add-to-calendar">Add to Calendar</button>
-                    <button class="loginButton" data-action="claim-ticket">Claim Free Ticket</button>
+
+                        <button class="ticket-button" id="ticketButton">Get tickets</button>
+                        <button class="loginButton" data-action="claim-ticket">Claim Free Ticket</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="event-description">
-            <h2>About this event</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rhoncus enim erat, consectetur feugiat ipsum congue aliquet. In eu faucibus diam. Fusce porttitor id libero aliquam congue. Donec scelerisque quam ac semper tincidunt. Vestibulum vel lorem eget augue sodales dapibus sed eu urna. Maecenas tempor quam ut eleifend euismod. Cras id posuere libero, id pulvinar neque. Vivamus eget ante nibh. Phasellus maximus feugiat neque, ut consequat felis hendrerit eu. Morbi gravida in enim sed fringilla. Donec consequat eget metus sed dignissim. Integer eu fringilla dui.</p>
-            
-            
-            <h3>Guest Lecturers</h3>
-            <ul>
-                <li>Leonardo</li>
-                <li>Donatello</li>
-                <li>Raphael</li>
-                <li>Michelangelo</li>
-            </ul>
-        </div>
+
+            <div class="event-description">
+                <h2>About this event</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rhoncus enim erat, consectetur
+                    feugiat ipsum congue aliquet. In eu faucibus diam. Fusce porttitor id libero aliquam congue. Donec
+                    scelerisque quam ac semper tincidunt. Vestibulum vel lorem eget augue sodales dapibus sed eu urna.
+                    Maecenas tempor quam ut eleifend euismod. Cras id posuere libero, id pulvinar neque. Vivamus eget
+                    ante nibh. Phasellus maximus feugiat neque, ut consequat felis hendrerit eu. Morbi gravida in enim
+                    sed fringilla. Donec consequat eget metus sed dignissim. Integer eu fringilla dui.</p>
+
+
+                <h3>Speakers</h3>
+                <ul id="speakersList">
+                    <li>Leonardo</li>
+                    <li>Donatello</li>
+                    <li>Raphael</li>
+                    <li>Michelangelo</li>
+                </ul>
+            </div>
     </main>
 
 
@@ -109,8 +104,8 @@
             title: document.querySelector("h1")?.textContent?.trim() || "Sample Event",
             description: document.querySelector(".event-description")?.textContent?.trim() || "",
             location: "Concordia University",
-            startsAt: new Date(Date.now() + 24*3600e3).toISOString(),
-            endsAt: new Date(Date.now() + 26*3600e3).toISOString(),
+            startsAt: new Date(Date.now() + 24 * 3600e3).toISOString(),
+            endsAt: new Date(Date.now() + 26 * 3600e3).toISOString(),
             price: 0
         });
 
@@ -119,4 +114,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

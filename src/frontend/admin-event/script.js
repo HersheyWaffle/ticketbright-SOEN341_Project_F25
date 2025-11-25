@@ -4,150 +4,136 @@ if (!user || user.role !== "admin") {
   window.location.href = "../main/main.html";
 }
 
-// Initialize the page
-document.addEventListener('DOMContentLoaded', () => {
-    const logoutButton = document.querySelector('.logoutButton');
-
-    
-    // Logout functionality
-    document.querySelector('.logoutButton').addEventListener('click', function() {
-    if(confirm('Are you sure you want to log out?')) {
-        localStorage.removeItem("user");
-        window.location.href = '../main/main.html';
-        }
-    });
-
-
-
-    // Sample data for the chart (would come from API in real app)
-const events = [
-    {
-        id: 1,
-        title: "Entrepeneurship Workshop",
-        organizer: "Commerce Club",
-        date: "2026-04-15",
-        time: "6:00 PM"
-    },
-    {
-        id: 2,
-        title: "AI & Machine Learning Workshop",
-        organizer: "Computer Science Department",
-        date: "2026-04-20",
-        time: "2:00 PM"
-    },    
-    {
-        id: 3,
-        title: "Career Fair 2026",
-        organizer: "Career Services",
-        date: "2026-05-05",
-        time: "10:00 AM"
+document.addEventListener("DOMContentLoaded", () => {
+  // Logout functionality
+  document.querySelector(".logoutButton").addEventListener("click", () => {
+    if (confirm("Are you sure you want to log out?")) {
+      localStorage.removeItem("user");
+      window.location.href = "../main/main.html";
     }
-];
+  });
 
-// DOM elements
-const eventsTableBody = document.getElementById('events-table-body');
+  // REAL events list (from DB)
+  let events = [];
 
-// Format date for display
-function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  // DOM elements
+  const eventsTableBody = document.getElementById("events-table-body");
+
+  // Format date for display
+  function formatDate(dateString) {
+    if (!dateString) return "—";
+    const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
-}
+  }
 
-// Render events table
-function renderEvents() {
-    eventsTableBody.innerHTML = '';
-    
+  // Fetch only published events for moderation
+  async function loadPublishedEvents() {
+    const res = await fetch("/api/admin/events/published");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    events = await res.json();
+    renderEvents();
+  }
+
+  // Render events table
+  function renderEvents() {
+    eventsTableBody.innerHTML = "";
+
+    if (events.length === 0) {
+      eventsTableBody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align:center; padding:1rem;">
+            No published events waiting for moderation.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
     events.forEach(event => {
-        const row = document.createElement('tr');
-        
-        row.innerHTML = `
-            <td class="event-title">${event.title}</td>
-            <td>${event.organizer}</td>
-            <td>${formatDate(event.date)}<br><small>${event.time}</small></td>
-            <td>
-                <div class="action-buttons">
-                    <button class="btn btn-approve approve-event" data-id="${event.id}">Approve</button>
-                    <button class="btn btn-reject reject-event" data-id="${event.id}">Reject</button>
-                </div>
-            </td>
-        `;
-        
-        eventsTableBody.appendChild(row);
+      const row = document.createElement("tr");
+
+      const organizerDisplay =
+        event.organizerName ||
+        event.organizerUsername ||
+        event.organizerEmail ||
+        "—";
+
+      row.innerHTML = `
+        <td class="event-title">${event.title}</td>
+        <td>${organizerDisplay}</td>
+        <td>${formatDate(event.date)}<br><small>${event.time || ""}</small></td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn btn-approve approve-event" data-id="${event.id}">Approve</button>
+            <button class="btn btn-reject reject-event" data-id="${event.id}">Reject</button>
+          </div>
+        </td>
+      `;
+
+      eventsTableBody.appendChild(row);
     });
-    
+
     // Add event listeners to action buttons
-    document.querySelectorAll('.approve-event').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const eventId = parseInt(e.target.getAttribute('data-id'));
-            approveEvent(eventId);
-        });
+    eventsTableBody.querySelectorAll(".approve-event").forEach(button => {
+      button.addEventListener("click", () => {
+        const eventId = button.getAttribute("data-id");
+        approveEvent(eventId);
+      });
     });
-    
-    document.querySelectorAll('.reject-event').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const eventId = parseInt(e.target.getAttribute('data-id'));
-            rejectEvent(eventId);
-        });
+
+    eventsTableBody.querySelectorAll(".reject-event").forEach(button => {
+      button.addEventListener("click", () => {
+        const eventId = button.getAttribute("data-id");
+        rejectEvent(eventId);
+      });
     });
-}
+  }
 
+  // Approve event -> set status to "approved"
+  async function approveEvent(eventId) {
+    try {
+      const res = await fetch(`/api/admin/events/${eventId}/moderate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "approve" })
+      });
 
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-
-// Approve event
-async function approveEvent(eventId) {
-    const eventIndex = events.findIndex(ev => ev.id === eventId);
-    if (eventIndex !== -1) {
-        const eventTitle = events[eventIndex].title;
-
-        try {
-            const res = await fetch(`/api/admin/events/${eventId}/moderate`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "approve" })
-            });
-
-            if (res.ok) {
-                events.splice(eventIndex, 1);
-                renderEvents();
-            } else {
-                console.error(`Error approving "${eventTitle}"`);
-            }
-        } catch (err) {
-            console.error(`Network error while approving "${eventTitle}":`, err);
-        }
+      // remove locally + rerender
+      events = events.filter(ev => ev.id !== eventId);
+      renderEvents();
+    } catch (err) {
+      console.error("Approve failed:", err);
+      alert("Error approving event.");
     }
-}
+  }
 
-// Reject event
-async function rejectEvent(eventId) {
-    const eventIndex = events.findIndex(ev => ev.id === eventId);
-    if (eventIndex !== -1) {
-        const eventTitle = events[eventIndex].title;
-        const reason = prompt(`Enter reason for rejecting "${eventTitle}":`) || "No reason provided";
+  // Reject event -> delete row
+  async function rejectEvent(eventId) {
+    if (!confirm("Rejecting will delete this event. Continue?")) return;
 
-        try {
-            const res = await fetch(`/api/admin/events/${eventId}/moderate`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "reject", reason })
-            });
+    try {
+      const res = await fetch(`/api/admin/events/${eventId}/moderate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reject" })
+      });
 
-            if (res.ok) {
-                events.splice(eventIndex, 1);
-                renderEvents();
-            } else {
-                console.error(`Error rejecting "${eventTitle}"`);
-            }
-        } catch (err) {
-            console.error(`Network error while rejecting "${eventTitle}":`, err);
-        }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      // remove locally + rerender
+      events = events.filter(ev => ev.id !== eventId);
+      renderEvents();
+    } catch (err) {
+      console.error("Reject failed:", err);
+      alert("Error rejecting event.");
     }
-}
+  }
 
-
-
-renderEvents();
-
+  // Initial load
+  loadPublishedEvents().catch(err => {
+    console.error(err);
+    alert("Failed to load published events.");
+  });
 });
-

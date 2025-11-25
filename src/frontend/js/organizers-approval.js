@@ -4,17 +4,58 @@ if (!user || user.role !== "admin") {
   window.location.href = "../main/main.html";
 }
 
-// Mock dataset
-let organizers = [
-  { id: 1, name: "Ayla Kent", email: "ayla.kent@gmail.com", org: "Robotics Club", status: "pending", date: "2025-10-27" },
-  { id: 2, name: "Ben Martin", email: "ben.martin@gmail.com", org: "Music Society", status: "pending", date: "2025-10-28" },
-  { id: 3, name: "Chloe Tran", email: "chloe.tran@hotmail.com", org: "Debate Union", status: "approved", date: "2025-10-18" },
-  { id: 4, name: "Diego Park", email: "diego.park@outlook.com", org: "Film Association", status: "rejected", date: "2025-10-20" },
-  { id: 5, name: "Emma Wilson", email: "emma.wilson@gmail.com", org: "Art Club", status: "pending", date: "2025-10-29" },
-  { id: 6, name: "Frank Liu", email: "frank.liu@outlook.com", org: "Science Society", status: "pending", date: "2025-10-26" },
-  { id: 7, name: "Grace Kim", email: "grace.kim@gmail.com", org: "Drama Group", status: "approved", date: "2025-10-22" },
-  { id: 8, name: "Henry Brown", email: "henry.brown@gmail.com", org: "Sports Club", status: "rejected", date: "2025-10-24" },
-];
+let organizers = [];
+
+async function loadStats() {
+  try {
+    const res = await fetch("/api/admin/organizers?status=all");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const allOrganizers = await res.json();
+
+    const totals = { pending: 0, approved: 0, rejected: 0 };
+    allOrganizers.forEach(o => totals[o.status]++);
+
+    els.stats.innerHTML = `
+      <div class="statCard pending">
+        <div class="statIcon pending"><i class="fas fa-clock"></i></div>
+        <div class="statInfo">
+          <div class="statLabel">Pending Review</div>
+          <div class="statValue">${totals.pending}</div>
+        </div>
+      </div>
+      <div class="statCard approved">
+        <div class="statIcon approved"><i class="fas fa-check-circle"></i></div>
+        <div class="statInfo">
+          <div class="statLabel">Approved</div>
+          <div class="statValue">${totals.approved}</div>
+        </div>
+      </div>
+      <div class="statCard rejected">
+        <div class="statIcon rejected"><i class="fas fa-times-circle"></i></div>
+        <div class="statInfo">
+          <div class="statLabel">Rejected</div>
+          <div class="statValue">${totals.rejected}</div>
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    console.error("loadStats:", err);
+  }
+}
+
+async function loadOrganizers() {
+  const status = els.statusFilter.value; // pending/approved/rejected/all
+  const url = `/api/admin/organizers?status=${encodeURIComponent(status)}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    organizers = await res.json();
+    renderTable();
+  } catch (err) {
+    console.error("loadOrganizers:", err);
+  }
+}
 
 // DOM refs
 const els = {
@@ -56,9 +97,18 @@ function renderStats() {
 // Filtering / sort
 function applyFilters(data) {
   const q = (els.search.value || "").trim().toLowerCase();
-  let filtered = data.filter(o =>
-    [o.name, o.email, o.org].some(v => v.toLowerCase().includes(q))
-  );
+  let filtered = data.filter(o => {
+    const haystack = [
+      o.name,
+      o.email,
+      o.organizationName,
+      o.organizationType,
+    ]
+      .filter(Boolean)
+      .map(v => String(v).toLowerCase());
+
+    return haystack.some(v => v.includes(q));
+  });
 
   const s = els.statusFilter.value;
   if (s !== "all") filtered = filtered.filter(o => o.status === s);
@@ -108,7 +158,7 @@ function renderTable() {
         <td><input type="checkbox" class="checkbox row-checkbox" data-id="${o.id}"></td>
         <td>${o.name}</td>
         <td>${o.email}</td>
-        <td>${o.org}</td>
+        <td>${o.organizationName || "—"}</td>
         <td>${badge(o.status)}</td>
         <td class="actions">
           ${o.status !== "approved" ? `
@@ -129,9 +179,6 @@ function renderTable() {
 // Single update
 // ---- SINGLE: Approve/Reject one organizer via backend ----
 async function updateStatus(id, nextStatus) {
-  const row = organizers.find(o => o.id === id);
-  if (!row) return;
-
   const url = `/api/admin/organizers/${id}/${nextStatus === 'approved' ? 'approve' : 'reject'}`;
 
   try {
@@ -141,10 +188,8 @@ async function updateStatus(id, nextStatus) {
       console.error(`Failed to ${nextStatus} #${id}:`, data.message || res.statusText);
       return;
     }
-    // server ok → update local row and rerender
-    row.status = nextStatus;
-    renderStats();
-    renderTable();
+    await loadOrganizers();
+    await loadStats();
   } catch (err) {
     console.error(`Network error ${nextStatus} #${id}:`, err);
   }
@@ -160,7 +205,7 @@ async function updateStatus(id, nextStatus) {
 // ---- BULK: Approve/Reject selected organizers via backend ----
 async function updateSelectedStatus(nextStatus) {
   const ids = [...document.querySelectorAll('.row-checkbox:checked')]
-    .map(cb => parseInt(cb.dataset.id, 10));
+    .map(cb => cb.dataset.id);
 
   if (!ids.length) return;
 
@@ -174,13 +219,8 @@ async function updateSelectedStatus(nextStatus) {
         })
       )
     );
-
-    // server ok → update local rows and rerender
-    organizers.forEach(o => {
-      if (ids.includes(o.id) && o.status === 'pending') o.status = nextStatus;
-    });
-    renderStats();
-    renderTable();
+    await loadOrganizers();
+    await loadStats();
   } catch (err) {
     console.error('Bulk update error:', err);
   }
@@ -200,7 +240,7 @@ async function updateSelectedStatus(nextStatus) {
 els.table.addEventListener('click', (e) => {
   const btn = e.target.closest('button');
   if (!btn) return;
-  const id = parseInt(e.target.closest('tr').dataset.id, 10);
+  const id = e.target.closest('tr').dataset.id;
   if (btn.dataset.act === 'approve') updateStatus(id, 'approved');
   if (btn.dataset.act === 'reject') updateStatus(id, 'rejected');
 });
@@ -216,7 +256,7 @@ els.selectAll.addEventListener('change', (e) => {
 
 ['input', 'change'].forEach(ev => {
   els.search.addEventListener(ev, renderTable);
-  els.statusFilter.addEventListener(ev, renderTable);
+  els.statusFilter.addEventListener(ev, loadOrganizers);
   els.sortBy.addEventListener(ev, renderTable);
 });
 
@@ -225,9 +265,8 @@ els.approveSelected.addEventListener('click', () => updateSelectedStatus('approv
 els.rejectSelected.addEventListener('click', () => updateSelectedStatus('rejected'));
 
 /* --------- Init --------- */
-renderStats();
-renderTable();
-
+loadStats();
+loadOrganizers();
 
 // Logout functionality
 document.querySelector('.logoutButton').addEventListener('click', function () {

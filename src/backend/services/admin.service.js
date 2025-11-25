@@ -2,12 +2,12 @@
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
+import User from "../models/user.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataDir = path.join(__dirname, "../data/misc");
 
-const usersPath = path.join(dataDir, "users.json");
 const eventsPath = path.join(dataDir, "events.json");
 
 async function readJson(p) {
@@ -20,31 +20,45 @@ async function writeJson(p, data) {
 
 // ---- Organizers ----
 export const listPendingOrganizersSvc = async () => {
-  const users = await readJson(usersPath);
-  return users.filter((u) => u.status === "pending_organizer");
+  const rows = await User.findAll({
+    where: { role: "organizer", approved: 0 },
+    order: [["createdAt", "DESC"]],
+    attributes: ["id", "username", "email", "approved", "createdAt"],
+  });
+
+  // Return shape your FE expects
+  return rows.map(u => ({
+    id: u.id,
+    name: u.username,
+    email: u.email,
+    org: "—", // fill later if you add org on User
+    status: "pending",
+    date: u.createdAt.toISOString().slice(0, 10),
+  }));
 };
 
 export const approveOrganizerSvc = async (id) => {
-  const users = await readJson(usersPath);
-  const u = users.find((x) => x.id === Number(id));
-  if (!u) return null;
-  if (u.status !== "pending_organizer") return { conflict: true };
+  const u = await User.findOne({
+    where: { id, role: "organizer" },
+  });
 
-  u.status = "active";
-  u.role = "organizer";
-  await writeJson(usersPath, users);
+  if (!u) return null;
+
+  u.approved = 1;
+  await u.save();
+
   return { user: u };
 };
 
 export const rejectOrganizerSvc = async (id, reason) => {
-  const users = await readJson(usersPath);
-  const u = users.find((x) => x.id === Number(id));
-  if (!u) return null;
-  if (u.status !== "pending_organizer") return { conflict: true };
+  const u = await User.findOne({
+    where: { id, role: "organizer" },
+  });
 
-  u.status = "rejected";
-  if (reason) u.reject_reason = reason;
-  await writeJson(usersPath, users);
+  if (!u) return null;
+
+  u.approved = -1;
+  await u.save();
   return { user: u };
 };
 
@@ -102,16 +116,59 @@ export const moderateEventSvc = async (eventId, action, reason) => {
   return { event: e };
 };
 
+// GET organizers by status
+// status: "pending" | "approved" | "rejected" | "all"
+export const listOrganizersSvc = async (status = "pending") => {
+  const where = { role: "organizer" };
+
+  if (status === "pending") where.approved = 0;
+  else if (status === "approved") where.approved = 1;
+  else if (status === "rejected") where.approved = -1;
+  // "all" => no approved filter
+
+  const rows = await User.findAll({
+    where,
+    order: [["createdAt", "DESC"]],
+    attributes: [
+      "id",
+      "username",
+      "email",
+      "approved",
+      "createdAt",
+      "organizationName",
+      "organizationType",
+    ],
+  });
+
+  return rows.map(u => ({
+    id: u.id,
+    name: u.username,
+    email: u.email,
+
+    // what your table should show
+    org: u.organizationName || "—",
+    organizationName: u.organizationName,
+    organizationType: u.organizationType,
+
+    status:
+      u.approved === 1 ? "approved" :
+      u.approved === -1 ? "rejected" :
+      "pending",
+
+    date: u.createdAt ? u.createdAt.toISOString().slice(0, 10) : "",
+  }));
+};
+
 // ---- Roles ----
 export const assignRoleSvc = async (userId, role) => {
   const valid = new Set(["admin", "organizer", "student"]);
   if (!valid.has(role)) return { invalidRole: true };
 
-  const users = await readJson(usersPath);
-  const u = users.find((x) => x.id === Number(userId));
+  const u = await User.findOne({ where: { id: userId } });
   if (!u) return { notFound: true };
 
   u.role = role;
-  await writeJson(usersPath, users);
+  await u.save();
+
   return { user: u };
 };

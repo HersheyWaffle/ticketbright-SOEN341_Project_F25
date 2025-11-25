@@ -96,7 +96,6 @@ export async function addToCalendar(event) {
       btnAdd.addEventListener("click", async () => {
         const ev = await getEvent();
         await addToCalendar(ev);
-        alert("Event added to your calendar!");
       });
     }
   
