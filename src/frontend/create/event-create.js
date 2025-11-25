@@ -1,16 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() {
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user || (user.role !== "admin" && user.role !== "organizer")) {
+    alert("Please log in to access this page.");
+    window.location.href = "../signup-login/login.html";
+}
 
-    const logoutButton = document.querySelector('.logoutButton');
-
-
-    // Logout functionality
-    document.querySelector('.logoutButton').addEventListener('click', function() {
-    if(confirm('Are you sure you want to log out?')) {
-        window.location.href = '../main/main.html';
-        }
-    });
-
-
+document.addEventListener('DOMContentLoaded', function () {
     // Elements
     const eventForm = document.getElementById('eventForm');
     const reviewPage = document.getElementById('reviewPage');
@@ -18,10 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const successMessage = document.getElementById('successMessage');
     const reviewDetails = document.getElementById('reviewDetails');
     const categoryTags = document.getElementById('categoryTags');
-    
+
     // Selected categories
     let selectedCategories = [];
-    
+
     // Ticket type elements
     const freeOption = document.getElementById('freeOption');
     const paidOption = document.getElementById('paidOption');
@@ -39,12 +33,44 @@ document.addEventListener('DOMContentLoaded', function() {
     const eventLinkContainer = document.getElementById('eventLinkContainer');
     const locationContainer = document.getElementById('locationContainer');
 
+    function buildEventObject() {
+        return {
+            title: getValue('title'),
+            subtitle: getValue('subtitle'),
+            description: getValue('description'),
+            speakers: getValue('speakers'),
+            tags: getValue('tags'),
+            categories: selectedCategories.map(c => c.value),
+            organizerName: getValue('organizerName'),
+            organizerEmail: getValue('organizerEmail'),
+            organizerType: getSelectedText('organizerType'),
+            date: getValue('date'),
+            time: getValue('time'),
+
+            durationMinutes: parseInt(durationValue.value) * (durationUnit.value === "hours" ? 60 : durationUnit.value === "days" ? 1440 : 1),
+
+            mode: getValue('mode'),
+            location: getValue('location'),
+            eventLink: getValue('eventLink'),
+            accessibility: getValue('accessibility'),
+            capacity: Number(getValue('capacity')),
+
+            ticketType: freeRadio.checked ? "free" : "paid",
+            price: paidRadio.checked ? Number(getValue('price')) : 0,
+
+            registrationDeadline: getValue('registrationDeadline'),
+            ticketsSold: 0,
+            attendances: 0,
+            rating: 0
+        };
+    }
+
     // Category selection
     document.querySelectorAll('.categoryOption').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             const value = this.getAttribute('data-value');
             const text = this.textContent;
-            
+
             if (this.classList.contains('selected')) {
                 // Remove category
                 this.classList.remove('selected');
@@ -54,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.classList.add('selected');
                 selectedCategories.push({ value, text });
             }
-            
+
             updateCategoryTags();
         });
     });
@@ -73,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add remove functionality
         document.querySelectorAll('.categoryTag .remove').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const value = this.getAttribute('data-value');
                 selectedCategories = selectedCategories.filter(cat => cat.value !== value);
                 document.querySelector(`.categoryOption[data-value="${value}"]`).classList.remove('selected');
@@ -89,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
     modeSelect.addEventListener('change', updateConditionalFields);
 
     // Ticket type functionality
-    freeOption.addEventListener('click', function() {
+    freeOption.addEventListener('click', function () {
         freeRadio.checked = true;
         freeOption.classList.add('selected');
         paidOption.classList.remove('selected');
@@ -97,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         priceInput.removeAttribute('required');
     });
 
-    paidOption.addEventListener('click', function() {
+    paidOption.addEventListener('click', function () {
         paidRadio.checked = true;
         paidOption.classList.add('selected');
         freeOption.classList.remove('selected');
@@ -106,22 +132,46 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Reset Form
-    document.getElementById('resetForm').addEventListener('click', function() {
+    document.getElementById('resetForm').addEventListener('click', function () {
         if (confirm('Are you sure you want to clear the form? All entered data will be lost.')) {
             resetForm();
         }
     });
 
     // Save as Draft
-    document.getElementById('saveDraft').addEventListener('click', function() {
-        if (validateForm(true)) {
-            eventForm.style.display = 'none';
-            savedMessage.style.display = 'block';
+    document.getElementById('saveDraft').addEventListener('click', async function () {
+        if (!validateForm(true)) return;
+
+        const newEvent = buildEventObject();
+        newEvent.status = "draft"; // explicitly mark as draft
+
+        const formData = new FormData();
+        for (const key in newEvent) {
+            formData.append(key, newEvent[key]);
+        }
+
+        const bannerFile = document.getElementById("banner").files[0];
+        if (bannerFile) formData.append("banner", bannerFile);
+
+        try {
+            const res = await fetch("/api/events", {
+                method: "POST",
+                body: formData
+            });
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.error || "Failed to save draft");
+
+            eventForm.style.display = "none";
+            savedMessage.style.display = "block";
+        } catch (err) {
+            console.error(err);
+            alert("Error saving draft: " + err.message);
         }
     });
 
     // Publish Event
-    document.getElementById('publishEvent').addEventListener('click', function() {
+    document.getElementById('publishEvent').addEventListener('click', function () {
         if (validateForm()) {
             populateReviewPage();
             eventForm.style.display = 'none';
@@ -129,47 +179,75 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Review page buttons
-    document.getElementById('editEvent').addEventListener('click', function() {
-        reviewPage.style.display = 'none';
-        eventForm.style.display = 'block';
+    document.querySelector('.logoutButton').addEventListener('click', function () {
+        if (confirm('Are you sure you want to log out?')) {
+            localStorage.removeItem("user");
+            window.location.href = '../main/main.html';
+        }
     });
 
-    document.getElementById('confirmPublish').addEventListener('click', function() {
-        reviewPage.style.display = 'none';
-        successMessage.style.display = 'block';
+    // Review page buttons
+    document.getElementById('confirmPublish').addEventListener('click', async function () {
+        const formData = new FormData();
+
+        const event = buildEventObject();
+        event.status = "published";
+        for (const key in event) {
+            formData.append(key, event[key]);
+        }
+
+        // attach file
+        const bannerFile = document.getElementById("banner").files[0];
+        if (bannerFile) {
+            formData.append("banner", bannerFile);
+        }
+
+        try {
+            const res = await fetch("/api/events", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Failed to save event");
+
+            reviewPage.style.display = "none";
+            successMessage.style.display = "block";
+        } catch (err) {
+            alert("Error saving event: " + err.message);
+        }
     });
 
     // Saved message buttons
-    document.getElementById('createAnotherDraft').addEventListener('click', function() {
+    document.getElementById('createAnotherDraft').addEventListener('click', function () {
         savedMessage.style.display = 'none';
         eventForm.style.display = 'block';
         resetForm();
     });
 
-    document.getElementById('viewDashboard').addEventListener('click', function() {
+    document.getElementById('viewDashboard').addEventListener('click', function () {
         alert('Redirecting to My Events...');
     });
 
     // Success message buttons
-    document.getElementById('createAnother').addEventListener('click', function() {
+    document.getElementById('createAnother').addEventListener('click', function () {
         successMessage.style.display = 'none';
         eventForm.style.display = 'block';
         resetForm();
     });
 
-    document.getElementById('viewEvent').addEventListener('click', function() {
+    document.getElementById('viewEvent').addEventListener('click', function () {
         alert('Redirecting to event page...');
     });
 
     // Update conditional fields based on event mode
     function updateConditionalFields() {
         const mode = modeSelect.value;
-        
+
         // Reset both fields
         eventLinkContainer.style.display = 'none';
         locationContainer.style.display = 'none';
-        
+
         // Show appropriate fields
         if (mode === 'online' || mode === 'hybrid') {
             eventLinkContainer.style.display = 'block';
@@ -182,11 +260,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form validation
     function validateForm(isDraft = false) {
         const requiredFields = [
-            'title', 'organizerName', 'organizerEmail', 
-            'organizerType', 'date', 'time', 'mode', 
+            'title', 'organizerName', 'organizerEmail',
+            'organizerType', 'date', 'time', 'mode',
             'capacity', 'registrationDeadline', 'description'
         ];
-        
+
         let isValid = true;
 
         // Check categories
@@ -219,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('eventLink').style.borderColor = '#dc2626';
             isValid = false;
         }
-        
+
         if ((mode === 'in-person' || mode === 'hybrid') && !document.getElementById('location').value.trim()) {
             document.getElementById('location').style.borderColor = '#dc2626';
             isValid = false;
@@ -243,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Populate review page
     function populateReviewPage() {
         reviewDetails.innerHTML = '';
-        
+
         // Section 1: Event Information
         const section1 = createReviewSection('Event Information', [
             { label: 'Event Title', value: getValue('title') },
@@ -279,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mode === 'in-person' || mode === 'hybrid') {
             logisticsData.push({ label: 'Venue Location', value: getValue('location') });
         }
-        
+
         logisticsData.push({ label: 'Accessibility Information', value: getValue('accessibility') || 'Not provided' });
 
         const section3 = createReviewSection('Date & Location', logisticsData);
@@ -299,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function createReviewSection(title, items) {
         const section = document.createElement('div');
         section.className = 'reviewSection';
-        
+
         const titleEl = document.createElement('h3');
         titleEl.className = 'reviewSectionTitle';
         titleEl.textContent = title;
@@ -308,15 +386,15 @@ document.addEventListener('DOMContentLoaded', function() {
         items.forEach(item => {
             const row = document.createElement('div');
             row.className = 'detailRow';
-            
+
             const label = document.createElement('div');
             label.className = 'detailLabel';
             label.textContent = item.label + ':';
-            
+
             const value = document.createElement('div');
             value.className = 'detailValue';
             value.textContent = item.value;
-            
+
             row.appendChild(label);
             row.appendChild(value);
             section.appendChild(row);
@@ -348,18 +426,18 @@ document.addEventListener('DOMContentLoaded', function() {
         paidOption.classList.remove('selected');
         priceContainer.classList.remove('visible');
         updateConditionalFields();
-        
+
         // Reset categories
         selectedCategories = [];
         document.querySelectorAll('.categoryOption').forEach(option => {
             option.classList.remove('selected');
         });
         updateCategoryTags();
-        
+
         // Reset duration to default
         durationValue.value = '60';
         durationUnit.value = 'hours';
-        
+
         // Clear any error borders
         const inputs = eventForm.querySelectorAll('input, select, textarea');
         inputs.forEach(input => input.style.borderColor = '');
@@ -388,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set minimum dates
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').min = today;
-    
+
     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     document.getElementById('registrationDeadline').min = now.toISOString().slice(0, 16);

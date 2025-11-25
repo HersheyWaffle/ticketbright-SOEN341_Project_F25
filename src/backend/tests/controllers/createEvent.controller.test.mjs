@@ -2,23 +2,24 @@
 
 import { jest } from "@jest/globals";
 
-// 1) Mock DB layer BEFORE controller loads
-jest.unstable_mockModule("../../config/db.js", () => ({
-  default: {}, // fake pg pool (we don't use it in these tests)
+// Mocks for the Event model
+const findOneMock = jest.fn();
+const createMock = jest.fn();
+
+// 1) Mock the Event model BEFORE importing the controller
+jest.unstable_mockModule("../../models/event.js", () => ({
+  default: {
+    findOne: findOneMock,
+    create: createMock,
+  },
 }));
 
-// 2) Mock service layer BEFORE controller loads
-jest.unstable_mockModule("../../services/event.service.js", () => ({
-  // used by createEvent
-  createEventService: async () => ({ id: "123", title: "Created Event" }),
-
-  // also imported by event.controller.js – must exist even if not used here
-  getAttendeesForEvent: async () => [],
-  fetchEventDashboard: async () => ({}),
-}));
-
-// 3) Now safely import controller AFTER mocks are in place
-const { createEvent } = await import("../../controllers/event.controller.js");
+// 2) Import the controller AFTER mocks are set up
+// IMPORTANT: make sure this path matches your actual file name.
+// If your file is src/backend/controllers/event.controller.js, change to "../../controllers/event.controller.js".
+const { createEvent } = await import(
+  "../../controllers/eventCreateController.js"
+);
 
 // Simple mock Express res object
 function mockRes() {
@@ -36,75 +37,104 @@ function mockRes() {
   };
 }
 
-describe("createEvent controller", () => {
-  test("400 for missing required fields", async () => {
+beforeEach(() => {
+  findOneMock.mockReset();
+  createMock.mockReset();
+});
+
+describe("createEvent controller (new implementation)", () => {
+  test("returns 400 if title is missing", async () => {
     const req = {
       body: {
-        // title missing on purpose
+        // title missing
         description: "desc",
-        event_date: "2030-01-01",
-        event_time: "10:00",
+        date: "2030-01-01",
         capacity: 50,
-        ticket_type: "free",
       },
-      user: { id: "org123" },
     };
-
-    const res = mockRes();
-
-    await createEvent(req, res);
-
-    expect(res.statusCode).toBe(400);
-    expect(res.payload).toEqual({ message: "Missing required fields." });
-  });
-
-  test("400 for invalid paid event price", async () => {
-    const req = {
-      body: {
-        title: "Paid event",
-        description: "desc",
-        event_date: "2030-01-01",
-        event_time: "10:00",
-        capacity: 50,
-        ticket_type: "paid",
-        price: -5, // invalid
-      },
-      user: { id: "org123" },
-    };
-
     const res = mockRes();
 
     await createEvent(req, res);
 
     expect(res.statusCode).toBe(400);
     expect(res.payload).toEqual({
-      message: "For paid events, price must be a positive number.",
+      success: false,
+      error: "Event title is required",
     });
+    expect(findOneMock).not.toHaveBeenCalled();
+    expect(createMock).not.toHaveBeenCalled();
   });
 
-  test("201 for valid event", async () => {
+  test("returns 400 if a published event with same title already exists", async () => {
+    // Simulate an existing published event
+    findOneMock.mockResolvedValueOnce({
+      id: 1,
+      eventID: "my_event",
+      status: "published",
+    });
+
     const req = {
       body: {
-        title: "Valid Event",
+        title: "My Event",
         description: "desc",
-        event_date: "2030-01-01",
-        event_time: "10:00",
+        date: "2030-01-01",
         capacity: 50,
-        ticket_type: "free",
       },
-      user: { id: "org123" },
     };
-
     const res = mockRes();
 
     await createEvent(req, res);
 
-    expect(res.statusCode).toBe(201);
-    expect(res.payload).toEqual(
-      expect.objectContaining({
-        id: "123",
-        title: "Created Event",
-      })
-    );
+    expect(findOneMock).toHaveBeenCalledTimes(1);
+    expect(res.statusCode).toBe(400);
+    expect(res.payload).toEqual({
+      success: false,
+      error: "An event with this title already exists",
+    });
+    expect(createMock).not.toHaveBeenCalled();
+  });
+
+  test("creates a new event and returns 200 with success", async () => {
+    // No existing event
+    findOneMock.mockResolvedValueOnce(null);
+
+    // Whatever Event.create returns becomes savedEvent
+    createMock.mockResolvedValueOnce({
+      id: 123,
+      title: "New Event",
+      eventID: "new_event",
+      description: "desc",
+      date: "2030-01-01",
+      capacity: 50,
+    });
+
+    const req = {
+      body: {
+        title: "New Event",
+        description: "desc",
+        date: "2030-01-01",
+        capacity: 50,
+      },
+    };
+    const res = mockRes();
+
+    await createEvent(req, res);
+
+    expect(findOneMock).toHaveBeenCalledTimes(1);
+    expect(createMock).toHaveBeenCalledTimes(1);
+
+    // Controller responds with 200 and wrapped event object
+    expect(res.statusCode).toBe(200);
+    expect(res.payload).toEqual({
+      success: true,
+      event: {
+        id: 123,
+        title: "New Event",
+        eventID: "new_event",
+        description: "desc",
+        date: "2030-01-01",
+        capacity: 50,
+      },
+    });
   });
 });
