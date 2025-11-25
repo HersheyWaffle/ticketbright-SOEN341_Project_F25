@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //     });
     // });
-
+},
 // Logout functionality
 document.querySelector('.logoutButton').addEventListener('click', function () {
     if (confirm('Are you sure you want to log out?')) {
@@ -44,7 +44,3 @@ document.querySelector('.logoutButton').addEventListener('click', function () {
         window.location.href = '../main/main.html';
     }
 });
-
-
-console.log('Organization management page loaded successfully');
-console.log(`Total organizations: ${totalOrgs}`);

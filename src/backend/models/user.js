@@ -27,9 +27,17 @@ const User = sequelize.define("User", {
     allowNull: false,
     defaultValue: "student"
   },
+  organizationName: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  organizationType: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   approved: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true // default for students
+    type: DataTypes.INTEGER, // -1 = rejected, 0 = pending, 1 = approved
+    defaultValue: 1 // default for students
   }
 });
 

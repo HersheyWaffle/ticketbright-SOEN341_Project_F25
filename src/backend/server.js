@@ -79,9 +79,38 @@ app.get("/", (req, res) => {
 app.get("/analytics", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/analytics/analytics.html"));
 });
-
+app.get("/admin-analytics", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/admin-analytics/adminanalytics.html"));
+});
+app.get("/admin-event", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/admin-event/admin-event.html"));
+});
 app.get("/create", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/create/event-create.html"));
+});
+app.get("/event", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/event/event.html"));
+});
+app.get("/organization-edit", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/organization-edit/organization-edit.html"));
+});
+app.get("/organization-management", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/orgranization-management/orgManagement.html"));
+});
+app.get("/organizer-approval", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/organizers_approval/organizers-approval.html"));
+});
+app.get("/purchase", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/purchase/purchase.html"));
+});
+app.get("/search", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/search/event-search.html"));
+});
+app.get("/signup", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/signup-login/signup.html"));
+});
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/signup-login/login.html"));
 });
 
 sequelize.sync({ alter: true })

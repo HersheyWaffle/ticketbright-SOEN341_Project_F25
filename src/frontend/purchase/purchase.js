@@ -278,8 +278,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: JSON.stringify({ incrementBy: quantity })
                 });
 
-                const result = await res.json();
-                if (!res.ok) throw new Error(result.error || "Failed to update tickets");
+                let result = null;
+                const text = await res.text();
+                try {
+                    result = text ? JSON.parse(text) : {};
+                } catch {
+                    console.error("Non-JSON response from increment endpoint:", text);
+                    throw new Error(`Increment endpoint returned non-JSON (HTTP ${res.status})`);
+                }
+
+                if (!res.ok) throw new Error(result.error || result.message || "Failed to update tickets");
                 console.log("Tickets sold updated:", result);
 
                 // Continue with QR generation as before

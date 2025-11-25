@@ -5,9 +5,13 @@ import {
   listPendingOrganizers,
   approveOrganizer,
   rejectOrganizer,
+  listOrganizers,
   listPendingEvents,
-  moderateEvent,
   assignRole,
+  getAdminStats,
+  getMonthlyTickets,
+  getPublishedEventsForModeration,
+  moderatePublishedEvent,
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
@@ -16,14 +20,20 @@ const router = express.Router();
 // router.use(authenticateUser);
 router.use(requireAdmin);
 
+// ---- Analytics ----
+router.get("/analytics/stats", getAdminStats);
+router.get("/analytics/monthly", getMonthlyTickets);
+
 // ---- Organizers ----
 router.get ("/organizers/pending", listPendingOrganizers);
 router.post("/organizers/:id/approve", approveOrganizer);
 router.post("/organizers/:id/reject",   rejectOrganizer);
+router.get ("/organizers", listOrganizers);
 
 // ---- Events ----
 router.get ("/events/pending", listPendingEvents);
-router.post("/events/:id/moderate", moderateEvent);
+router.get("/events/published", getPublishedEventsForModeration);
+router.post("/events/:id/moderate", moderatePublishedEvent);
 
 // ---- Roles ----
 router.post("/roles/assign", assignRole);

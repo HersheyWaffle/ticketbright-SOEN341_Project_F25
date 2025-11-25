@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>TicketBright - Manage Organizations</title>
-    <link rel="stylesheet" href="orgManagement.css">
+    <link rel="stylesheet" href="../js/orgManagement.css">
 </head>
+
 <body>
     <header>
         <div class="headerContainer">
@@ -15,9 +17,11 @@
                     <button class="adminButton">Admin</button>
                     <div class="dropdownContent">
                         <a href="../admin-analytics/adminAnalytics.html" class="dropdownLink">Analytics</a>
-                        <a href="../organizers_approval/organizers-approval.html" class="dropdownLink">Organizer Accounts</a>
+                        <a href="../organizers_approval/organizers-approval.html" class="dropdownLink">Organizer
+                            Accounts</a>
                         <a href="../admin-event/admin-event.html" class="dropdownLink">Event Management</a>
-                        <a href="../orgranization-management/orgManagement.html" class="dropdownLink active">Organizations Management</a>                        
+                        <a href="../orgranization-management/orgManagement.html"
+                            class="dropdownLink active">Organizations Management</a>
                     </div>
                 </div>
                 <button class="logoutButton">Log Out</button>
@@ -48,27 +52,15 @@
                     <div class="tableCell">Organizers</div>
                     <div class="tableCell actionsHeader">Actions</div>
                 </div>
-                
-                <div class="tableBody">
-                    <!-- Engineering Club -->
-                    <div class="tableRow">
-                        <div class="tableCell">
-                            <div class="orgName">Computer Science Club</div>
-                        </div>
-                        <div class="tableCell">
-                            <div class="organizersInfo">
-                                <div class="organizersCount">5 members</div>
-                            </div>
-                        </div>
-                        <div class="tableCell actionsCell">
-                            <button class="manageButton" data-org-id="1">Manage Organization</button>
-                        </div>
-                    </div>
-                </div>
+
+                <div class="tableBody" id="orgTableBody">
+                    <!-- rows inserted by JS -->
+                </div>z
             </div>
         </div>
     </section>
 
-    <script src="orgManagement.js"></script>
+    <script src="../js/orgManagement.js"></script>
 </body>
+
 </html>

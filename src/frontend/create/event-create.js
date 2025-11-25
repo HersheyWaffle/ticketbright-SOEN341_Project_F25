@@ -1,10 +1,10 @@
 const user = JSON.parse(localStorage.getItem("user"));
 if (!user || (user.role !== "admin" && user.role !== "organizer")) {
     alert("Please log in to access this page.");
-    window.location.href = "../signup-login/login.html";
+    window.location.href = "../login";
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async () => {
     // Elements
     const eventForm = document.getElementById('eventForm');
     const reviewPage = document.getElementById('reviewPage');
@@ -33,6 +33,57 @@ document.addEventListener('DOMContentLoaded', function () {
     const eventLinkContainer = document.getElementById('eventLinkContainer');
     const locationContainer = document.getElementById('locationContainer');
 
+    try {
+        const res = await fetch(`/api/users/by-username/${encodeURIComponent(user.username)}`);
+        const dbUser = await res.json();
+        if (!res.ok) throw new Error(dbUser.error || "Failed to fetch organizer");
+
+        // only autofill if organizer
+        if (dbUser.role === "organizer") {
+            const organizerNameInput = document.getElementById("organizerName");
+            const organizerEmailInput = document.getElementById("organizerEmail");
+            const organizerUsernameInput = document.getElementById("organizerUsername");
+            const organizerTypeSelect = document.getElementById("organizerType");
+
+            if (organizerNameInput) organizerNameInput.value = dbUser.organizationName || dbUser.username;
+            if (organizerEmailInput) organizerEmailInput.value = dbUser.email || "";
+            if (organizerUsernameInput) organizerUsernameInput.value = dbUser.username || "";
+            if (organizerTypeSelect && dbUser.organizationType) {
+                const normalized = dbUser.organizationType.trim().toLowerCase();
+
+                // Find matching option regardless of capitalization or spacing
+                let matched = false;
+                for (const opt of organizerTypeSelect.options) {
+                    if (opt.value.trim().toLowerCase() === normalized) {
+                        organizerTypeSelect.value = opt.value;
+                        matched = true;
+                        break;
+                    }
+                }
+
+                // If no match, fallback to selecting nothing
+                if (!matched) {
+                    organizerTypeSelect.selectedIndex = 0;
+                }
+            }
+
+            // lock fields
+            [organizerNameInput, organizerEmailInput, organizerUsernameInput].forEach(el => {
+                if (!el) return;
+                el.readOnly = true;
+                el.style.background = "#f3f4f6";
+                el.style.cursor = "not-allowed";
+            });
+            if (organizerTypeSelect) {
+                organizerTypeSelect.disabled = true;
+                organizerTypeSelect.style.background = "#f3f4f6";
+                organizerTypeSelect.style.cursor = "not-allowed";
+            }
+        }
+    } catch (err) {
+        console.error("Autofill organizer failed:", err);
+    }
+
     function buildEventObject() {
         return {
             title: getValue('title'),
@@ -43,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
             categories: selectedCategories.map(c => c.value),
             organizerName: getValue('organizerName'),
             organizerEmail: getValue('organizerEmail'),
+            organizerEmail: user.username,
             organizerType: getSelectedText('organizerType'),
             date: getValue('date'),
             time: getValue('time'),
@@ -237,7 +289,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('viewEvent').addEventListener('click', function () {
-        alert('Redirecting to event page...');
+        const id = getValue('title')
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s_-]/g, "")
+            .replace(/\s+/g, "_");
+        location.href = `../event/event.html?id=${encodeURIComponent(id)}`;
     });
 
     // Update conditional fields based on event mode
