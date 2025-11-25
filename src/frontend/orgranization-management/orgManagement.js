@@ -28,13 +28,14 @@ document.addEventListener('DOMContentLoaded', function () {
     //         const orgName = this.closest('.tableRow').querySelector('.orgName').textContent;
 
     //         console.log(`Managing organization: ${orgName} (ID: ${orgId})`);
+            
+            // Redirect to organization management page
+            // In real app, this would be: window.location.href = `manage-organization.html?id=${orgId}`;
+            // alert(`Redirecting to manage organization: ${orgName}\nOrganization ID: ${orgId}\n\nThis would redirect to the organization management page created by your teammate.`);
+    //         window.location.href = '../organization-edit/organization-edit.html';
 
-    // Redirect to organization management page
-    // In real app, this would be: window.location.href = `manage-organization.html?id=${orgId}`;
-    // alert(`Redirecting to manage organization: ${orgName}\nOrganization ID: ${orgId}\n\nThis would redirect to the organization management page created by your teammate.`);
-    window.location.href = '../organization-edit/organization-edit.html';
-
-});
+    //     });
+    // });
 
 // Logout functionality
 document.querySelector('.logoutButton').addEventListener('click', function () {

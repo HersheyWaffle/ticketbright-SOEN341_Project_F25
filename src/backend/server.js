@@ -12,6 +12,8 @@ import eventCreateRoutes from "./routes/eventCreateRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import adminRouter from "./routes/admin.routes.js";
 import orgRouter from "./routes/organizations.routes.js";
+import chatRoutes from "./routes/chat.routes.js";
+
 
 import sequelize from "./config/db.js";
 import Event from "./models/event.js";
@@ -60,6 +62,10 @@ const adminSetup = async () => {
 app.use("/api", ticketValidationRoutes);
 app.use("/api/events", attendeeCSVRoutes);
 app.use("/api/events", eventAnalyticsRoutes);
+app.use("/api/admin/organizations", orgRouter);  // <-- mount here
+app.use("/api/admin", adminRouter);
+app.use("/api/chat", chatRoutes);
+
 app.use("/api/events", eventCreateRoutes);
 //app.use("/api/admin/organizations", orgRouter);  // <-- mount here
 app.use("/api/organizations", orgRouter);
